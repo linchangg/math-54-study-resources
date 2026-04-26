@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ODE Examples — LaTeX Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']],
+    tags: 'none'
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0e0e10;--bg2:#16161a;--bg3:#1e1e24;--bg4:#26262e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --text:#e8e6e0;--muted:#8a8880;--faint:#444240;
+  --gold:#e8b86d;--teal:#7eb8a4;--red:#c47b7b;--blue:#8b9eca;--purple:#b48fd4;--orange:#d4916b;
+}
+
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
+
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 6rem;position:relative;z-index:1}
+
+.hdr{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.lbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:.7rem}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,3rem);font-weight:400;line-height:1.15;margin-bottom:.45rem}
+h1 em{font-style:italic;color:var(--gold)}
+.sub{font-size:13px;color:var(--muted);line-height:1.55}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:2rem;padding:.9rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px}
+.li{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+.tabs{display:flex;gap:4px;margin-bottom:2.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tab{flex:1;min-width:110px;padding:9px 12px;border:none;background:transparent;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border-radius:7px;transition:all .2s;letter-spacing:.02em}
+.tab:hover{color:var(--text);background:var(--bg3)}
+.tab.on{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+
+.sec{display:none}.sec.on{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.sec-title{font-family:'Instrument Serif',serif;font-size:1.45rem;font-weight:400;margin-bottom:.3rem}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:1.8rem;line-height:1.55}
+
+.card{border:1px solid var(--border);border-radius:14px;margin-bottom:1.4rem;overflow:hidden;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+
+.card-hdr{display:flex;align-items:center;gap:11px;padding:.9rem 1.3rem;background:var(--bg2);cursor:pointer;user-select:none;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.card-hdr:hover{background:var(--bg3)}
+
+.badge{font-family:'DM Mono',monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.b-lec{background:rgba(232,184,109,.15);color:var(--gold)}
+.b-new{background:rgba(126,184,164,.15);color:var(--teal)}
+.b-ovl{background:rgba(196,123,123,.15);color:var(--red)}
+.b-vop{background:rgba(139,158,202,.15);color:var(--blue)}
+
+.card-eq{font-size:13.5px;flex:1;color:var(--text);min-width:0}
+.card-topic{font-size:11px;color:var(--muted);white-space:nowrap;margin-left:auto}
+.arrow{font-size:12px;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.card.open .arrow{transform:rotate(180deg)}
+
+.card-body{display:none;padding:1.5rem 1.6rem;background:var(--bg)}
+.card.open .card-body{display:block}
+
+.steps{display:flex;flex-direction:column;gap:1.3rem}
+.step{display:flex;gap:14px;align-items:flex-start}
+.snum{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px}
+.sg{background:rgba(232,184,109,.18);color:var(--gold);border:1px solid rgba(232,184,109,.3)}
+.st{background:rgba(126,184,164,.18);color:var(--teal);border:1px solid rgba(126,184,164,.3)}
+.sr{background:rgba(196,123,123,.18);color:var(--red);border:1px solid rgba(196,123,123,.3)}
+.sb{background:rgba(139,158,202,.18);color:var(--blue);border:1px solid rgba(139,158,202,.3)}
+
+.sc{flex:1;min-width:0}
+.slbl{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-family:'DM Mono',monospace}
+.stxt{font-size:13.5px;color:var(--muted);line-height:1.65}
+.stxt strong{color:var(--text);font-weight:600}
+
+.mblock{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0;overflow-x:auto;line-height:1.9}
+.mblock.gold{border-left:3px solid var(--gold)}
+.mblock.teal{border-left:3px solid var(--teal)}
+.mblock.red{border-left:3px solid var(--red)}
+.mblock.blue{border-left:3px solid var(--blue)}
+
+.ckey{display:flex;flex-wrap:wrap;gap:8px;margin:.7rem 0}
+.ck{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-size:12px;border:1px solid var(--border)}
+.ck-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+.warn{background:rgba(196,123,123,.07);border:1px solid rgba(196,123,123,.2);border-radius:8px;padding:.7rem 1rem;font-size:12.5px;color:#d9a0a0;line-height:1.6;margin:.7rem 0}
+.tip{background:rgba(126,184,164,.07);border:1px solid rgba(126,184,164,.18);border-radius:8px;padding:.7rem 1rem;font-size:12.5px;color:#9ed4c4;line-height:1.6;margin:.7rem 0}
+
+.ans{background:var(--bg3);border:1px solid var(--border2);border-radius:11px;padding:1rem 1.3rem;margin-top:1.1rem;overflow-x:auto}
+.ans-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;font-family:'DM Mono',monospace}
+
+.divider{height:1px;background:var(--border);margin:1.1rem 0}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.6rem 0}
+@media(max-width:560px){.g2{grid-template-columns:1fr}}
+
+mjx-container{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="lbl">Lectures 30 &amp; 31 — LaTeX Edition</div>
+  <h1>Color-Coded<br><em>Worked Examples</em></h1>
+  <p class="sub">Full \(\LaTeX\) typesetting &nbsp;·&nbsp; Color tracks each term through every step &nbsp;·&nbsp; Lecture &amp; new examples</p>
+</div>
+
+<div class="legend">
+  <div class="li"><span class="ldot" style="background:var(--gold)"></span> Term A / primary unknown</div>
+  <div class="li"><span class="ldot" style="background:var(--teal)"></span> Term B / secondary unknown</div>
+  <div class="li"><span class="ldot" style="background:var(--red)"></span> Overlap / problem term</div>
+  <div class="li"><span class="ldot" style="background:var(--blue)"></span> Wronskian / VOP quantity</div>
+  <div class="li"><span class="ldot" style="background:var(--purple)"></span> Third coefficient C</div>
+  <div class="li"><span class="badge b-lec">Lecture</span> From slides</div>
+  <div class="li"><span class="badge b-new">New</span> Practice problem</div>
+</div>
+
+<div class="tabs">
+  <button class="tab on"  onclick="show('muc-basic',this)">MUC — Basics</button>
+  <button class="tab"     onclick="show('muc-ovl',this)">MUC — Overlap</button>
+  <button class="tab"     onclick="show('super',this)">Superposition</button>
+  <button class="tab"     onclick="show('vop',this)">Var. of Params</button>
+  <button class="tab"     onclick="show('new',this)">New Examples</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  TAB 1 — MUC BASICS                                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec on" id="s-muc-basic">
+<div class="sec-title">MUC — Basic Examples</div>
+<p class="sec-sub">No overlap. Identify the type of \(f(t)\), write the corresponding guess, differentiate, plug in, match coefficients.</p>
+
+<!-- B4.4.11 -->
+<div class="card" id="e1">
+<div class="card-hdr" onclick="tog('e1')">
+  <span class="badge b-lec">Lecture · B4.4.11</span>
+  <span class="card-eq">\(y'' + y = 2^x\)</span>
+  <span class="card-topic">Rewrite as \(e^{kx}\)</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sg">1</div>
+    <div class="sc">
+      <div class="slbl">Rewrite f(x)</div>
+      <div class="stxt">Use the identity \(a^x = e^{x \ln a}\):</div>
+      <div class="mblock gold">\[ 2^x = e^{x \ln 2} \]</div>
+      <div class="stxt">Now it's a plain exponential with \(k = \ln 2\). MUC is viable.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">2</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution — check overlap</div>
+      <div class="mblock gold">\[ r^2 + 1 = 0 \;\Rightarrow\; r = \pm i \;\Rightarrow\; y_c = c_1 \cos x + c_2 \sin x \]</div>
+      <div class="stxt">No \(e^{x\ln 2}\) in \(y_c\). <strong>No overlap.</strong></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">3</div>
+    <div class="sc">
+      <div class="slbl">Guess &amp; differentiate — color tracks the single unknown</div>
+      <div class="ckey">
+        <div class="ck"><span class="ck-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">gold = unknown \(A\)</span></div>
+      </div>
+      <div class="mblock gold">
+        \[\begin{aligned}
+          y_p   &= {\color{#e8b86d}{A}}\, e^{x\ln 2}\\[4pt]
+          y_p'  &= {\color{#e8b86d}{A}}(\ln 2)\, e^{x\ln 2}\\[4pt]
+          y_p'' &= {\color{#e8b86d}{A}}(\ln 2)^2\, e^{x\ln 2}
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">4</div>
+    <div class="sc">
+      <div class="slbl">Substitute &amp; equate coefficients</div>
+      <div class="mblock gold">
+        \[ {\color{#e8b86d}{A}}(\ln 2)^2\, e^{x\ln 2} + {\color{#e8b86d}{A}}\, e^{x\ln 2} = e^{x\ln 2} \]
+      </div>
+      <div class="stxt">Divide both sides by \(e^{x\ln 2} \neq 0\):</div>
+      <div class="mblock gold">
+        \[ {\color{#e8b86d}{A}}\bigl[(\ln 2)^2 + 1\bigr] = 1 \;\Longrightarrow\; {\color{#e8b86d}{A}} = \frac{1}{(\ln 2)^2 + 1} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 \cos x + c_2 \sin x + \frac{2^x}{(\ln 2)^2 + 1} \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- B4.4.3 -->
+<div class="card" id="e2">
+<div class="card-hdr" onclick="tog('e2')">
+  <span class="badge b-lec">Lecture · B4.4.3</span>
+  <span class="card-eq">\(2y'' - 6y' + y = e^{-4x}\sin x\)</span>
+  <span class="card-topic">Product guess</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sg">1</div>
+    <div class="sc">
+      <div class="slbl">Identify and check viability</div>
+      <div class="stxt">\(f(x) = e^{-4x}\sin x\) is exponential \(\times\) trig — both MUC-viable, so the product is too. It would fail if it were \(e^{4x}/\sin x = e^{4x}\csc x\) since \(\csc x\) is not a viable type.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">2</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution — check overlap</div>
+      <div class="mblock gold">
+        \[ 2r^2 - 6r + 1 = 0 \;\Rightarrow\; r = \frac{6 \pm \sqrt{28}}{4} \quad\text{(real irrational)} \]
+      </div>
+      <div class="stxt">\(y_c\) contains only real exponentials — no \(e^{-4x}\sin x\). <strong>No overlap.</strong></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">3</div>
+    <div class="sc">
+      <div class="slbl">Form the guess — product of individual guesses</div>
+      <div class="ckey">
+        <div class="ck"><span class="ck-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">gold = \(A\)</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--teal)"></span><span style="color:var(--teal)">teal = \(B\)</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--red)"></span><span style="color:var(--red)">red = shared \(e^{-4x}\)</span></div>
+      </div>
+      <div class="mblock gold">
+        \[ y_p = {\color{#c47b7b}{e^{-4x}}}\!\bigl({\color{#e8b86d}{A}}\cos x + {\color{#7eb8a4}{B}}\sin x\bigr) \]
+      </div>
+      <div class="tip">No extra constant \(C\) out front. Writing \(C \cdot e^{-4x}(A\cos x + B\sin x)\) makes \(CA\) just one constant — two symbols for the same unknown. Redundant and makes the algebra longer for no reason.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">4</div>
+    <div class="sc">
+      <div class="slbl">Differentiate &amp; plug in</div>
+      <div class="stxt">Each derivative uses the product rule, pulling a factor of \(-4\) from \(e^{-4x}\) and cycling \(\cos x \leftrightarrow \sin x\). After substituting into \(2y'' - 6y' + y\), group by \({\color{#c47b7b}{e^{-4x}}}\cos x\) and \({\color{#c47b7b}{e^{-4x}}}\sin x\) terms separately and set each coefficient equal to the right-hand side.</div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">Form of particular solution</div>
+    \[ y_p = {\color{#c47b7b}{e^{-4x}}}\bigl({\color{#e8b86d}{A}}\cos x + {\color{#7eb8a4}{B}}\sin x\bigr) \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- B4.4.7 -->
+<div class="card" id="e3">
+<div class="card-hdr" onclick="tog('e3')">
+  <span class="badge b-lec">Lecture · B4.4.7</span>
+  <span class="card-eq">\(8z'' - 2z' = 3x^{100}e^{4x}\cos(25x)\)</span>
+  <span class="card-topic">Triple product</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum sg">1</div>
+    <div class="sc">
+      <div class="slbl">Three factors — all viable</div>
+      <div class="ckey">
+        <div class="ck"><span class="ck-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">gold = polynomial \(x^{100}\)</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--red)"></span><span style="color:var(--red)">red = exponential \(e^{4x}\)</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--blue)"></span><span style="color:var(--blue)">blue = trig \(\cos(25x)\)</span></div>
+      </div>
+      <div class="mblock gold">
+        \[ f(x) = 3{\color{#e8b86d}{x^{100}}}\cdot{\color{#c47b7b}{e^{4x}}}\cdot{\color{#8b9eca}{\cos(25x)}} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum sg">2</div>
+    <div class="sc">
+      <div class="slbl">Guess = product of three individual guesses</div>
+      <div class="mblock gold">
+        \[ z_p = {\color{#e8b86d}{q(x)}}\cdot{\color{#c47b7b}{e^{4x}}}\cdot\bigl({\color{#8b9eca}{A\cos(25x) + B\sin(25x)}}\bigr) \]
+      </div>
+      <div class="stxt">where \({\color{#e8b86d}{q(x)}}\) is a general degree-100 polynomial with 101 unknown coefficients.</div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">Form of z_p</div>
+    \[ z_p = {\color{#e8b86d}{q(x)}}\;{\color{#c47b7b}{e^{4x}}}\bigl[{\color{#8b9eca}{A\cos(25x) + B\sin(25x)}}\bigr], \quad \deg(q)=100 \]
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end sec muc-basic -->
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  TAB 2 — MUC OVERLAP                                  -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-muc-ovl">
+<div class="sec-title">MUC — Overlap Examples</div>
+<p class="sec-sub">When your guess is already in \(y_c\) it contributes zero on the left side. Multiply by \(t\) (or \(t^2\) for a double root) to fix it.</p>
+
+<!-- cos t demo -->
+<div class="card" id="e4">
+<div class="card-hdr" onclick="tog('e4')">
+  <span class="badge b-ovl">Lecture · Overlap Demo</span>
+  <span class="card-eq">\(y'' + y = \cos t\)</span>
+  <span class="card-topic">Why the naive guess fails</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sr">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution</div>
+      <div class="mblock red">
+        \[ r^2 + 1 = 0 \;\Rightarrow\; r = \pm i \;\Rightarrow\; {\color{#c47b7b}{y_c = c_1\cos t + c_2\sin t}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">2</div>
+    <div class="sc">
+      <div class="slbl">Naive guess produces zero — here's exactly why</div>
+      <div class="stxt">Normal guess: \(y_p = {\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t\). Differentiate twice:</div>
+      <div class="mblock red">
+        \[\begin{aligned}
+          y_p   &= {\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t \\[4pt]
+          y_p'' &= -{\color{#e8b86d}{A}}\cos t - {\color{#7eb8a4}{B}}\sin t
+        \end{aligned}\]
+      </div>
+      <div class="mblock red">
+        \[ y_p'' + y_p = (-{\color{#e8b86d}{A}}+{\color{#e8b86d}{A}})\cos t + (-{\color{#7eb8a4}{B}}+{\color{#7eb8a4}{B}})\sin t = {\color{#c47b7b}{0}} \]
+      </div>
+      <div class="warn">⚠ The guess satisfies the <em>homogeneous</em> equation, so it always gives \(0\) on the left — never \(\cos t\). <br><br><strong>Overlap test:</strong> ratio \(= \cos t / \cos t = 1\), a polynomial → overlap confirmed.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">3</div>
+    <div class="sc">
+      <div class="slbl">Fix: multiply the whole guess by \(t\)</div>
+      <div class="mblock red">
+        \[ y_p = t\bigl({\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t\bigr) \]
+      </div>
+      <div class="stxt">Differentiate twice by product rule:</div>
+      <div class="mblock red">
+        \[\begin{aligned}
+          y_p'  &= {\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t + t(-{\color{#e8b86d}{A}}\sin t + {\color{#7eb8a4}{B}}\cos t)\\[4pt]
+          y_p'' &= -2{\color{#e8b86d}{A}}\sin t + 2{\color{#7eb8a4}{B}}\cos t + t(-{\color{#e8b86d}{A}}\cos t - {\color{#7eb8a4}{B}}\sin t)
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">4</div>
+    <div class="sc">
+      <div class="slbl">Substitute — \(t\) terms cancel, only constants survive</div>
+      <div class="mblock red">
+        \[\begin{aligned}
+          y_p'' + y_p &= -2{\color{#e8b86d}{A}}\sin t + 2{\color{#7eb8a4}{B}}\cos t\\
+          &\quad + t\underbrace{\bigl(-{\color{#e8b86d}{A}}\cos t - {\color{#7eb8a4}{B}}\sin t + {\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t\bigr)}_{=\;0}\\[4pt]
+          &= -2{\color{#e8b86d}{A}}\sin t + 2{\color{#7eb8a4}{B}}\cos t \;=\; \cos t
+        \end{aligned}\]
+      </div>
+      <div class="mblock red">
+        \[ 2{\color{#7eb8a4}{B}} = 1 \;\Rightarrow\; {\color{#7eb8a4}{B = \tfrac{1}{2}}} \qquad\qquad -2{\color{#e8b86d}{A}} = 0 \;\Rightarrow\; {\color{#e8b86d}{A = 0}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1\cos t + c_2\sin t + \frac{t}{2}\sin t \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- t cos t -->
+<div class="card" id="e5">
+<div class="card-hdr" onclick="tog('e5')">
+  <span class="badge b-ovl">Lecture · Overlap</span>
+  <span class="card-eq">\(y'' + y = t\cos t\)</span>
+  <span class="card-topic">Product \(\times\) overlap combined</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sr">1</div>
+    <div class="sc">
+      <div class="slbl">y_c is the same</div>
+      <div class="mblock red">\[ {\color{#c47b7b}{y_c = c_1\cos t + c_2\sin t}} \]</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">2</div>
+    <div class="sc">
+      <div class="slbl">What the naive guess would be — and why it fails</div>
+      <div class="stxt">\(f(t) = t\cos t\) is polynomial \(\times\) trig, so normally guess a degree-1 polynomial times both trig functions:</div>
+      <div class="mblock red">
+        \[ y_p^{\text{naive}} = ({\color{#e8b86d}{A}}t + {\color{#c47b7b}{B}})\cos t + ({\color{#7eb8a4}{C}}t + {\color{#c47b7b}{D}})\sin t \]
+      </div>
+      <div class="stxt">But \({\color{#c47b7b}{B\cos t}}\) and \({\color{#c47b7b}{D\sin t}}\) are in \(y_c\). They contribute zero. Discard them.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">3</div>
+    <div class="sc">
+      <div class="slbl">Correct guess — the whole naive guess is multiplied by \(t\)</div>
+      <div class="ckey">
+        <div class="ck"><span class="ck-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">\(A, C\)</span> multiply \(t^2\)</div>
+        <div class="ck"><span class="ck-dot" style="background:var(--teal)"></span><span style="color:var(--teal)">\(B, D\)</span> multiply \(t\)</div>
+      </div>
+      <div class="mblock red">
+        \[ y_p = ({\color{#e8b86d}{A}}t^2 + {\color{#7eb8a4}{B}}t)\cos t + ({\color{#e8b86d}{C}}t^2 + {\color{#7eb8a4}{D}}t)\sin t \]
+      </div>
+      <div class="tip">Do <strong>not</strong> write \((At^2 + Bt + E)\cos t\). The \(E\cos t\) term is a homogeneous solution — it contributes nothing and adds unnecessary unknowns.</div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">Correct form — solving gives \(A=0,\,B=1,\,C=1,\,D=0\)</div>
+    \[ y_p = t\cos t + t^2\sin t \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- double overlap -->
+<div class="card" id="e6">
+<div class="card-hdr" onclick="tog('e6')">
+  <span class="badge b-ovl">Lecture · Double Overlap</span>
+  <span class="card-eq">\(y'' - 2y' + y = e^t\)</span>
+  <span class="card-topic">Double root \(\Rightarrow\) multiply by \(t^2\)</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sr">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution — double root</div>
+      <div class="mblock red">
+        \[ r^2 - 2r + 1 = (r-1)^2 = 0 \;\Rightarrow\; r = 1,\;1 \]
+      </div>
+      <div class="mblock red">
+        \[ {\color{#c47b7b}{y_c = c_1 e^t + c_2\, t e^t}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">2</div>
+    <div class="sc">
+      <div class="slbl">Both \(e^t\) and \(te^t\) are in \(y_c\)</div>
+      <div class="stxt">Normal guess \({\color{#c47b7b}{Ae^t}}\) — in \(y_c\). Multiply by \(t\): \({\color{#c47b7b}{Ate^t}}\) — also in \(y_c\). <strong>Double overlap</strong> → multiply by \(t^2\).</div>
+      <div class="warn">⚠ General rule: if the overlapping root has multiplicity \(m\), multiply the standard guess by \(t^m\).</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">3</div>
+    <div class="sc">
+      <div class="slbl">Correct guess and its derivatives</div>
+      <div class="mblock red">
+        \[\begin{aligned}
+          y_p   &= {\color{#e8b86d}{A}}t^2 e^t\\[4pt]
+          y_p'  &= {\color{#e8b86d}{A}}(t^2 + 2t)\,e^t\\[4pt]
+          y_p'' &= {\color{#e8b86d}{A}}(t^2 + 4t + 2)\,e^t
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">4</div>
+    <div class="sc">
+      <div class="slbl">Substitute — \(t^2\) and \(t\) terms cancel, only the constant survives</div>
+      <div class="mblock red">
+        \[\begin{aligned}
+          &{\color{#e8b86d}{A}}(t^2+4t+2)e^t - 2{\color{#e8b86d}{A}}(t^2+2t)e^t + {\color{#e8b86d}{A}}t^2 e^t\\[4pt]
+          &= {\color{#e8b86d}{A}}e^t\bigl[\underbrace{(1-2+1)}_{=\,0}t^2 + \underbrace{(4-4)}_{=\,0}t + 2\bigr]\\[4pt]
+          &= 2{\color{#e8b86d}{A}}e^t = e^t
+        \end{aligned}\]
+      </div>
+      <div class="mblock red">\[ {\color{#e8b86d}{A = \tfrac{1}{2}}} \]</div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 e^t + c_2\,t e^t + \tfrac{1}{2}t^2 e^t \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- overlap nuance -->
+<div class="card" id="e7">
+<div class="card-hdr" onclick="tog('e7')">
+  <span class="badge b-ovl">Lecture · Overlap Nuance</span>
+  <span class="card-eq">\(y'' + 9y = e^t \sin(3t)\)</span>
+  <span class="card-topic">Shared trig but NO overlap</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sr">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution</div>
+      <div class="mblock red">
+        \[ r^2 + 9 = 0 \;\Rightarrow\; r = \pm 3i \;\Rightarrow\; {\color{#c47b7b}{y_c = c_1\cos(3t) + c_2\sin(3t)}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">2</div>
+    <div class="sc">
+      <div class="slbl">Apply the ratio test</div>
+      <div class="stxt">Both \(f(t)\) and \(y_c\) contain \(\sin(3t)\). Compute the ratio:</div>
+      <div class="mblock red">
+        \[ \frac{e^t\sin(3t)}{\sin(3t)} = e^t \]
+      </div>
+      <div class="stxt">\(e^t\) is <strong>not a polynomial</strong> → <strong>no overlap.</strong></div>
+      <div class="warn">⚠ Compare: \(t\cos t\,/\,\cos t = t\) (polynomial → overlap). \(\;e^t\cos t\,/\,\cos t = e^t\) (not polynomial → no overlap). The exponential factor changes everything.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">3</div>
+    <div class="sc">
+      <div class="slbl">Standard guess — no \(t\) factor needed</div>
+      <div class="mblock red">
+        \[ y_p = {\color{#e8b86d}{A}}e^t\cos(3t) + {\color{#7eb8a4}{B}}e^t\sin(3t) \]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">Form of y_p</div>
+    \[ y_p = {\color{#e8b86d}{A}}e^t\cos(3t) + {\color{#7eb8a4}{B}}e^t\sin(3t) \quad\text{(no }t\text{ factor needed)} \]
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end sec muc-ovl -->
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  TAB 3 — SUPERPOSITION                                -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-super">
+<div class="sec-title">Superposition — Full General Solutions</div>
+<p class="sec-sub">Finding all unknown coefficients and writing the complete \(y = y_c + y_p\).</p>
+
+<!-- B4.5.17 -->
+<div class="card" id="e8">
+<div class="card-hdr" onclick="tog('e8')">
+  <span class="badge b-lec">Lecture · B4.5.17</span>
+  <span class="card-eq">\(y'' - 2y' - 3y = 3t^2 - 5\)</span>
+  <span class="card-topic">Full polynomial solve with three unknowns</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sg">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution</div>
+      <div class="mblock gold">
+        \[ r^2 - 2r - 3 = (r-3)(r+1) = 0 \;\Rightarrow\; r = -1,\;3 \]
+      </div>
+      <div class="mblock gold">
+        \[ y_c = c_1 e^{-t} + c_2 e^{3t} \]
+      </div>
+      <div class="stxt">No polynomial terms in \(y_c\) → <strong>no overlap</strong> with \(f(t) = 3t^2-5\).</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">2</div>
+    <div class="sc">
+      <div class="slbl">Guess — degree matches \(f\)</div>
+      <div class="ckey">
+        <div class="ck"><span class="ck-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">gold = \(A\) (coeff of \(t^2\))</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--teal)"></span><span style="color:var(--teal)">teal = \(B\) (coeff of \(t\))</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--purple)"></span><span style="color:var(--purple)">purple = \(C\) (constant)</span></div>
+      </div>
+      <div class="mblock gold">
+        \[ y_p = {\color{#e8b86d}{A}}t^2 + {\color{#7eb8a4}{B}}t + {\color{#b48fd4}{C}} \]
+      </div>
+      <div class="mblock gold">
+        \[ y_p' = 2{\color{#e8b86d}{A}}t + {\color{#7eb8a4}{B}}, \qquad y_p'' = 2{\color{#e8b86d}{A}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">3</div>
+    <div class="sc">
+      <div class="slbl">Substitute and expand</div>
+      <div class="mblock gold">
+        \[ 2{\color{#e8b86d}{A}} - 2(2{\color{#e8b86d}{A}}t + {\color{#7eb8a4}{B}}) - 3({\color{#e8b86d}{A}}t^2 + {\color{#7eb8a4}{B}}t + {\color{#b48fd4}{C}}) = 3t^2 - 5 \]
+      </div>
+      <div class="mblock gold">
+        \[ -3{\color{#e8b86d}{A}}t^2 + (-4{\color{#e8b86d}{A}}-3{\color{#7eb8a4}{B}})t + (2{\color{#e8b86d}{A}}-2{\color{#7eb8a4}{B}}-3{\color{#b48fd4}{C}}) = 3t^2 + 0\cdot t - 5 \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sg">4</div>
+    <div class="sc">
+      <div class="slbl">Equate coefficients — one equation per power of \(t\)</div>
+      <div class="mblock gold">
+        \[\begin{alignedat}{3}
+          t^2\!:\quad & -3{\color{#e8b86d}{A}} = 3 &\quad&\Rightarrow\quad & {\color{#e8b86d}{A}} &= -1\\[4pt]
+          t^1\!:\quad & -4{\color{#e8b86d}{A}}-3{\color{#7eb8a4}{B}} = 0 &\quad&\Rightarrow\quad & {\color{#7eb8a4}{B}} &= \tfrac{4}{3}\\[4pt]
+          t^0\!:\quad & 2{\color{#e8b86d}{A}}-2{\color{#7eb8a4}{B}}-3{\color{#b48fd4}{C}} = -5 &\quad&\Rightarrow\quad & {\color{#b48fd4}{C}} &= \tfrac{1}{9}
+        \end{alignedat}\]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y(t) = c_1 e^{-t} + c_2 e^{3t} \underbrace{- t^2 + \tfrac{4}{3}t + \tfrac{1}{9}}_{y_p} \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- B4.5.21 -->
+<div class="card" id="e9">
+<div class="card-hdr" onclick="tog('e9')">
+  <span class="badge b-ovl">Lecture · B4.5.21</span>
+  <span class="card-eq">\(y'' + 2y' + 2y = e^{-t}\cos t\)</span>
+  <span class="card-topic">Overlap with complex exponential</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sr">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution</div>
+      <div class="mblock red">
+        \[ r^2+2r+2=0 \;\Rightarrow\; (r+1)^2+1=0 \;\Rightarrow\; r=-1\pm i \]
+      </div>
+      <div class="mblock red">
+        \[ {\color{#c47b7b}{y_c = c_1 e^{-t}\cos t + c_2 e^{-t}\sin t}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">2</div>
+    <div class="sc">
+      <div class="slbl">Overlap check</div>
+      <div class="stxt">Normal guess: \({\color{#c47b7b}{Ae^{-t}\cos t + Be^{-t}\sin t}}\). These are <strong>exactly</strong> in \(y_c\).</div>
+      <div class="mblock red">
+        \[ \frac{e^{-t}\cos t}{e^{-t}\cos t} = 1 \quad\text{(polynomial)}\;\Rightarrow\;\textbf{overlap} \]
+      </div>
+      <div class="stxt">Root \(r=-1+i\) is not repeated, so this is a single overlap → multiply by \(t\) once.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sr">3</div>
+    <div class="sc">
+      <div class="slbl">Corrected guess</div>
+      <div class="mblock red">
+        \[ y_p = t\,{\color{#c47b7b}{e^{-t}}}\bigl({\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t\bigr) \]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">Form of y_p</div>
+    \[ y_p = t\, e^{-t}\bigl({\color{#e8b86d}{A}}\cos t + {\color{#7eb8a4}{B}}\sin t\bigr) \]
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end sec super -->
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  TAB 4 — VARIATION OF PARAMETERS                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-vop">
+<div class="sec-title">Variation of Parameters</div>
+<p class="sec-sub">When \(f(t)\) is not MUC-viable. Color tracks each function \(y_1,\,y_2,\,u_1,\,u_2\) and the Wronskian \(W\) through every step.</p>
+
+<!-- What is 'a'? -->
+<div style="background:rgba(139,158,202,.08);border:1px solid rgba(139,158,202,.2);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:13px;color:#adc2e8;line-height:1.7">
+  <strong style="color:var(--blue)">What is \(a\) in the formula \(u_1' = -f\,y_2\,/\,(a\,W)\)?</strong><br>
+  The general equation is \({\color{#8b9eca}{a}}y'' + by' + cy = f(t)\). When you divide through to get standard form \(y'' + \cdots = f(t)/{\color{#8b9eca}{a}}\), that leading coefficient \({\color{#8b9eca}{a}}\) ends up in the denominator of both VOP formulas. In most textbook problems \({\color{#8b9eca}{a=1}}\) so it disappears — but if you have e.g.\ \(2y'' + \ldots\), then \({\color{#8b9eca}{a=2}}\) and you must divide by it.
+</div>
+
+<!-- B4.6.1 -->
+<div class="card" id="e10">
+<div class="card-hdr" onclick="tog('e10')">
+  <span class="badge b-vop">Lecture · B4.6.1</span>
+  <span class="card-eq">\(y'' + 4y = \tan(2t)\)</span>
+  <span class="card-topic">VOP with trig integrals</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sb">1</div>
+    <div class="sc">
+      <div class="slbl">Why not MUC?</div>
+      <div class="stxt">\(f(t) = \tan(2t)\) is not a polynomial, exponential, or sin/cos — MUC fails. Use VOP. Note \({\color{#8b9eca}{a = 1}}\) here so the \(a\) in the denominator disappears.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">2</div>
+    <div class="sc">
+      <div class="slbl">Find \(y_1,\,y_2\) and compute the Wronskian</div>
+      <div class="ckey">
+        <div class="ck"><span class="ck-dot" style="background:var(--gold)"></span><span style="color:var(--gold)">\(y_1 = \cos(2t)\)</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--teal)"></span><span style="color:var(--teal)">\(y_2 = \sin(2t)\)</span></div>
+        <div class="ck"><span class="ck-dot" style="background:var(--blue)"></span><span style="color:var(--blue)">\(W\) = Wronskian</span></div>
+      </div>
+      <div class="mblock blue">
+        \[ r^2+4=0 \;\Rightarrow\; r=\pm 2i \;\Rightarrow\; {\color{#e8b86d}{y_1=\cos(2t)}},\quad {\color{#7eb8a4}{y_2=\sin(2t)}} \]
+      </div>
+      <div class="mblock blue">
+        \[ {\color{#8b9eca}{W}} = \begin{vmatrix}{\color{#e8b86d}{\cos(2t)}} & {\color{#7eb8a4}{\sin(2t)}}\\ -2{\color{#e8b86d}{\sin(2t)}} & 2{\color{#7eb8a4}{\cos(2t)}}\end{vmatrix} = 2\cos^2(2t)+2\sin^2(2t) = {\color{#8b9eca}{2}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">3</div>
+    <div class="sc">
+      <div class="slbl">Cramer's Rule — solve for \(u_1'\) and \(u_2'\)</div>
+      <div class="stxt">The two formulas come from solving the \(2{\times}2\) linear system by Cramer's Rule. Watch how \({\color{#e8b86d}{y_1}}\), \({\color{#7eb8a4}{y_2}}\), \(f\), and \({\color{#8b9eca}{W}}\) slot in:</div>
+      <div class="mblock blue">
+        \[ u_1' = \frac{-{\color{#7eb8a4}{y_2}}\cdot f}{{\color{#8b9eca}{W}}} = \frac{-{\color{#7eb8a4}{\sin(2t)}}\cdot\tan(2t)}{{\color{#8b9eca}{2}}} = \frac{-\sin^2(2t)}{2\cos(2t)} \]
+      </div>
+      <div class="mblock blue">
+        \[ u_2' = \frac{{\color{#e8b86d}{y_1}}\cdot f}{{\color{#8b9eca}{W}}} = \frac{{\color{#e8b86d}{\cos(2t)}}\cdot\tan(2t)}{{\color{#8b9eca}{2}}} = \frac{\sin(2t)}{2} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">4</div>
+    <div class="sc">
+      <div class="slbl">Integrate \(u_1'\) using \(\sin^2 = 1 - \cos^2\)</div>
+      <div class="mblock blue">
+        \[\begin{aligned}
+          u_1 &= -\tfrac{1}{2}\int\frac{\sin^2(2t)}{\cos(2t)}\,dt = -\tfrac{1}{2}\int\frac{1-\cos^2(2t)}{\cos(2t)}\,dt\\[6pt]
+          &= -\tfrac{1}{2}\int\bigl[\sec(2t)-\cos(2t)\bigr]\,dt\\[6pt]
+          &= -\tfrac{1}{4}\bigl[\ln|\sec(2t)+\tan(2t)| - \sin(2t)\bigr]
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">5</div>
+    <div class="sc">
+      <div class="slbl">Integrate \(u_2'\)</div>
+      <div class="mblock blue">
+        \[ u_2 = \tfrac{1}{2}\int\sin(2t)\,dt = \frac{-\cos(2t)}{4} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">6</div>
+    <div class="sc">
+      <div class="slbl">Assemble \(y_p = u_1 {\color{#e8b86d}{y_1}} + u_2 {\color{#7eb8a4}{y_2}}\)</div>
+      <div class="mblock blue">
+        \[\begin{aligned}
+          y_p &= \Bigl(-\tfrac{1}{4}\ln|\sec(2t)+\tan(2t)| + \tfrac{\sin(2t)}{4}\Bigr){\color{#e8b86d}{\cos(2t)}}\\
+          &\quad + \frac{-{\color{#7eb8a4}{\cos(2t)}}}{4}\cdot{\color{#7eb8a4}{\sin(2t)}}
+        \end{aligned}\]
+      </div>
+      <div class="stxt">The \(\tfrac{\sin(2t)\cos(2t)}{4}\) terms cancel:</div>
+      <div class="mblock blue">
+        \[ y_p = -\frac{{\color{#e8b86d}{\cos(2t)}}}{4}\ln|\sec(2t)+\tan(2t)| \]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1\cos(2t) + c_2\sin(2t) - \frac{\cos(2t)}{4}\ln\bigl|\sec(2t)+\tan(2t)\bigr| \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- B4.6.7 -->
+<div class="card" id="e11">
+<div class="card-hdr" onclick="tog('e11')">
+  <span class="badge b-vop">Lecture · B4.6.7</span>
+  <span class="card-eq">\(y'' + 4y' + 4y = e^{-2t}\ln t\)</span>
+  <span class="card-topic">VOP with \(\ln t\), integration by parts</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+
+  <div class="step">
+    <div class="snum sb">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution — double root</div>
+      <div class="mblock blue">
+        \[ r^2+4r+4=(r+2)^2=0 \;\Rightarrow\; r=-2,\,-2 \]
+      </div>
+      <div class="mblock blue">
+        \[ y_c = c_1{\color{#e8b86d}{e^{-2t}}} + c_2{\color{#7eb8a4}{te^{-2t}}} \;\Rightarrow\; {\color{#e8b86d}{y_1=e^{-2t}}},\;{\color{#7eb8a4}{y_2=te^{-2t}}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">2</div>
+    <div class="sc">
+      <div class="slbl">Wronskian</div>
+      <div class="mblock blue">
+        \[\begin{aligned}
+          {\color{#e8b86d}{y_1'}} &= -2{\color{#e8b86d}{e^{-2t}}}\\[3pt]
+          {\color{#7eb8a4}{y_2'}} &= (1-2t){\color{#7eb8a4}{e^{-2t}}}
+        \end{aligned}\]
+      </div>
+      <div class="mblock blue">
+        \[ {\color{#8b9eca}{W}} = {\color{#e8b86d}{e^{-2t}}}(1-2t){\color{#7eb8a4}{e^{-2t}}} - (-2{\color{#e8b86d}{e^{-2t}}})\cdot t{\color{#7eb8a4}{e^{-2t}}} = e^{-4t}(1-2t+2t) = {\color{#8b9eca}{e^{-4t}}} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">3</div>
+    <div class="sc">
+      <div class="slbl">Compute \(u_1'\) and \(u_2'\) — exponentials cancel</div>
+      <div class="mblock blue">
+        \[ u_1' = \frac{-{\color{#7eb8a4}{te^{-2t}}}\cdot e^{-2t}\ln t}{{\color{#8b9eca}{e^{-4t}}}} = \frac{-t\,\bcancel{e^{-4t}}\ln t}{\bcancel{e^{-4t}}} = -t\ln t \]
+      </div>
+      <div class="mblock blue">
+        \[ u_2' = \frac{{\color{#e8b86d}{e^{-2t}}}\cdot e^{-2t}\ln t}{{\color{#8b9eca}{e^{-4t}}}} = \frac{\bcancel{e^{-4t}}\ln t}{\bcancel{e^{-4t}}} = \ln t \]
+      </div>
+      <div class="tip">The \(e^{-4t}\) in the Wronskian cancels perfectly with the \(e^{-2t}\) factors. This is why the problem was designed with \(e^{-2t}\) — it matches the \(y_1, y_2\) structure.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">4</div>
+    <div class="sc">
+      <div class="slbl">Integrate \(u_1'\) by parts: \(u = \ln t,\; dv = t\,dt\)</div>
+      <div class="mblock blue">
+        \[ u_1 = -\int t\ln t\,dt = -\left[\frac{t^2}{2}\ln t - \int\frac{t}{2}\,dt\right] = -\frac{t^2\ln t}{2} + \frac{t^2}{4} \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">5</div>
+    <div class="sc">
+      <div class="slbl">Integrate \(u_2'\) by parts: \(u = \ln t,\; dv = dt\)</div>
+      <div class="mblock blue">
+        \[ u_2 = \int \ln t\,dt = t\ln t - t \]
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="snum sb">6</div>
+    <div class="sc">
+      <div class="slbl">Assemble \(y_p = u_1{\color{#e8b86d}{y_1}} + u_2{\color{#7eb8a4}{y_2}}\) — watch the \(\ln t\) terms combine</div>
+      <div class="mblock blue">
+        \[\begin{aligned}
+          y_p &= \Bigl(-\frac{t^2\ln t}{2}+\frac{t^2}{4}\Bigr){\color{#e8b86d}{e^{-2t}}} + (t\ln t - t)\cdot{\color{#7eb8a4}{te^{-2t}}}\\[6pt]
+          &= e^{-2t}\Bigl(-\tfrac{t^2\ln t}{2}+\tfrac{t^2}{4}+t^2\ln t - t^2\Bigr)\\[6pt]
+          &= e^{-2t}\Bigl(\frac{t^2\ln t}{2} - \frac{3t^2}{4}\Bigr)
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 e^{-2t} + c_2 t e^{-2t} + e^{-2t}\!\left(\frac{t^2\ln t}{2} - \frac{3t^2}{4}\right) \]
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end sec vop -->
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!--  TAB 5 — NEW EXAMPLES                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="sec" id="s-new">
+<div class="sec-title">New Practice Examples</div>
+<p class="sec-sub">Original problems — none from the slides. Each one is designed to isolate a specific concept.</p>
+
+<!-- New 1 -->
+<div class="card" id="n1">
+<div class="card-hdr" onclick="tog('n1')">
+  <span class="badge b-new">New · 1</span>
+  <span class="card-eq">\(y'' - 3y' + 2y = 4e^{3t}\)</span>
+  <span class="card-topic">Exponential — no overlap</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution</div>
+      <div class="mblock teal">
+        \[ r^2-3r+2=(r-1)(r-2)=0 \;\Rightarrow\; r=1,\,2 \;\Rightarrow\; y_c=c_1 e^{t}+c_2 e^{2t} \]
+      </div>
+      <div class="stxt">\(f(t)=4e^{3t}\). Is \(e^{3t}\) in \(y_c\)? No — roots are 1 and 2, not 3. <strong>No overlap.</strong></div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Guess and differentiate</div>
+      <div class="mblock teal">
+        \[ y_p = {\color{#e8b86d}{A}}e^{3t},\quad y_p' = 3{\color{#e8b86d}{A}}e^{3t},\quad y_p'' = 9{\color{#e8b86d}{A}}e^{3t} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Substitute and solve</div>
+      <div class="mblock teal">
+        \[ 9{\color{#e8b86d}{A}}e^{3t} - 3(3{\color{#e8b86d}{A}}e^{3t}) + 2({\color{#e8b86d}{A}}e^{3t}) = 4e^{3t} \]
+      </div>
+      <div class="mblock teal">
+        \[ {\color{#e8b86d}{A}}(9-9+2)\,e^{3t} = 4e^{3t} \;\Rightarrow\; 2{\color{#e8b86d}{A}}=4 \;\Rightarrow\; {\color{#e8b86d}{A=2}} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 e^t + c_2 e^{2t} + 2e^{3t} \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- New 2 -->
+<div class="card" id="n2">
+<div class="card-hdr" onclick="tog('n2')">
+  <span class="badge b-new">New · 2</span>
+  <span class="card-eq">\(y'' - 3y' + 2y = 5e^{t}\)</span>
+  <span class="card-topic">Same ODE — now single overlap</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Same \(y_c\) — but now \(e^t\) is a root</div>
+      <div class="mblock teal">
+        \[ y_c = {\color{#c47b7b}{c_1 e^{t}}} + c_2 e^{2t} \]
+      </div>
+      <div class="stxt">Normal guess \({\color{#c47b7b}{Ae^t}}\) is in \(y_c\). <strong>Single overlap → multiply by \(t\).</strong></div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Correct guess and derivatives</div>
+      <div class="mblock teal">
+        \[\begin{aligned}
+          y_p   &= {\color{#e8b86d}{A}}te^t\\[4pt]
+          y_p'  &= {\color{#e8b86d}{A}}(t+1)e^t\\[4pt]
+          y_p'' &= {\color{#e8b86d}{A}}(t+2)e^t
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Substitute — \(t\) terms cancel as guaranteed</div>
+      <div class="mblock teal">
+        \[\begin{aligned}
+          &{\color{#e8b86d}{A}}(t+2)e^t - 3{\color{#e8b86d}{A}}(t+1)e^t + 2{\color{#e8b86d}{A}}te^t\\[4pt]
+          &= {\color{#e8b86d}{A}}e^t\bigl[\underbrace{(1-3+2)}_{=\,0}t + (2-3)\bigr]\\[4pt]
+          &= -{\color{#e8b86d}{A}}e^t = 5e^t \;\Rightarrow\; {\color{#e8b86d}{A=-5}}
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 e^t + c_2 e^{2t} - 5te^t \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- New 3 -->
+<div class="card" id="n3">
+<div class="card-hdr" onclick="tog('n3')">
+  <span class="badge b-new">New · 3</span>
+  <span class="card-eq">\(y'' + 2y' = 6t + 4\)</span>
+  <span class="card-topic">Polynomial overlap via \(r=0\)</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution — \(r=0\) is a root</div>
+      <div class="mblock teal">
+        \[ r^2 + 2r = r(r+2) = 0 \;\Rightarrow\; r=0,\,-2 \;\Rightarrow\; y_c = {\color{#c47b7b}{c_1}} + c_2 e^{-2t} \]
+      </div>
+      <div class="warn">⚠ \(r=0\) means constants are solutions to the homogeneous equation. The usual guess for a degree-1 polynomial is \(At+B\), but \({\color{#c47b7b}{B}}\) (a constant) is in \(y_c\). Overlap → multiply by \(t\).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Correct guess</div>
+      <div class="mblock teal">
+        \[ y_p = {\color{#e8b86d}{A}}t^2 + {\color{#7eb8a4}{B}}t, \quad y_p'=2{\color{#e8b86d}{A}}t+{\color{#7eb8a4}{B}}, \quad y_p''=2{\color{#e8b86d}{A}} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Equate coefficients</div>
+      <div class="mblock teal">
+        \[ 2{\color{#e8b86d}{A}} + 2(2{\color{#e8b86d}{A}}t+{\color{#7eb8a4}{B}}) = 6t+4 \;\Rightarrow\; 4{\color{#e8b86d}{A}}t + (2{\color{#e8b86d}{A}}+2{\color{#7eb8a4}{B}}) = 6t+4 \]
+      </div>
+      <div class="mblock teal">
+        \[ t:\; 4{\color{#e8b86d}{A}}=6 \Rightarrow {\color{#e8b86d}{A=\tfrac{3}{2}}} \qquad t^0:\; 2{\color{#e8b86d}{A}}+2{\color{#7eb8a4}{B}}=4 \Rightarrow {\color{#7eb8a4}{B=\tfrac{1}{2}}} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 + c_2 e^{-2t} + \tfrac{3}{2}t^2 + \tfrac{1}{2}t \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- New 4: VOP -->
+<div class="card" id="n4">
+<div class="card-hdr" onclick="tog('n4')">
+  <span class="badge b-new">New · 4</span>
+  <span class="card-eq">\(y'' + y = \sec t \tan t\)</span>
+  <span class="card-topic">VOP — not MUC viable</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Setup — \(a=1\), find \(y_1,y_2,W\)</div>
+      <div class="mblock teal">
+        \[ r^2+1=0 \;\Rightarrow\; {\color{#e8b86d}{y_1=\cos t}},\;{\color{#7eb8a4}{y_2=\sin t}},\;{\color{#8b9eca}{W=1}} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">\(u_1'\) and \(u_2'\)</div>
+      <div class="mblock teal">
+        \[ u_1' = \frac{-{\color{#7eb8a4}{\sin t}}\cdot\sec t\tan t}{{\color{#8b9eca}{1}}} = -\tan^2 t = -({\sec^2 t - 1}) \]
+      </div>
+      <div class="mblock teal">
+        \[ u_2' = \frac{{\color{#e8b86d}{\cos t}}\cdot\sec t\tan t}{{\color{#8b9eca}{1}}} = \tan t \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Integrate</div>
+      <div class="mblock teal">
+        \[ u_1 = -\int(\sec^2 t - 1)\,dt = -\tan t + t \]
+      </div>
+      <div class="mblock teal">
+        \[ u_2 = \int\tan t\,dt = \ln|\sec t| \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">4</div>
+    <div class="sc">
+      <div class="slbl">Assemble \(y_p = u_1{\color{#e8b86d}{y_1}} + u_2{\color{#7eb8a4}{y_2}}\)</div>
+      <div class="mblock teal">
+        \[\begin{aligned}
+          y_p &= (-\tan t + t){\color{#e8b86d}{\cos t}} + \ln|\sec t|\cdot{\color{#7eb8a4}{\sin t}}\\[4pt]
+              &= -\sin t + t\cos t + \sin t\ln|\sec t|
+        \end{aligned}\]
+      </div>
+      <div class="stxt">The \(-\sin t\) absorbs into \(c_2\sin t\).</div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1\cos t + c_2\sin t + t\cos t + \sin t\ln|\sec t| \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- New 5 -->
+<div class="card" id="n5">
+<div class="card-hdr" onclick="tog('n5')">
+  <span class="badge b-new">New · 5</span>
+  <span class="card-eq">\(y'' + 4y = \sin(2t)\)</span>
+  <span class="card-topic">Trig overlap — full coefficient solve</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Complementary solution</div>
+      <div class="mblock teal">
+        \[ r^2+4=0 \;\Rightarrow\; r=\pm 2i \;\Rightarrow\; {\color{#c47b7b}{y_c = c_1\cos(2t)+c_2\sin(2t)}} \]
+      </div>
+      <div class="stxt">Normal guess \(A\cos(2t)+B\sin(2t)\) is in \(y_c\). <strong>Overlap → multiply by \(t\).</strong></div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Guess and differentiate</div>
+      <div class="mblock teal">
+        \[ y_p = t\bigl({\color{#e8b86d}{A}}\cos(2t)+{\color{#7eb8a4}{B}}\sin(2t)\bigr) \]
+      </div>
+      <div class="mblock teal">
+        \[\begin{aligned}
+          y_p'  &= {\color{#e8b86d}{A}}\cos(2t)+{\color{#7eb8a4}{B}}\sin(2t)+t(-2{\color{#e8b86d}{A}}\sin(2t)+2{\color{#7eb8a4}{B}}\cos(2t))\\[4pt]
+          y_p'' &= -4{\color{#e8b86d}{A}}\sin(2t)+4{\color{#7eb8a4}{B}}\cos(2t)+t(-4{\color{#e8b86d}{A}}\cos(2t)-4{\color{#7eb8a4}{B}}\sin(2t))
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Substitute — \(t\) terms cancel</div>
+      <div class="mblock teal">
+        \[\begin{aligned}
+          y_p''+4y_p &= -4{\color{#e8b86d}{A}}\sin(2t)+4{\color{#7eb8a4}{B}}\cos(2t)\\
+          &\quad + t\underbrace{(-4{\color{#e8b86d}{A}}\cos(2t)-4{\color{#7eb8a4}{B}}\sin(2t)+4{\color{#e8b86d}{A}}\cos(2t)+4{\color{#7eb8a4}{B}}\sin(2t))}_{=\;0}\\[4pt]
+          &= 4{\color{#7eb8a4}{B}}\cos(2t) - 4{\color{#e8b86d}{A}}\sin(2t) = \sin(2t)
+        \end{aligned}\]
+      </div>
+      <div class="mblock teal">
+        \[ 4{\color{#7eb8a4}{B}}=0 \Rightarrow {\color{#7eb8a4}{B=0}} \qquad\qquad -4{\color{#e8b86d}{A}}=1 \Rightarrow {\color{#e8b86d}{A=-\tfrac{1}{4}}} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1\cos(2t) + c_2\sin(2t) - \frac{t}{4}\cos(2t) \]
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end sec new -->
+
+<div style="text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--faint);margin-top:3rem;letter-spacing:.1em;text-transform:uppercase">end of example bank</div>
+</div><!-- wrap -->
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('s-' + id).classList.add('on');
+  btn.classList.add('on');
+  if (window.MathJax) MathJax.typesetPromise();
+}
+
+function tog(id) {
+  const c = document.getElementById(id);
+  c.classList.toggle('open');
+  if (c.classList.contains('open') && window.MathJax) {
+    MathJax.typesetPromise([c]);
+  }
+}
+
+window.addEventListener('load', () => {
+  if (window.MathJax) MathJax.typesetPromise();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lectures 32, 33 & 34 — Systems of DEs, Real Eigenvalues & Complex Eigenvalues</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']], tags:'none' },
+  options: { skipHtmlTags:['script','noscript','style','textarea'] },
+  startup: { typeset:false }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e0e10;--bg2:#16161a;--bg3:#1e1e24;--bg4:#26262e;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+  --text:#e8e6e0;--muted:#8a8880;--faint:#444240;
+  --gold:#e8b86d;--teal:#7eb8a4;--red:#c47b7b;--blue:#8b9eca;
+  --purple:#b48fd4;--orange:#d4916b;
+}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 6rem;position:relative;z-index:1}
+
+/* header */
+.hdr{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.lbl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:.7rem}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(1.9rem,4.5vw,3rem);font-weight:400;line-height:1.15;margin-bottom:.45rem}
+h1 em{font-style:italic;color:var(--gold)}
+.sub{font-size:13px;color:var(--muted);line-height:1.55}
+
+/* legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:2rem;padding:.9rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px}
+.li{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.ldot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* tabs */
+.tabs{display:flex;gap:4px;margin-bottom:2.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tab{flex:1;min-width:120px;padding:9px 12px;border:none;background:transparent;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;cursor:pointer;border-radius:7px;transition:all .2s;letter-spacing:.02em}
+.tab:hover{color:var(--text);background:var(--bg3)}
+.tab.on{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+
+.sec{display:none}.sec.on{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* section header */
+.sec-title{font-family:'Instrument Serif',serif;font-size:1.45rem;font-weight:400;margin-bottom:.3rem}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:1.8rem;line-height:1.6}
+
+/* summary box */
+.summary-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.4rem 1.6rem;margin-bottom:2rem}
+.summary-box h3{font-family:'Instrument Serif',serif;font-size:1.1rem;font-weight:400;margin-bottom:1rem;color:var(--text)}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:580px){.summary-grid{grid-template-columns:1fr}}
+.summary-item{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.9rem 1rem}
+.summary-item-title{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.summary-item-body{font-size:13px;color:var(--muted);line-height:1.6}
+.summary-item-body strong{color:var(--text)}
+
+/* example cards */
+.card{border:1px solid var(--border);border-radius:14px;margin-bottom:1.4rem;overflow:hidden;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card-hdr{display:flex;align-items:center;gap:11px;padding:.9rem 1.3rem;background:var(--bg2);cursor:pointer;user-select:none;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.card-hdr:hover{background:var(--bg3)}
+
+.badge{font-family:'DM Mono',monospace;font-size:9.5px;padding:3px 9px;border-radius:20px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.b-lec{background:rgba(232,184,109,.15);color:var(--gold)}
+.b-new{background:rgba(126,184,164,.15);color:var(--teal)}
+.b-ovl{background:rgba(196,123,123,.15);color:var(--red)}
+.b-sys{background:rgba(139,158,202,.15);color:var(--blue)}
+.b-add{background:rgba(180,143,212,.15);color:var(--purple)}
+
+.card-eq{font-size:13px;flex:1;color:var(--text);min-width:0}
+.card-topic{font-size:11px;color:var(--muted);white-space:nowrap;margin-left:auto}
+.arrow{font-size:12px;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.card.open .arrow{transform:rotate(180deg)}
+.card-body{display:none;padding:1.5rem 1.6rem;background:var(--bg)}
+.card.open .card-body{display:block}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:1.3rem}
+.step{display:flex;gap:14px;align-items:flex-start}
+.snum{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px}
+.sg{background:rgba(232,184,109,.18);color:var(--gold);border:1px solid rgba(232,184,109,.3)}
+.st{background:rgba(126,184,164,.18);color:var(--teal);border:1px solid rgba(126,184,164,.3)}
+.sr{background:rgba(196,123,123,.18);color:var(--red);border:1px solid rgba(196,123,123,.3)}
+.sb{background:rgba(139,158,202,.18);color:var(--blue);border:1px solid rgba(139,158,202,.3)}
+.sp{background:rgba(180,143,212,.18);color:var(--purple);border:1px solid rgba(180,143,212,.3)}
+
+.sc{flex:1;min-width:0}
+.slbl{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-family:'DM Mono',monospace}
+.stxt{font-size:13.5px;color:var(--muted);line-height:1.65}
+.stxt strong{color:var(--text);font-weight:600}
+
+/* math blocks */
+.mblock{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0;overflow-x:auto;line-height:1.9}
+.mblock.gold{border-left:3px solid var(--gold)}
+.mblock.teal{border-left:3px solid var(--teal)}
+.mblock.red{border-left:3px solid var(--red)}
+.mblock.blue{border-left:3px solid var(--blue)}
+.mblock.purple{border-left:3px solid var(--purple)}
+.mblock.orange{border-left:3px solid var(--orange)}
+
+/* color key */
+.ckey{display:flex;flex-wrap:wrap;gap:8px;margin:.7rem 0}
+.ck{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-size:12px;border:1px solid var(--border)}
+.ck-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+.warn{background:rgba(196,123,123,.07);border:1px solid rgba(196,123,123,.2);border-radius:8px;padding:.7rem 1rem;font-size:12.5px;color:#d9a0a0;line-height:1.6;margin:.7rem 0}
+.tip{background:rgba(126,184,164,.07);border:1px solid rgba(126,184,164,.18);border-radius:8px;padding:.7rem 1rem;font-size:12.5px;color:#9ed4c4;line-height:1.6;margin:.7rem 0}
+.info{background:rgba(139,158,202,.07);border:1px solid rgba(139,158,202,.2);border-radius:8px;padding:.7rem 1rem;font-size:12.5px;color:#adc2e8;line-height:1.6;margin:.7rem 0}
+
+.ans{background:var(--bg3);border:1px solid var(--border2);border-radius:11px;padding:1rem 1.3rem;margin-top:1.1rem;overflow-x:auto}
+.ans-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;font-family:'DM Mono',monospace}
+
+.divider{height:1px;background:var(--border);margin:1.5rem 0}
+.sec-divider{height:1px;background:var(--border2);margin:2rem 0;display:flex;align-items:center;gap:1rem}
+.sec-divider-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;padding:0 .75rem;background:var(--bg)}
+
+mjx-container{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="lbl">Lectures 32, 33 &amp; 34 — Full Summary</div>
+  <h1>Systems of DEs<br><em>&amp; Eigenvalue Methods</em></h1>
+  <p class="sub">VOP with nonconstant coefficients &nbsp;·&nbsp; Chapter B9 systems &nbsp;·&nbsp; Real eigenvalue solutions &amp; mixing problems &nbsp;·&nbsp; Complex eigenvalue solutions &nbsp;·&nbsp; Why multiplying by \(t\) works</p>
+</div>
+
+<div class="legend">
+  <div class="li"><span class="ldot" style="background:var(--gold)"></span> Primary term / real part \(\mathbf{a}\)</div>
+  <div class="li"><span class="ldot" style="background:var(--teal)"></span> Secondary / imaginary part \(\mathbf{b}\)</div>
+  <div class="li"><span class="ldot" style="background:var(--red)"></span> Eigenvalue \(\alpha, \beta\) / overlap</div>
+  <div class="li"><span class="ldot" style="background:var(--blue)"></span> Matrix \(A\), Wronskian, system quantities</div>
+  <div class="li"><span class="ldot" style="background:var(--purple)"></span> Full assembled solution</div>
+  <div class="li"><span class="badge b-lec">Lecture</span> From slides</div>
+  <div class="li"><span class="badge b-new">New</span> Practice problem</div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="show('lec32',this)">Lec 32 — VOP &amp; Systems</button>
+  <button class="tab"    onclick="show('lec33',this)">Lec 33 — Real Eigenvalues</button>
+  <button class="tab"    onclick="show('lec34',this)">Lec 34 — Complex Eigenvalues</button>
+  <button class="tab"    onclick="show('addendum',this)">Addendum — Why \(t\) Works</button>
+  <button class="tab"    onclick="show('practice',this)">Practice Problems</button>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TAB 1 — LECTURE 32                            -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="sec on" id="s-lec32">
+
+<!-- hero -->
+<div class="l33-hero">
+  <div class="l33-chunk-label">Lecture 32 · B4.6 &amp; B9.1</div>
+  <div class="l33-h2" style="font-size:clamp(1.6rem,3.5vw,2.2rem)">VOP with Nonconstant Coefficients &amp; <em>Systems Intro</em></div>
+  <p class="l33-p" style="font-size:16px;margin-top:.4rem">This lecture has two distinct parts. The first revisits Variation of Parameters (VOP) and asks: does it still work when the coefficients of the ODE are functions of \(t\) rather than constants? The answer is yes — and it's remarkably elegant. The second part opens up an entirely new chapter: what does it even mean to have a <strong>system</strong> of differential equations, and how do we write one down cleanly?</p>
+</div>
+
+<!-- ─── PART 1: VOP WITH NONCONSTANT COEFFICIENTS ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 1 — VOP Extended</div>
+  <div class="l33-h2">Does VOP still work when the coefficients aren't constants?</div>
+
+  <p class="l33-p">Up until now, whenever we solved a nonhomogeneous equation like \(ay'' + by' + cy = f(t)\), the leading coefficient \(a\) was always a plain number. Lecture 32 asks: what if it's a function of \(t\)? What if we have something like \(ty'' - (t+1)y' + y = t^2\), where the coefficient in front of \(y''\) is \(t\) itself?</p>
+
+  <p class="l33-p">The good news is that <strong>VOP doesn't care</strong>. When we derived the VOP formulas for \(u_1'\) and \(u_2'\), we never actually used the fact that \(a, b, c\) were constants — only that we had two known homogeneous solutions \(y_1\) and \(y_2\). So the same formulas apply word-for-word. The only difference: instead of dividing \(f(t)\) by the constant \(a\), you divide by the function \(a(t)\).</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">VOP formulas — work for both constant and nonconstant \(a(t)\)</div>
+    \[ u_1' = \frac{-y_2 \cdot \frac{f(t)}{a(t)}}{W(y_1,y_2)}, \qquad u_2' = \frac{y_1 \cdot \frac{f(t)}{a(t)}}{W(y_1,y_2)} \]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">where \(W(y_1,y_2) = y_1 y_2' - y_2 y_1'\) is the Wronskian, and \(a(t)\) is whatever the leading coefficient is — constant or not.</div>
+  </div>
+
+  <div class="l33-annotation">
+    <div class="l33-annotation-icon">⚠️</div>
+    <div class="l33-annotation-text"><strong>But there's a catch.</strong> To use these formulas, you first need \(y_1\) and \(y_2\) — the two linearly independent solutions to the complementary (homogeneous) equation. With constant coefficients, finding them was easy: use the characteristic equation and you're done. With nonconstant coefficients, there's <em>no characteristic equation</em>. You can't just write down the solutions. They might come from a Taylor series, from a clever substitution, or from being told — as in most exam problems. This is the real difficulty, not the VOP step itself.</div>
+  </div>
+
+  <p class="l33-p">So in a sense, the hard problem with nonconstant coefficients is finding \(y_1, y_2\) in the first place. Once you have them, getting from the homogeneous solution to the particular solution is no harder than before.</p>
+
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>Why not just always use VOP then?</strong> A reasonable question — if VOP handles both constant and nonconstant coefficients, why did we bother learning Undetermined Coefficients (MUC) at all? The answer: MUC is usually much faster when it applies (constant coefficients + right kind of \(f(t)\)). VOP always works but always requires integration, which can be painful. Both tools have their place.</div>
+  </div>
+</div>
+
+<div class="l33-divider"><span class="l33-divider-lbl">worked example · B4.6.23</span></div>
+
+<!-- ─── WORKED EXAMPLE VOP ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Worked Example — VOP with nonconstant coefficients</div>
+  <div class="l33-h2">Finding a particular solution when \(y_1, y_2\) are given</div>
+
+  <p class="l33-p">Consider the equation \(ty'' - (t+1)y' + y = t^2\), where we are told that \(y_1 = e^t\) and \(y_2 = t+1\) are the two homogeneous solutions. Our job is to find a particular solution \(y_p\) using VOP.</p>
+
+  <div class="l33-worked open" id="lw32a">
+    <div class="l33-worked-hdr" onclick="lwTog('lw32a')">
+      <span class="badge b-lec">Steps</span>
+      <span class="l33-worked-title">Full solution walkthrough</span>
+      <span class="l33-worked-sub">click to collapse</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Put the equation in standard form first</div>
+          <div class="l33-step-body">The VOP formulas require the equation to be in the form \(y'' + P(t)y' + Q(t)y = g(t)\), meaning the leading coefficient must be 1. Our equation has leading coefficient \(t\), so divide everything through by \(t\):</div>
+          <div class="l33-step-eq gold">\[ y'' - \frac{t+1}{t}\,y' + \frac{1}{t}\,y = t \]</div>
+          <div class="l33-step-body">Now we can identify \(g(t) = t\) — this is the right-hand side after dividing. (Note: the original \(f(t) = t^2\) divided by \(a(t) = t\) gives \(g(t) = t\).)</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Compute the Wronskian \(W(y_1, y_2)\)</div>
+          <div class="l33-step-body">The Wronskian is the determinant of the matrix formed by \(y_1, y_2\) and their derivatives. It appears in the denominator of both VOP formulas, so we compute it first:</div>
+          <div class="l33-step-eq gold">\[ W = \begin{vmatrix} y_1 & y_2 \\ y_1' & y_2' \end{vmatrix} = \begin{vmatrix} e^t & t+1 \\ e^t & 1 \end{vmatrix} = e^t \cdot 1 - (t+1) \cdot e^t = e^t(1 - t - 1) = -te^t \]</div>
+          <div class="l33-step-body">So \(W = -te^t\). Note it's nonzero (for \(t \neq 0\)), confirming \(y_1\) and \(y_2\) are linearly independent — as they should be.</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find \(u_1'\) using the VOP formula</div>
+          <div class="l33-step-body">The formula is \(u_1' = \frac{-y_2 \cdot g(t)}{W}\). Plug in \(y_2 = t+1\), \(g(t) = t\), and \(W = -te^t\):</div>
+          <div class="l33-step-eq gold">\[ u_1' = \frac{-(t+1) \cdot t}{-te^t} = \frac{t(t+1)}{te^t} = \frac{t+1}{e^t} = (t+1)e^{-t} \]</div>
+          <div class="l33-step-body">The two negatives cancel, giving a positive result. Now we integrate to find \(u_1\):</div>
+          <div class="l33-step-eq gold">\[ u_1 = \int (t+1)e^{-t}\,dt \]</div>
+          <div class="l33-step-body">This requires integration by parts. Let \(u = (t+1)\), \(dv = e^{-t}\,dt\), so \(du = dt\) and \(v = -e^{-t}\):</div>
+          <div class="l33-step-eq gold">\[ u_1 = -(t+1)e^{-t} + \int e^{-t}\,dt = -(t+1)e^{-t} - e^{-t} = -(t+2)e^{-t} \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">4</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find \(u_2'\) using the VOP formula</div>
+          <div class="l33-step-body">The formula is \(u_2' = \frac{y_1 \cdot g(t)}{W}\). Plug in \(y_1 = e^t\), \(g(t) = t\), \(W = -te^t\):</div>
+          <div class="l33-step-eq gold">\[ u_2' = \frac{e^t \cdot t}{-te^t} = \frac{te^t}{-te^t} = -1 \]</div>
+          <div class="l33-step-body">Remarkably clean — \(e^t\) and \(t\) both cancel. Integrating gives:</div>
+          <div class="l33-step-eq gold">\[ u_2 = \int -1\,dt = -t \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">5</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Assemble \(y_p = u_1 y_1 + u_2 y_2\)</div>
+          <div class="l33-step-body">Now multiply each \(u\) by its matching homogeneous solution and add:</div>
+          <div class="l33-step-eq gold">\[ y_p = u_1 y_1 + u_2 y_2 = \underbrace{-(t+2)e^{-t}}_{u_1} \cdot \underbrace{e^t}_{y_1} + \underbrace{(-t)}_{u_2} \cdot \underbrace{(t+1)}_{y_2} \]</div>
+          <div class="l33-step-body">The first term simplifies beautifully: \(e^{-t} \cdot e^t = 1\), so \(-(t+2)e^{-t} \cdot e^t = -(t+2)\). The second term expands to \(-t(t+1) = -t^2 - t\). Combining:</div>
+          <div class="l33-step-eq gold">\[ y_p = -(t+2) + (-t^2 - t) = -(t^2 + 2t + 2) \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">6</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Write the general solution</div>
+          <div class="l33-step-body">The general solution is the homogeneous solution plus the particular solution:</div>
+          <div class="l33-final">
+            <div class="l33-final-lbl">General solution</div>
+            \[ y(t) = c_1 e^t + c_2(t+1) - (t^2 + 2t + 2) \]
+            <div class="l33-final-note">The first two terms are \(y_c\) — the complementary solution with arbitrary constants \(c_1, c_2\). The last term is \(y_p\), a specific polynomial that accounts for the \(t^2\) forcing on the right side. Initial conditions, if given, would determine \(c_1\) and \(c_2\).</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="l33-divider"><span class="l33-divider-lbl">part 2 — chapter B9: systems of differential equations</span></div>
+
+<!-- ─── PART 2: WHAT IS A SYSTEM? ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 2 — Chapter B9 Introduction</div>
+  <div class="l33-h2">What is a system of differential equations?</div>
+
+  <p class="l33-p">Up until now we've always had a <strong>single</strong> unknown function — just \(y(t)\). A <em>system</em> of differential equations involves <strong>multiple</strong> unknown functions of the same variable, all coupled together. For instance, \(x_1(t)\) and \(x_2(t)\) might both depend on \(t\), and the rate of change of each one might depend on the current values of both.</p>
+
+  <p class="l33-p">A classic example from Calculus is the predator-prey model: let \(x_1\) be the prey population and \(x_2\) be the predator population. Both change over time, and each population's rate of change depends on how many of the other exist right now:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">Predator-prey (Lotka-Volterra) — a nonlinear system</div>
+    \[\begin{aligned} x_1' &= 2x_1 - 5x_1 x_2 \\ x_2' &= -3x_2 + 4x_1 x_2 \end{aligned}\]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">Prey (\(x_1\)) grows on its own (the \(+2x_1\) term) but is eaten by predators (the \(-5x_1 x_2\) term). Predators (\(x_2\)) die off on their own (the \(-3x_2\) term) but are fed by eating prey (the \(+4x_1 x_2\) term).</div>
+  </div>
+
+  <div class="l33-annotation red">
+    <div class="l33-annotation-icon">✗</div>
+    <div class="l33-annotation-text"><strong>Why can't we solve this with matrices?</strong> The predator-prey system contains \(x_1 x_2\) terms — the product of two unknowns. That makes it <em>nonlinear</em>. Linear algebra requires linear equations, and \(x_1 x_2\) is quadratic. If we tried an exponential solution \(x_j = c_j e^{kt}\), then \(x_1 x_2 = c_1 c_2 e^{2kt}\) — a different exponential rate. The exponentials on the two sides of the equation would never match up, so the method fails completely.</div>
+  </div>
+
+  <p class="l33-p">What we can solve are <strong>linear</strong> systems — where each equation is a linear combination of the unknowns, with no products like \(x_1 x_2\). Mixing problems (two tanks feeding each other salt) are a natural source of linear systems, because the concentration of salt in a pipe is proportional to the amount in the source tank — no squaring or multiplication of unknowns.</p>
+</div>
+
+<!-- ─── PART 3: MATRIX NOTATION ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 3 — The Matrix Form</div>
+  <div class="l33-h2">Writing a linear system as \(\mathbf{x}' = A\mathbf{x}\)</div>
+
+  <p class="l33-p">A linear system of differential equations looks like a bunch of equations where each \(x_j'\) equals some linear combination of all the \(x\)'s. The elegant observation is that we can package all of this into a single matrix equation. Stack the unknown functions into a column vector \(\mathbf{x}(t)\), read the coefficients into a matrix \(A\), and the whole system becomes:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">General linear system in matrix form</div>
+    \[ \mathbf{x}'(t) = A(t)\,\mathbf{x}(t) + \mathbf{f}(t) \]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">where \(\mathbf{x}(t)\) is \(n \times 1\), \(A(t)\) is \(n \times n\), and \(\mathbf{f}(t)\) is \(n \times 1\). When \(\mathbf{f}(t) = \mathbf{0}\), the system is called <strong>homogeneous</strong>. When \(A\) has only constant entries, it has <strong>constant coefficients</strong>.</div>
+  </div>
+
+  <p class="l33-p">Concretely: if we have the system \(x_1' = -4x_1 + x_2\) and \(x_2' = 3x_1 - 2x_2\), we just read off the coefficients row by row into the matrix \(A\), exactly as we did when converting systems of linear <em>algebraic</em> equations to matrix form earlier in the course:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">Example: reading off the coefficient matrix</div>
+    \[ \begin{bmatrix}x_1'\\x_2'\end{bmatrix} = \underbrace{\begin{bmatrix}-4 & 1 \\ 3 & -2\end{bmatrix}}_{A}\begin{bmatrix}x_1\\x_2\end{bmatrix} \]
+  </div>
+
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">✓</div>
+    <div class="l33-annotation-text"><strong>Why constant coefficients matter so much.</strong> If \(A\) has only constants, then the entries of \(A\) don't change over time, and the system has a clean exponential character. We can hope that \(\mathbf{x}(t) = e^{\lambda t}\mathbf{v}\) for some \(\lambda\) and \(\mathbf{v}\) — this will be the entire basis of Lectures 33 and 34. If \(A\) has functions of \(t\) in it, that approach breaks down and we're mostly stuck.</div>
+  </div>
+
+  <div class="l33-h2" style="font-size:1.2rem;margin-top:2rem">Higher-order ODEs are secretly just systems</div>
+
+  <p class="l33-p">There's a subtle but important connection: any single higher-order ODE can be rewritten as a system of first-order equations. For example, take \(ty''' + t^2 y'' + y' + 5y = 0\). Define \(x_1 = y\), \(x_2 = y'\), \(x_3 = y''\). Then \(x_1' = x_2\), \(x_2' = x_3\), and \(x_3' = y'''\), which we can solve for from the original equation. The whole thing becomes:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">A 3rd-order ODE written as a 3×3 system</div>
+    \[ \begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix}' = \begin{bmatrix}0 & 1 & 0 \\ 0 & 0 & 1 \\ -5/t & -1/t & -t\end{bmatrix}\begin{bmatrix}x_1\\x_2\\x_3\end{bmatrix} \]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">This particular matrix has \(t\)-dependent entries, so we can't solve it using the eigenvalue methods coming up. But a constant-coefficient second-order ODE \(ay'' + by' + cy = 0\) would give a constant matrix with entries \(0, 1, -c/a, -b/a\) — and that we can handle.</div>
+  </div>
+
+  <div class="l33-callout tip">
+    <strong>The key takeaway from this half of the lecture:</strong> writing a system in matrix form doesn't automatically make it easier to solve. The real power comes when the matrix \(A\) has constant entries — because then the whole eigenvalue machinery of linear algebra becomes available to us. That's what the rest of the chapter is about.
+  </div>
+</div>
+
+<!-- ─── PART 4: WHAT WE CAN AND CAN'T SOLVE ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 4 — Scope of the Chapter</div>
+  <div class="l33-h2">What kinds of systems will we actually solve?</div>
+
+  <p class="l33-p">Not all systems are equal. The lecture gives a clear map of what's accessible:</p>
+
+  <div class="l33-two-col">
+    <div class="l33-col-box" style="border-color:rgba(126,184,164,.25)">
+      <div class="l33-col-box-title" style="color:var(--teal)">✓ Homogeneous, constant coefficients</div>
+      <div class="l33-col-box-body">\(\mathbf{x}' = A\mathbf{x}\) where \(A\) is a constant matrix. This is the main case. Solutions come from eigenvalues and eigenvectors of \(A\). Covered in B9.5 (Lec 33) and B9.6 (Lec 34).</div>
+    </div>
+    <div class="l33-col-box" style="border-color:rgba(232,184,109,.2)">
+      <div class="l33-col-box-title" style="color:var(--gold)">~ Nonhomogeneous, constant coefficients</div>
+      <div class="l33-col-box-body">\(\mathbf{x}' = A\mathbf{x} + \mathbf{f}(t)\) where \(A\) is constant but \(\mathbf{f}(t) \neq 0\). Harder, but if \(\mathbf{f}\) is a simple constant (like in the salt-replenishment scenario), sometimes still doable.</div>
+    </div>
+    <div class="l33-col-box" style="border-color:rgba(196,123,123,.2)">
+      <div class="l33-col-box-title" style="color:var(--red)">✗ Nonconstant coefficients</div>
+      <div class="l33-col-box-body">If entries of \(A\) contain \(t\), eigenvalue methods fail. Volume-in-tank changing over time is one example — the concentrations get \(t\) in the denominator. Not accessible to us.</div>
+    </div>
+    <div class="l33-col-box" style="border-color:rgba(196,123,123,.2)">
+      <div class="l33-col-box-title" style="color:var(--red)">✗ Nonlinear systems</div>
+      <div class="l33-col-box-body">Predator-prey type systems with \(x_1 x_2\) terms. Matrix methods don't apply at all. Beyond the scope of this course entirely.</div>
+    </div>
+  </div>
+
+  <p class="l33-p" style="margin-top:1.4rem">The mixing problem (two tanks, constant volumes, constant flow rates) gives a homogeneous constant-coefficient system — which is exactly the case we can handle. Replenishing with saltwater adds a constant \(\mathbf{f}(t)\), making it nonhomogeneous. Changing volumes put \(t\) in the matrix entries, making it nonconstant. The lecture points these out not to solve them, but to understand <em>why</em> the nice case is nice and why the other cases are harder.</p>
+</div>
+
+</div><!-- end lec32 -->
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TAB 2 — LECTURE 33                            -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="sec" id="s-lec33">
+
+<style>
+/* ── Lec 33 prose layout ───────────────────────── */
+.l33-hero{margin-bottom:3rem}
+.l33-hero .sec-title{font-family:'Instrument Serif',serif;font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:400;margin-bottom:.6rem;line-height:1.2}
+.l33-hero .sec-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:680px}
+
+.l33-chunk{margin-bottom:3.5rem}
+.l33-chunk-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.l33-h2{font-family:'Instrument Serif',serif;font-size:1.55rem;font-weight:400;line-height:1.25;margin-bottom:.9rem;color:var(--text)}
+.l33-h2 em{color:var(--gold);font-style:italic}
+.l33-p{font-size:15px;line-height:1.8;color:#c8c6c0;margin-bottom:1.1rem;max-width:720px}
+.l33-p strong{color:var(--text)}
+.l33-p em{color:var(--gold);font-style:normal}
+
+.l33-eq-block{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.6rem 2rem;margin:1.4rem 0;overflow-x:auto}
+.l33-eq-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem}
+.l33-eq-block mjx-container, .l33-eq-block .MathJax{font-size:1.1em!important}
+
+.l33-annotation{display:flex;gap:1.2rem;align-items:flex-start;margin:.6rem 0;padding:.8rem 1rem;background:var(--bg3);border-radius:9px;border-left:3px solid var(--gold)}
+.l33-annotation.teal{border-left-color:var(--teal)}
+.l33-annotation.red{border-left-color:var(--red)}
+.l33-annotation.blue{border-left-color:var(--blue)}
+.l33-annotation-icon{font-size:18px;flex-shrink:0;line-height:1.4}
+.l33-annotation-text{font-size:13.5px;color:#c8c6c0;line-height:1.7}
+.l33-annotation-text strong{color:var(--text)}
+
+.l33-two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1.4rem 0}
+@media(max-width:600px){.l33-two-col{grid-template-columns:1fr}}
+.l33-col-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem}
+.l33-col-box-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.l33-col-box-body{font-size:13.5px;color:#c8c6c0;line-height:1.7}
+.l33-col-box-body strong{color:var(--text)}
+
+.l33-divider{height:1px;background:var(--border2);margin:3rem 0;position:relative;display:flex;align-items:center;justify-content:center}
+.l33-divider-lbl{position:relative;background:var(--bg);padding:0 1rem;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
+
+/* SVG diagram wrapper */
+.l33-diagram{margin:1.8rem 0;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+
+/* worked example */
+.l33-worked{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;margin:1.8rem 0}
+.l33-worked-hdr{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;cursor:pointer;user-select:none}
+.l33-worked-hdr:hover{background:var(--bg3)}
+.l33-worked-title{font-family:'Instrument Serif',serif;font-size:1.05rem;font-weight:400;flex:1}
+.l33-worked-sub{font-size:12px;color:var(--muted)}
+.l33-worked-body{padding:1.6rem 1.8rem}
+.l33-worked.closed .l33-worked-body{display:none}
+.l33-worked .l33-arrow{font-size:11px;color:var(--muted);transition:transform .25s}
+.l33-worked.open .l33-arrow{transform:rotate(180deg)}
+
+.l33-step{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start;margin-bottom:2rem}
+.l33-step:last-child{margin-bottom:0}
+.l33-step-num{width:32px;height:32px;border-radius:50%;background:rgba(232,184,109,.15);border:1px solid rgba(232,184,109,.3);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;flex-shrink:0;margin-top:2px}
+.l33-step-num.teal{background:rgba(126,184,164,.15);border-color:rgba(126,184,164,.3);color:var(--teal)}
+.l33-step-content{}
+.l33-step-title{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.l33-step-body{font-size:14px;color:#c8c6c0;line-height:1.75}
+.l33-step-body strong{color:var(--text)}
+.l33-step-eq{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.9rem 1.2rem;margin:.7rem 0;overflow-x:auto;line-height:2}
+.l33-step-eq.gold{border-left:3px solid var(--gold)}
+.l33-step-eq.teal{border-left:3px solid var(--teal)}
+
+.l33-final{background:var(--bg3);border:2px solid rgba(232,184,109,.3);border-radius:12px;padding:1.2rem 1.6rem;margin-top:1.4rem}
+.l33-final-lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.l33-final-note{font-size:13px;color:var(--muted);margin-top:.7rem;line-height:1.65}
+
+.l33-callout{border-radius:10px;padding:1rem 1.3rem;font-size:13.5px;line-height:1.7;margin:1rem 0}
+.l33-callout.warn{background:rgba(196,123,123,.07);border:1px solid rgba(196,123,123,.2);color:#d9a0a0}
+.l33-callout.tip{background:rgba(126,184,164,.07);border:1px solid rgba(126,184,164,.18);color:#9ed4c4}
+.l33-callout.info{background:rgba(139,158,202,.07);border:1px solid rgba(139,158,202,.2);color:#adc2e8}
+</style>
+
+<!-- hero -->
+<div class="l33-hero">
+  <div class="l33-chunk-label">Lecture 33 · B9.5</div>
+  <div class="l33-h2" style="font-size:clamp(1.6rem,3.5vw,2.2rem)">Real Eigenvalues &amp; <em>Mixing Problems</em></div>
+  <p class="l33-p" style="font-size:16px;margin-top:.4rem">This lecture answers the central question of Chapter B9: <strong>how do you actually solve the system \(\mathbf{x}' = A\mathbf{x}\)?</strong> The answer turns out to be surprisingly elegant — it comes directly from the eigenvalues and eigenvectors of \(A\).</p>
+</div>
+
+<!-- ─── PART 1: THE BIG IDEA ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 1 — The Core Idea</div>
+  <div class="l33-h2">Where do we even start?</div>
+
+  <p class="l33-p">Back when we had a single equation like \(x' = ax\), the solution was simply \(x(t) = Ce^{at}\) — an exponential. When we move to a <strong>system</strong> of equations \(\mathbf{x}' = A\mathbf{x}\), where \(\mathbf{x}(t)\) is now a whole vector of functions, it's natural to ask: can solutions still be exponential in some sense?</p>
+
+  <p class="l33-p">The key insight is to guess that every component of \(\mathbf{x}(t)\) shares the same exponential rate. That is, try:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">The educated guess (ansatz)</div>
+    \[ \mathbf{x}(t) = e^{\lambda t}\,\mathbf{w} \quad\text{where}\quad \mathbf{w} = \begin{bmatrix}w_1 \\ w_2 \\ \vdots \\ w_n\end{bmatrix} \text{ is a constant vector} \]
+  </div>
+
+  <p class="l33-p">Here, \(e^{\lambda t}\) is the shared exponential growth/decay rate, and \(\mathbf{w}\) is a constant vector that describes the <em>shape</em> or <em>direction</em> of the solution — how the components of \(\mathbf{x}\) relate to each other. The reason this guess makes sense: if we plug it in, every term on both sides will be proportional to \(e^{\lambda t}\), so there's actually a chance the equation can balance.</p>
+
+  <div class="l33-annotation">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>Why the same exponent for every component?</strong> In the equation \(\mathbf{x}' = A\mathbf{x}\), the matrix \(A\) mixes all components together. If different components grew at different rates, the ratios between them would change over time — and multiplying by the constant matrix \(A\) can't produce that. A consistent exponential rate is the only hope.</div>
+  </div>
+</div>
+
+<!-- ─── PART 2: VERIFICATION ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 2 — Why It Works</div>
+  <div class="l33-h2">The verification: eigenvalues appear naturally</div>
+
+  <p class="l33-p">Let's plug the guess \(\mathbf{x}(t) = Ce^{\lambda t}\mathbf{w}\) into the equation \(\mathbf{x}' = A\mathbf{x}\) and see what conditions we need. We compute both sides separately:</p>
+
+  <div class="l33-two-col">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title">Left side — differentiate \(\mathbf{x}(t)\)</div>
+      <div class="l33-col-box-body">Since \(C\) and \(\mathbf{w}\) are constants (no \(t\)), differentiating just brings down \(\lambda\) from the exponent:
+        <div style="margin-top:.7rem;overflow-x:auto">\[ \mathbf{x}'(t) = C\lambda\, e^{\lambda t}\,\mathbf{w} \]</div>
+      </div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title">Right side — apply \(A\) to \(\mathbf{x}(t)\)</div>
+      <div class="l33-col-box-body">Since \(A\) is a constant matrix, we can pull the scalar \(Ce^{\lambda t}\) out front:
+        <div style="margin-top:.7rem;overflow-x:auto">\[ A\mathbf{x}(t) = A\!\left[Ce^{\lambda t}\mathbf{w}\right] = Ce^{\lambda t}\!\left[A\mathbf{w}\right] \]</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="l33-p" style="margin-top:1.2rem">For the two sides to be equal, we need \(C\lambda\, e^{\lambda t}\,\mathbf{w} = Ce^{\lambda t}[A\mathbf{w}]\). Canceling \(Ce^{\lambda t}\) (which is never zero), this reduces to:</p>
+
+  <div class="l33-eq-block" style="border-color:rgba(232,184,109,.3)">
+    <div class="l33-eq-label">The condition for the guess to work</div>
+    \[ A\mathbf{w} = \lambda\,\mathbf{w} \]
+  </div>
+
+  <p class="l33-p">This is exactly the definition of an <strong>eigenvalue</strong> \(\lambda\) and <strong>eigenvector</strong> \(\mathbf{w}\) of the matrix \(A\). So the guess works <em>if and only if</em> \(\lambda\) is an eigenvalue of \(A\) and \(\mathbf{w}\) is a corresponding eigenvector. This is why eigenvectors, which might seem like a purely linear algebra concept, turn out to be the heart of solving differential equations.</p>
+
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">✓</div>
+    <div class="l33-annotation-text"><strong>The punchline:</strong> For each eigenvalue \(\lambda\) of \(A\) with eigenvector \(\mathbf{w}\), the function \(\mathbf{x}(t) = Ce^{\lambda t}\mathbf{w}\) is a solution to \(\mathbf{x}' = A\mathbf{x}\). We keep the constant \(C\) out front so we can scale the solution freely — since any nonzero multiple of an eigenvector is still an eigenvector, \(C\) generalizes the family.</div>
+  </div>
+</div>
+
+<!-- ─── PART 3: GENERAL SOLUTION ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 3 — Putting It All Together</div>
+  <div class="l33-h2">The general solution: <em>one term per eigenvalue</em></div>
+
+  <p class="l33-p">An \(n \times n\) system \(\mathbf{x}' = A\mathbf{x}\) has \(n\) unknown functions, so — just like an \(n\)th-order single equation — we expect the general solution to involve \(n\) linearly independent pieces. As long as \(A\) is <strong>diagonalizable over the reals</strong> (meaning it has \(n\) linearly independent real eigenvectors), we get exactly those pieces from the eigenvalues:</p>
+
+  <div class="l33-eq-block" style="border-color:rgba(232,184,109,.4)">
+    <div class="l33-eq-label">General solution — diagonalizable case</div>
+    \[ \mathbf{x}(t) = c_1\,e^{\lambda_1 t}\,\mathbf{v}_1 \;+\; c_2\,e^{\lambda_2 t}\,\mathbf{v}_2 \;+\; \cdots \;+\; c_n\,e^{\lambda_n t}\,\mathbf{v}_n \]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">where \(\lambda_1,\ldots,\lambda_n\) are the eigenvalues and \(\mathbf{v}_1,\ldots,\mathbf{v}_n\) are corresponding linearly independent eigenvectors of \(A\).</div>
+  </div>
+
+  <p class="l33-p">The constants \(c_1, \ldots, c_n\) are determined by initial conditions. The matrix whose columns are the vectors \(e^{\lambda_j t}\mathbf{v}_j\) is called the <strong>fundamental matrix</strong> — it's a compact way of packaging all \(n\) solutions at once, analogous to how a basis packages a vector space.</p>
+
+  <div class="l33-h2" style="font-size:1.2rem;margin-top:2rem">What if \(A\) isn't diagonalizable?</div>
+  <p class="l33-p">Two things can prevent \(A\) from being diagonalizable over the reals:</p>
+
+  <div class="l33-two-col">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--red)">Case 1 — Repeated real eigenvalue</div>
+      <div class="l33-col-box-body">If an eigenvalue appears multiple times but doesn't have enough independent eigenvectors to match, we're missing solutions. The fix is similar to single equations: the extra solutions involve a factor of \(t\), i.e. terms of the form \(te^{rt}\). Working this out for a 2×2 matrix is already quite involved (see HW B9.5.35); for larger matrices it gets much harder.</div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--teal)">Case 2 — Nonreal (complex) eigenvalues</div>
+      <div class="l33-col-box-body">This is actually more tractable! When eigenvalues come in conjugate pairs \(\alpha \pm \beta i\), we use Euler's identity to split the complex solution into two real-valued solutions involving \(\cos\) and \(\sin\). This is the whole story of Lecture 34.</div>
+    </div>
+  </div>
+</div>
+
+<div class="l33-divider"><span class="l33-divider-lbl">worked example · B9.5.1</span></div>
+
+<!-- ─── WORKED EXAMPLE 1 ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Worked Example</div>
+  <div class="l33-h2">Solving a 2×2 system step by step</div>
+
+  <p class="l33-p">Consider the system:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">The system</div>
+    \[\begin{aligned} x_1' &= -4x_1 + 2x_2 \\ x_2' &= \phantom{-}2x_1 - x_2 \end{aligned}\]
+  </div>
+
+  <p class="l33-p">The first step is always to read off the coefficient matrix \(A\) — the entries are just the coefficients of \(x_1\) and \(x_2\) on the right-hand side of each equation:</p>
+
+  <div class="l33-worked open" id="lw1">
+    <div class="l33-worked-hdr" onclick="lwTog('lw1')">
+      <span class="badge b-lec">Steps</span>
+      <span class="l33-worked-title">Full solution walkthrough</span>
+      <span class="l33-worked-sub">click to collapse</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Write the matrix \(A\)</div>
+          <div class="l33-step-body">The coefficient matrix is formed by reading off the coefficients row by row. Row 1 comes from the equation for \(x_1'\): its coefficient on \(x_1\) is \(-4\), and on \(x_2\) is \(+2\). Row 2 comes from the equation for \(x_2'\).</div>
+          <div class="l33-step-eq gold">\[ A = \begin{bmatrix}-4 & 2 \\ 2 & -1\end{bmatrix} \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvalues — set \(\det(A - \lambda I) = 0\)</div>
+          <div class="l33-step-body">We subtract \(\lambda\) from each diagonal entry and set the determinant to zero. This gives the characteristic polynomial:</div>
+          <div class="l33-step-eq gold">\[ \det\!\begin{bmatrix}-4-\lambda & 2 \\ 2 & -1-\lambda\end{bmatrix} = (-4-\lambda)(-1-\lambda) - (2)(2) \]</div>
+          <div class="l33-step-body">Expanding: \((-4-\lambda)(-1-\lambda) = 4 + 4\lambda + \lambda + \lambda^2 = \lambda^2 + 5\lambda + 4\). Subtracting \(4\) from the cross term gives \(\lambda^2 + 5\lambda = \lambda(\lambda+5) = 0\).</div>
+          <div class="l33-step-eq gold">\[ \lambda_1 = {\color{#c47b7b}{-5}}, \qquad \lambda_2 = {\color{#c47b7b}{0}} \]</div>
+          <div class="l33-callout info" style="margin-top:.8rem">Note that \(\lambda_2 = 0\) is a perfectly valid eigenvalue! A zero eigenvalue means the corresponding solution term is \(e^{0 \cdot t}\mathbf{v} = \mathbf{v}\) — a constant vector. This means the system has a mode that doesn't decay at all.</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvector for \(\lambda_1 = -5\)</div>
+          <div class="l33-step-body">Plug \(\lambda = -5\) into \(A - \lambda I\) and row reduce. Adding 5 to the diagonal of \(A\):</div>
+          <div class="l33-step-eq gold">\[ A + 5I = \begin{bmatrix}1 & 2 \\ 2 & 4\end{bmatrix} \sim \begin{bmatrix}1 & 2 \\ 0 & 0\end{bmatrix} \]</div>
+          <div class="l33-step-body">The single equation is \(w_1 + 2w_2 = 0\), so \(w_1 = -2w_2\). Choose \(w_2 = 1\) to get the simplest eigenvector:</div>
+          <div class="l33-step-eq gold">\[ \mathbf{v}_1 = \begin{bmatrix}-2 \\ 1\end{bmatrix} \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">4</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvector for \(\lambda_2 = 0\)</div>
+          <div class="l33-step-body">With \(\lambda = 0\), we just row reduce \(A\) itself:</div>
+          <div class="l33-step-eq gold">\[ A = \begin{bmatrix}-4 & 2 \\ 2 & -1\end{bmatrix} \sim \begin{bmatrix}-4 & 2 \\ 0 & 0\end{bmatrix} \]</div>
+          <div class="l33-step-body">The equation is \(-4w_1 + 2w_2 = 0\), so \(w_2 = 2w_1\). Choosing \(w_1 = 1\):</div>
+          <div class="l33-step-eq gold">\[ \mathbf{v}_2 = \begin{bmatrix}1 \\ 2\end{bmatrix} \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">5</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Assemble the general solution</div>
+          <div class="l33-step-body">Each eigenvalue–eigenvector pair gives one solution term. We take a linear combination of all of them:</div>
+          <div class="l33-final">
+            <div class="l33-final-lbl">General solution</div>
+            \[ \mathbf{x}(t) = c_1\, e^{-5t}\begin{bmatrix}-2\\1\end{bmatrix} + c_2\begin{bmatrix}1\\2\end{bmatrix} \]
+            <div class="l33-final-note">Written as scalar components: \(x_1(t) = -2c_1 e^{-5t} + c_2\) and \(x_2(t) = c_1 e^{-5t} + 2c_2\). The second term is a constant (since \(\lambda_2 = 0\)), meaning if you start with a particular ratio between \(x_1\) and \(x_2\), that part of the state never changes — only the \(e^{-5t}\) part decays away.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="l33-divider"><span class="l33-divider-lbl">worked example · B9.5.45 — mixing problem</span></div>
+
+<!-- ─── PART 4: MIXING PROBLEM ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 4 — Physical Application</div>
+  <div class="l33-h2">Two tanks, salt, and a system of DEs</div>
+
+  <p class="l33-p">Here's a classic application: two tanks of brine (saltwater) connected by pipes. Salt flows between them over time. We want to track how much salt is in each tank at any moment. Let's see how this naturally becomes a linear system \(\mathbf{x}' = A\mathbf{x}\).</p>
+
+  <!-- SVG DIAGRAM -->
+  <div class="l33-diagram">
+    <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="display:block;background:#16161a;width:100%;height:auto">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#7eb8a4"/>
+        </marker>
+        <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#8b9eca"/>
+        </marker>
+        <marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#e8b86d"/>
+        </marker>
+        <marker id="arrL" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+          <polygon points="8 0, 0 3, 8 6" fill="#7eb8a4"/>
+        </marker>
+      </defs>
+
+      <!-- Tank A -->
+      <rect x="130" y="80" width="160" height="130" rx="6" fill="rgba(139,158,202,0.06)" stroke="rgba(139,158,202,0.4)" stroke-width="1.5"/>
+      <text x="210" y="62" text-anchor="middle" font-family="'Syne',sans-serif" font-size="13" fill="#8b9eca" font-weight="600">TANK A</text>
+      <text x="210" y="140" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="22" fill="#e8e6e0">x₁(t)</text>
+      <text x="210" y="163" text-anchor="middle" font-family="'DM Mono',monospace" font-size="11" fill="#8a8880">50 L total</text>
+      <text x="210" y="180" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#8a8880">x₁(0) = 2.5 kg</text>
+
+      <!-- Tank B -->
+      <rect x="470" y="80" width="160" height="130" rx="6" fill="rgba(126,184,164,0.06)" stroke="rgba(126,184,164,0.4)" stroke-width="1.5"/>
+      <text x="550" y="62" text-anchor="middle" font-family="'Syne',sans-serif" font-size="13" fill="#7eb8a4" font-weight="600">TANK B</text>
+      <text x="550" y="140" text-anchor="middle" font-family="'Instrument Serif',serif" font-size="22" fill="#e8e6e0">x₂(t)</text>
+      <text x="550" y="163" text-anchor="middle" font-family="'DM Mono',monospace" font-size="11" fill="#8a8880">50 L total</text>
+      <text x="550" y="180" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#8a8880">x₂(0) = 0 kg</text>
+
+      <!-- Arrow: pure water in to Tank A -->
+      <line x1="30" y1="130" x2="122" y2="130" stroke="#8b9eca" stroke-width="2" marker-end="url(#arr2)"/>
+      <text x="75" y="120" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#8b9eca">3 L/min</text>
+      <text x="75" y="133" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#5a6a8a">pure water</text>
+
+      <!-- Arrow: A → B  (4 L/min, upper pipe) -->
+      <line x1="292" y1="118" x2="462" y2="118" stroke="#7eb8a4" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="377" y="109" text-anchor="middle" font-family="'DM Mono',monospace" font-size="11" fill="#7eb8a4">4 L/min</text>
+
+      <!-- Arrow: B → A  (1 L/min, lower pipe) -->
+      <line x1="462" y1="152" x2="292" y2="152" stroke="#e8b86d" stroke-width="2" marker-end="url(#arr3)"/>
+      <text x="377" y="168" text-anchor="middle" font-family="'DM Mono',monospace" font-size="11" fill="#e8b86d">1 L/min</text>
+
+      <!-- Arrow: out from Tank B -->
+      <line x1="638" y1="130" x2="720" y2="130" stroke="#7eb8a4" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="675" y="120" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#7eb8a4">3 L/min</text>
+      <text x="675" y="133" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#5a8a78">out</text>
+
+      <!-- Volume balance note -->
+      <text x="380" y="248" text-anchor="middle" font-family="'Syne',sans-serif" font-size="11" fill="#444240">Both tanks stay at 50 L: Tank A gets 3+1=4 in and 4 out. Tank B gets 4 in and 4+3−3=4 out... wait — check the flows:</text>
+      <text x="380" y="264" text-anchor="middle" font-family="'DM Mono',monospace" font-size="10" fill="#5a5a5a">Tank A: in = 3 (water) + 1 (from B) = 4 L/min ↔ out = 4 L/min ✓   |   Tank B: in = 4 L/min ↔ out = 4 (to A... wait, 1 back) + 3 = 4 L/min ✓</text>
+    </svg>
+  </div>
+
+  <div class="l33-callout info">
+    <strong>Why do volumes stay fixed?</strong> Before we can write any equations, we must verify that the 50 L in each tank is constant. Check: Tank A receives 3 L/min (pure water) + 1 L/min (from B) = 4 L/min total in, and sends out 4 L/min to B. Net change = 0. Tank B receives 4 L/min from A, and sends 1 L/min back + 3 L/min out = 4 L/min total out. Net change = 0. Both volumes stay fixed. This matters because otherwise the concentration denominators would have \(t\) in them, giving non-constant coefficients we can't easily handle.
+  </div>
+
+  <p class="l33-p" style="margin-top:1.5rem">Now we model each tank using the <strong>"rate in minus rate out"</strong> principle. The rate at which salt enters or leaves a tank through a pipe equals the <em>concentration</em> of salt in the source tank (kg per liter) times the <em>flow rate</em> (liters per minute). Concentration = (kg of salt) ÷ (volume of tank).</p>
+
+  <div class="l33-worked open" id="lw2">
+    <div class="l33-worked-hdr" onclick="lwTog('lw2')">
+      <span class="badge b-lec">Steps</span>
+      <span class="l33-worked-title">Building and solving the system</span>
+      <span class="l33-worked-sub">click to collapse</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Model Tank A — what's changing \(x_1\)?</div>
+          <div class="l33-step-body">
+            <p style="margin-bottom:.7rem">Salt enters Tank A from two sources: pure water (which has zero salt) and the pipe from Tank B. Salt leaves Tank A through the pipe to Tank B at 4 L/min.</p>
+            <p style="margin-bottom:.7rem"><strong>Salt in from Tank B:</strong> concentration in B is \(\frac{x_2}{50}\) kg/L, flow rate is 1 L/min, so rate in = \(\frac{x_2}{50} \cdot 1\).</p>
+            <p style="margin-bottom:.7rem"><strong>Salt out to Tank B:</strong> concentration in A is \(\frac{x_1}{50}\) kg/L, flow rate is 4 L/min, so rate out = \(\frac{x_1}{50} \cdot 4\).</p>
+          </div>
+          <div class="l33-step-eq gold">\[ x_1' = \underbrace{\frac{x_2}{50} \cdot 1}_{\text{in from B}} - \underbrace{\frac{x_1}{50} \cdot 4}_{\text{out to B}} = \frac{-4}{50}\,x_1 + \frac{1}{50}\,x_2 \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Model Tank B — what's changing \(x_2\)?</div>
+          <div class="l33-step-body">
+            <p style="margin-bottom:.7rem">Salt enters Tank B only from Tank A at 4 L/min. Salt leaves through the return pipe to A (1 L/min) and the outflow drain (3 L/min) — total out = 4 L/min from B.</p>
+            <p style="margin-bottom:.7rem"><strong>Salt in from Tank A:</strong> \(\frac{x_1}{50} \cdot 4\).</p>
+            <p style="margin-bottom:.7rem"><strong>Salt out (combined):</strong> \(\frac{x_2}{50} \cdot (1+3) = \frac{x_2}{50} \cdot 4\).</p>
+          </div>
+          <div class="l33-step-eq gold">\[ x_2' = \underbrace{\frac{x_1}{50} \cdot 4}_{\text{in from A}} - \underbrace{\frac{x_2}{50} \cdot 4}_{\text{out}} = \frac{4}{50}\,x_1 - \frac{4}{50}\,x_2 \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Write in matrix form</div>
+          <div class="l33-step-body">Collecting the coefficients into a matrix gives us the system \(\mathbf{x}' = A\mathbf{x}\):</div>
+          <div class="l33-step-eq gold">\[ A = \begin{bmatrix}-4/50 & 1/50 \\ 4/50 & -4/50\end{bmatrix} \]</div>
+          <div class="l33-callout tip">We could factor out \(\tfrac{1}{50}\) from \(A\), but that changes the eigenvalues (multiplying \(A\) by a constant scales all eigenvalues by that constant). It's cleaner to keep \(A\) as-is and handle the fractions carefully when computing the determinant.</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">4</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvalues</div>
+          <div class="l33-step-body">Setting \(\det(A - \lambda I) = 0\):</div>
+          <div class="l33-step-eq gold">\[ \left(\frac{-4}{50} - \lambda\right)^2 - \frac{4}{50}\cdot\frac{1}{50} = 0 \]</div>
+          <div class="l33-step-body">Let \(\mu = \frac{-4}{50} - \lambda\). Then \(\mu^2 = \frac{4}{2500}\), so \(\mu = \pm\frac{2}{50}\). This gives:</div>
+          <div class="l33-step-eq gold">\[ \lambda_1 = \frac{-4-2}{50} = {\color{#c47b7b}{-\frac{3}{25}}}, \qquad \lambda_2 = \frac{-4+2}{50} = {\color{#c47b7b}{-\frac{1}{25}}} \]</div>
+          <div class="l33-callout info">Both eigenvalues are <strong>negative</strong>. This is the mathematical statement that the salt will eventually die out — both modes of the system decay exponentially. It makes physical sense: we're only pumping in pure water, so the salt must eventually wash out completely.</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">5</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvectors</div>
+          <div class="l33-step-body">For \(\lambda_1 = -3/25\), add \(3/25\) to the diagonal and row reduce:</div>
+          <div class="l33-step-eq gold">\[ A + \tfrac{3}{25}I = \begin{bmatrix}1/25 & 1/50 \\ 4/50 & 1/25\end{bmatrix} \sim \begin{bmatrix}2 & 1 \\ 0 & 0\end{bmatrix} \;\Rightarrow\; \mathbf{v}_1 = \begin{bmatrix}1 \\ -2\end{bmatrix} \]</div>
+          <div class="l33-step-body" style="margin-top:.8rem">For \(\lambda_2 = -1/25\), add \(1/25\) to the diagonal:</div>
+          <div class="l33-step-eq gold">\[ A + \tfrac{1}{25}I = \begin{bmatrix}-1/25 & 1/50 \\ 4/50 & -1/25\end{bmatrix} \sim \begin{bmatrix}-2 & 1 \\ 0 & 0\end{bmatrix} \;\Rightarrow\; \mathbf{v}_2 = \begin{bmatrix}1 \\ 2\end{bmatrix} \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">6</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Apply initial conditions to find \(c_1\) and \(c_2\)</div>
+          <div class="l33-step-body">The general solution is \(\mathbf{x}(t) = c_1 e^{-3t/25}\mathbf{v}_1 + c_2 e^{-t/25}\mathbf{v}_2\). At \(t=0\), both exponentials equal 1, so:</div>
+          <div class="l33-step-eq gold">\[ c_1\begin{bmatrix}1\\-2\end{bmatrix} + c_2\begin{bmatrix}1\\2\end{bmatrix} = \begin{bmatrix}2.5\\0\end{bmatrix} \]</div>
+          <div class="l33-step-body">From the second row: \(-2c_1 + 2c_2 = 0\), so \(c_1 = c_2\). From the first row: \(c_1 + c_2 = 2.5\), so \(c_1 = c_2 = 1.25\).</div>
+          <div class="l33-final">
+            <div class="l33-final-lbl">Particular solution (IVP answer)</div>
+            \[\begin{aligned} x_1(t) &= 1.25\,e^{-3t/25} + 1.25\,e^{-t/25} \\ x_2(t) &= -2.5\,e^{-3t/25} + 2.5\,e^{-t/25} \end{aligned}\]
+            <div class="l33-final-note">As \(t \to \infty\), both \(e^{-3t/25}\) and \(e^{-t/25}\) go to zero, so \(x_1, x_2 \to 0\). All the salt eventually gets flushed out by the pure water inflow — exactly what physical intuition says should happen.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function lwTog(id) {
+  const el = document.getElementById(id);
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+  el.classList.toggle('closed', isOpen);
+  const sub = el.querySelector('.l33-worked-sub');
+  if (sub) sub.textContent = isOpen ? 'click to expand' : 'click to collapse';
+  if (!isOpen && window.MathJax) MathJax.typesetPromise([el]);
+}
+</script>
+
+</div><!-- end lec33 -->
+
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TAB 3 — LECTURE 34                            -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="sec" id="s-lec34">
+
+<!-- hero -->
+<div class="l33-hero">
+  <div class="l33-chunk-label">Lecture 34 · B9.6</div>
+  <div class="l33-h2" style="font-size:clamp(1.6rem,3.5vw,2.2rem)">Complex Eigenvalues: <em>Turning \(i\) into \(\cos\) and \(\sin\)</em></div>
+  <p class="l33-p" style="font-size:16px;margin-top:.4rem">In Lecture 33 we assumed \(A\) had real eigenvalues. But what happens when the characteristic polynomial has no real roots — when the eigenvalues are complex numbers like \(-1 \pm 4i\)? This lecture shows how to handle that case cleanly, and the answer is genuinely satisfying: complex eigenvalues don't give complex solutions. They give oscillating real solutions built from \(\cos\) and \(\sin\).</p>
+</div>
+
+<!-- ─── PART 1: WHY COMPLEX EIGENVALUES COME IN PAIRS ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 1 — Setup</div>
+  <div class="l33-h2">Complex eigenvalues always come in conjugate pairs</div>
+
+  <p class="l33-p">When the matrix \(A\) has real entries (which it always does in our setting), any nonreal eigenvalue must come paired with its complex conjugate. If \(\alpha + \beta i\) is an eigenvalue, then so is \(\alpha - \beta i\). This is a consequence of the fact that the characteristic polynomial \(\det(A - \lambda I)\) has real coefficients — complex roots of real polynomials always come in conjugate pairs.</p>
+
+  <p class="l33-p">We write these eigenvalues as \(\alpha \pm \beta i\), where \(\alpha\) is the real part and \(\beta \neq 0\) is the imaginary part. The associated eigenvector for \(\alpha + \beta i\) will itself be a complex vector — we write it as \(\mathbf{a} + \mathbf{b}i\), where \(\mathbf{a}\) and \(\mathbf{b}\) are ordinary real vectors.</p>
+
+  <div class="l33-annotation blue">
+    <div class="l33-annotation-icon">⚠️</div>
+    <div class="l33-annotation-text"><strong>Notation warning:</strong> Be careful not to confuse \(\alpha, \beta\) (parts of the <em>eigenvalue</em>) with \(\mathbf{a}, \mathbf{b}\) (parts of the <em>eigenvector</em>). They look similar and it's a very easy mix-up to make, especially under pressure on an exam.</div>
+  </div>
+</div>
+
+<!-- ─── PART 2: THE COMPLEX SOLUTION ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 2 — The Complex Solution</div>
+  <div class="l33-h2">The same formula still works — but gives a complex-valued answer</div>
+
+  <p class="l33-p">From Lecture 33, we know that for a real eigenvalue \(\lambda\) with eigenvector \(\mathbf{v}\), the function \(e^{\lambda t}\mathbf{v}\) is a solution. The exact same logic applies when \(\lambda\) is complex. If \(\alpha + \beta i\) is an eigenvalue with eigenvector \(\mathbf{a} + \mathbf{b}i\), then:</p>
+
+  <div class="l33-eq-block" style="border-color:rgba(139,158,202,.35)">
+    <div class="l33-eq-label">The complex solution \(w(t)\)</div>
+    \[ w(t) = e^{(\alpha + \beta i)t}(\mathbf{a} + \mathbf{b}i) \]
+  </div>
+
+  <p class="l33-p">This satisfies \(w'(t) = Aw(t)\) for the same reason as before: differentiating gives \((\alpha + \beta i)e^{(\alpha+\beta i)t}(\mathbf{a}+\mathbf{b}i)\), and since \(\mathbf{a}+\mathbf{b}i\) is an eigenvector, applying \(A\) to it gives the same thing. The verification is identical to the real case.</p>
+
+  <p class="l33-p">But there's a catch: \(w(t)\) is a complex-valued vector function. We're solving a real physical system, so we want real solutions. The question is: how do we extract real solutions from this complex one?</p>
+</div>
+
+<!-- ─── PART 3: EULER AND THE SPLIT ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 3 — The Key Insight</div>
+  <div class="l33-h2">Split \(w(t)\) into its real and imaginary parts using Euler's identity</div>
+
+  <p class="l33-p">The trick is Euler's identity: \(e^{i\theta} = \cos\theta + i\sin\theta\). We use it to separate \(e^{(\alpha+\beta i)t}\) into a real exponential and a complex oscillating factor:</p>
+
+  <div class="l33-eq-block" style="border-color:rgba(139,158,202,.35)">
+    <div class="l33-eq-label">Expanding \(w(t)\) step by step</div>
+    \[\begin{aligned}
+    w(t) &= e^{(\alpha + \beta i)t}(\mathbf{a} + \mathbf{b}i) \\[8pt]
+         &= e^{\alpha t} \cdot e^{i\beta t} \cdot (\mathbf{a} + \mathbf{b}i) \\[8pt]
+         &= e^{\alpha t}[\cos(\beta t) + i\sin(\beta t)](\mathbf{a} + \mathbf{b}i)
+    \end{aligned}\]
+  </div>
+
+  <p class="l33-p">Now we multiply out the bracket \([\cos(\beta t) + i\sin(\beta t)](\mathbf{a} + \mathbf{b}i)\). This is just complex number multiplication — distribute everything and remember that \(i^2 = -1\):</p>
+
+  <div class="l33-eq-block" style="border-color:rgba(139,158,202,.35)">
+    <div class="l33-eq-label">Multiplying out — collecting real and imaginary parts</div>
+    \[\begin{aligned}
+    &[\cos(\beta t) + i\sin(\beta t)](\mathbf{a} + \mathbf{b}i) \\[6pt]
+    &= \cos(\beta t)\mathbf{a} + i\cos(\beta t)\mathbf{b} + i\sin(\beta t)\mathbf{a} + i^2\sin(\beta t)\mathbf{b} \\[6pt]
+    &= \underbrace{\bigl[\cos(\beta t)\,\mathbf{a} - \sin(\beta t)\,\mathbf{b}\bigr]}_{\text{real part}} \;+\; i\underbrace{\bigl[\sin(\beta t)\,\mathbf{a} + \cos(\beta t)\,\mathbf{b}\bigr]}_{\text{imaginary part}}
+    \end{aligned}\]
+  </div>
+
+  <p class="l33-p">So \(w(t) = e^{\alpha t}[\text{real part}] + i \cdot e^{\alpha t}[\text{imaginary part}]\). We have successfully split the complex solution into its real and imaginary components, which we name \(w_1(t)\) and \(w_2(t)\).</p>
+
+  <div class="l33-two-col" style="margin-top:1.4rem">
+    <div class="l33-col-box" style="border-color:rgba(232,184,109,.25)">
+      <div class="l33-col-box-title" style="color:var(--gold)">Real part → \(w_1(t)\)</div>
+      <div class="l33-col-box-body" style="overflow-x:auto">
+        \[ w_1(t) = e^{\alpha t}\bigl[\cos(\beta t)\,\mathbf{a} - \sin(\beta t)\,\mathbf{b}\bigr] \]
+        <p style="margin-top:.6rem;font-size:13px">The \(-\) sign between the two terms is fixed. This is the real part of \(w(t)\).</p>
+      </div>
+    </div>
+    <div class="l33-col-box" style="border-color:rgba(126,184,164,.25)">
+      <div class="l33-col-box-title" style="color:var(--teal)">Imaginary part → \(w_2(t)\)</div>
+      <div class="l33-col-box-body" style="overflow-x:auto">
+        \[ w_2(t) = e^{\alpha t}\bigl[\sin(\beta t)\,\mathbf{a} + \cos(\beta t)\,\mathbf{b}\bigr] \]
+        <p style="margin-top:.6rem;font-size:13px">The \(+\) sign between the two terms is fixed. This is the imaginary part of \(w(t)\).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PART 4: WHY THESE ARE BOTH SOLUTIONS ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 4 — Why This Works</div>
+  <div class="l33-h2">Why are the real and imaginary parts <em>each</em> a valid solution?</div>
+
+  <p class="l33-p">This is the crucial step. We have \(w(t) = w_1(t) + i\,w_2(t)\) where \(w_1, w_2\) are real-valued vector functions. We've shown \(w'(t) = Aw(t)\), which means:</p>
+
+  <div class="l33-eq-block" style="border-color:rgba(139,158,202,.35)">
+    \[ w_1'(t) + i\,w_2'(t) = A\bigl[w_1(t) + i\,w_2(t)\bigr] = Aw_1(t) + i\,Aw_2(t) \]
+  </div>
+
+  <p class="l33-p">Since \(A\) is a real matrix, we can equate the real parts on both sides and the imaginary parts on both sides separately. Real parts give \(w_1' = Aw_1\) and imaginary parts give \(w_2' = Aw_2\). Both \(w_1\) and \(w_2\) individually satisfy the system — and they're both completely real.</p>
+
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">✓</div>
+    <div class="l33-annotation-text"><strong>The punchline:</strong> One complex eigenvalue \(\alpha + \beta i\) (with its conjugate \(\alpha - \beta i\)) yields <em>two</em> real solutions \(w_1(t)\) and \(w_2(t)\). The conjugate pair accounts for exactly two solutions — which is the right count, since a conjugate pair represents two eigenvalues.</div>
+  </div>
+
+  <div class="l33-h2" style="font-size:1.2rem;margin-top:2rem">Why not do the same thing for the conjugate eigenvalue \(\alpha - \beta i\)?</div>
+
+  <p class="l33-p">You might wonder: shouldn't the conjugate eigenvalue \(\alpha - \beta i\) give us two more solutions? It turns out it gives exactly the same \(w_1\) and \(w_2\) we already have — nothing new. Here's why: the conjugate eigenvalue has eigenvector \(\mathbf{a} - \mathbf{b}i\). When you work through the same expansion, cosine is an even function (\(\cos(-\beta t) = \cos(\beta t)\)) and sine is odd (\(\sin(-\beta t) = -\sin(\beta t)\)). So the real part stays the same as \(w_1\), and the imaginary part becomes \(-w_2\) — which is just a constant multiple of \(w_2\) and counts as the same solution. The conjugate pair together gives exactly two solutions, as expected.</p>
+
+  <div class="l33-callout warn">
+    <strong>Signs are not flexible.</strong> The formulas for \(w_1\) and \(w_2\) have specific signs: \(w_1\) has a minus between the \(\mathbf{a}\) and \(\mathbf{b}\) terms, while \(w_2\) has a plus. These are not interchangeable — \(w_1\) is the real part of \(w(t)\) and \(w_2\) is the imaginary part. Swapping signs would give something that is neither \(w_1\) nor a constant multiple of it, and would no longer be a solution. This is a common exam mistake.
+  </div>
+</div>
+
+<div class="l33-divider"><span class="l33-divider-lbl">worked example · B9.6.5</span></div>
+
+<!-- ─── WORKED EXAMPLE ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Worked Example</div>
+  <div class="l33-h2">Solving a system with complex eigenvalues</div>
+
+  <p class="l33-p">Let's work through a complete example. Consider the system:</p>
+
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">The system</div>
+    \[\begin{aligned} x_1' &= -x_1 - 2x_2 \\ x_2' &= \phantom{-}8x_1 - x_2 \end{aligned}\]
+  </div>
+
+  <div class="l33-worked open" id="lw3">
+    <div class="l33-worked-hdr" onclick="lwTog('lw3')">
+      <span class="badge b-lec">Steps</span>
+      <span class="l33-worked-title">Full solution walkthrough</span>
+      <span class="l33-worked-sub">click to collapse</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Write the coefficient matrix \(A\)</div>
+          <div class="l33-step-body">Read the coefficients row by row as before.</div>
+          <div class="l33-step-eq gold">\[ A = \begin{bmatrix}-1 & -2 \\ 8 & -1\end{bmatrix} \]</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvalues</div>
+          <div class="l33-step-body">Subtract \(\lambda\) from the diagonal and set the determinant to zero. Notice the diagonal entries are both \(-1\), so \(A - \lambda I\) has \(-1-\lambda\) in both diagonal slots:</div>
+          <div class="l33-step-eq gold">\[ \det(A - \lambda I) = (-1-\lambda)^2 - (-2)(8) = (-1-\lambda)^2 + 16 \overset{?}{=} 0 \]</div>
+          <div class="l33-step-body">This means \((-1-\lambda)^2 = -16\), so \(-1-\lambda = \pm 4i\), giving:</div>
+          <div class="l33-step-eq gold">\[ \lambda = -1 \pm 4i \quad\Rightarrow\quad \alpha = -1,\quad \beta = 4 \]</div>
+          <div class="l33-callout info" style="margin-top:.8rem">The real part \(\alpha = -1\) tells us solutions will decay like \(e^{-t}\) — they shrink over time. The imaginary part \(\beta = 4\) tells us solutions will oscillate with angular frequency 4 — they spin around. Together, the system spirals inward.</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Find the eigenvector for \(\lambda = -1 + 4i\) only</div>
+          <div class="l33-step-body">Because the conjugate gives nothing new, we only work with one eigenvalue. Plugging \(\lambda = -1 + 4i\) into \(A - \lambda I\):</div>
+          <div class="l33-step-eq gold">\[ A - (-1+4i)I = \begin{bmatrix}-1-(-1+4i) & -2 \\ 8 & -1-(-1+4i)\end{bmatrix} = \begin{bmatrix}-4i & -2 \\ 8 & -4i\end{bmatrix} \]</div>
+          <div class="l33-step-body">Since this is an eigenvalue, the two rows are dependent — we only need one equation. Using the first row: \(-4i\,y_1 - 2y_2 = 0\). Let's pick the simplest choice, \(y_1 = -1\), and solve for \(y_2\):</div>
+          <div class="l33-step-eq gold">\[ -4i(-1) - 2y_2 = 0 \quad\Rightarrow\quad 4i = 2y_2 \quad\Rightarrow\quad y_2 = 2i \]</div>
+          <div class="l33-step-body">So the (complex) eigenvector is \(\begin{bmatrix}-1 \\ 2i\end{bmatrix}\). Now we read off the real and imaginary parts:</div>
+          <div class="l33-step-eq gold">\[ \begin{bmatrix}-1 \\ 2i\end{bmatrix} = \underbrace{\begin{bmatrix}-1 \\ 0\end{bmatrix}}_{\mathbf{a}\text{ (real part)}} + \underbrace{\begin{bmatrix}0 \\ 2\end{bmatrix}}_{\mathbf{b}\text{ (imaginary part)}}i \]</div>
+          <div class="l33-callout tip" style="margin-top:.8rem">Note: we could also have chosen \(y_1 = i\), which would give a different (but equally valid) eigenvector — any nonzero scalar multiple, real or complex, is acceptable.</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">4</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Plug into the \(w_1, w_2\) formulas</div>
+          <div class="l33-step-body">We have \(\alpha = -1\), \(\beta = 4\), \(\mathbf{a} = \begin{bmatrix}-1\\0\end{bmatrix}\), \(\mathbf{b} = \begin{bmatrix}0\\2\end{bmatrix}\). Substitute directly:</div>
+          <div class="l33-step-eq gold">
+            \[ w_1(t) = e^{-t}\left[\cos(4t)\begin{bmatrix}-1\\0\end{bmatrix} - \sin(4t)\begin{bmatrix}0\\2\end{bmatrix}\right] = e^{-t}\begin{bmatrix}-\cos(4t) \\ -2\sin(4t)\end{bmatrix} \]
+          </div>
+          <div class="l33-step-eq gold" style="margin-top:.8rem">
+            \[ w_2(t) = e^{-t}\left[\sin(4t)\begin{bmatrix}-1\\0\end{bmatrix} + \cos(4t)\begin{bmatrix}0\\2\end{bmatrix}\right] = e^{-t}\begin{bmatrix}-\sin(4t) \\ 2\cos(4t)\end{bmatrix} \]
+          </div>
+          <div class="l33-step-body" style="margin-top:.8rem">Notice how \(e^{-t}\) factors out in front of everything. This is the <em>decay envelope</em> from \(\alpha = -1\). The vectors inside oscillate between the \(\mathbf{a}\) and \(\mathbf{b}\) directions — that's the rotation from \(\beta = 4\).</div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">5</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Write the general solution</div>
+          <div class="l33-step-body">The general solution is \(c_1 w_1(t) + c_2 w_2(t)\). Writing out the scalar components explicitly:</div>
+          <div class="l33-final">
+            <div class="l33-final-lbl">General solution</div>
+            \[ \mathbf{x}(t) = c_1 e^{-t}\begin{bmatrix}-\cos(4t) \\ -2\sin(4t)\end{bmatrix} + c_2 e^{-t}\begin{bmatrix}-\sin(4t) \\ 2\cos(4t)\end{bmatrix} \]
+            <div class="l33-final-note">Component form: \(x_1(t) = -c_1 e^{-t}\cos(4t) - c_2 e^{-t}\sin(4t)\) and \(x_2(t) = -2c_1 e^{-t}\sin(4t) + 2c_2 e^{-t}\cos(4t)\). As \(t \to \infty\), the \(e^{-t}\) factor drives everything to zero — the spiral decays inward.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ─── PART 5: BIGGER PICTURE ─── -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5 — Bigger Picture</div>
+  <div class="l33-h2">What about larger systems?</div>
+
+  <p class="l33-p">The procedure above works for any size matrix. If \(A\) is \(3 \times 3\) with one real eigenvalue and one conjugate pair, you handle each type separately and combine: the real eigenvalue gives one \(e^{\lambda t}\mathbf{v}\) term (as in Lec 33), and the complex conjugate pair gives \(w_1\) and \(w_2\) as above. Together that's three terms, which is exactly right for a third-order system.</p>
+
+  <p class="l33-p">For a \(10 \times 10\) matrix the calculation is much longer, but the fundamental idea doesn't change. The only thing that can still cause problems — regardless of matrix size — is <strong>repeated eigenvalues</strong> (whether real or complex) that don't have enough independent eigenvectors. That's the topic of the Addendum tab: why the "\(t\) trick" is not just a lucky guess, but falls out naturally from variation of parameters.</p>
+
+  <div class="l33-two-col" style="margin-top:1.2rem">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--gold)">Real eigenvalue \(\lambda\)</div>
+      <div class="l33-col-box-body">Gives <strong>one</strong> solution: \(e^{\lambda t}\mathbf{v}\). If \(\lambda < 0\), the solution decays. If \(\lambda > 0\), it grows. If \(\lambda = 0\), it's constant.</div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--teal)">Complex pair \(\alpha \pm \beta i\)</div>
+      <div class="l33-col-box-body">Gives <strong>two</strong> solutions: \(w_1(t)\) and \(w_2(t)\). The \(e^{\alpha t}\) factor controls growth or decay; the \(\cos(\beta t)\), \(\sin(\beta t)\) factors produce oscillation.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end lec34 -->
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TAB 4 — ADDENDUM                              -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="sec" id="s-addendum">
+<div class="sec-title">Addendum — Why Multiplying by \(t\) Works</div>
+<p class="sec-sub">Three situations use the "multiply by \(t\)" fix. This addendum proves <em>why</em> it works using VOP — a deeper justification than just "brute-force checking it".</p>
+
+<div class="summary-box">
+  <h3>The Three Situations Where You Multiply by \(t\)</h3>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="summary-item-title">(1) Repeated real root in homogeneous ODE</div>
+      <div class="summary-item-body">Root \(r\) repeated → \(e^{rt}\) and \(te^{rt}\). The \(te^{rt}\) is derived, not guessed.</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-item-title">(2) MUC overlap with homogeneous solution</div>
+      <div class="summary-item-body">When the "natural guess" for \(y_p\) is already in \(y_c\), multiply by \(t\) (or \(t^2\) for double overlap).</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-item-title">(3) Repeated eigenvalue in a system</div>
+      <div class="summary-item-body">Repeated eigenvalue with insufficient eigenvectors → generalized eigenvector approach also uses \(t\) multiplication.</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-item-title">Common Root</div>
+      <div class="summary-item-body">All three cases involve a function that "lives in the kernel" — multiplying by \(t\) moves it out of the null space (the homogeneous solution space). This is a linear algebra idea.</div>
+    </div>
+  </div>
+</div>
+
+<!-- VOP derivation -->
+<div class="card" id="add1">
+<div class="card-hdr" onclick="tog('add1')">
+  <span class="badge b-add">Addendum · VOP Derivation</span>
+  <span class="card-eq">Proving \(te^{rt}\) is the second solution when \(r\) is a repeated root</span>
+  <span class="card-topic">Why \(t\) works</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum sp">1</div>
+    <div class="sc">
+      <div class="slbl">Setup — one known solution, find a second</div>
+      <div class="stxt">In \(ay'' + by' + cy = 0\), we know \({\color{#e8b86d}{y_1 = e^{rt}}}\) where \(r\) is a repeated root. Try a second solution of the form \(y = u_1(t)\cdot y_1(t)\):</div>
+      <div class="mblock purple">
+        \[\begin{aligned}
+          y   &= {\color{#b48fd4}{u_1}}{\color{#e8b86d}{e^{rt}}}\\
+          y'  &= {\color{#b48fd4}{u_1'}}{\color{#e8b86d}{e^{rt}}} + {\color{#b48fd4}{u_1}}\cdot r{\color{#e8b86d}{e^{rt}}}\\
+          y'' &= {\color{#b48fd4}{u_1''}}{\color{#e8b86d}{e^{rt}}} + 2{\color{#b48fd4}{u_1'}} r{\color{#e8b86d}{e^{rt}}} + {\color{#b48fd4}{u_1}} r^2{\color{#e8b86d}{e^{rt}}}
+        \end{aligned}\]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum sp">2</div>
+    <div class="sc">
+      <div class="slbl">Substitute into the ODE</div>
+      <div class="mblock purple">
+        \[ a({\color{#b48fd4}{u_1''}} + 2{\color{#b48fd4}{u_1'}} r + {\color{#b48fd4}{u_1}} r^2){\color{#e8b86d}{e^{rt}}} + b({\color{#b48fd4}{u_1'}} + {\color{#b48fd4}{u_1}} r){\color{#e8b86d}{e^{rt}}} + c{\color{#b48fd4}{u_1}}{\color{#e8b86d}{e^{rt}}} = 0 \]
+      </div>
+      <div class="stxt">Group by \(u_1''\), \(u_1'\), and \(u_1\) — the \(u_1\) terms form exactly \({\color{#e8b86d}{a(r^2)+b(r)+c}}\) times \(u_1\), which is <strong>zero</strong> since \(r\) is a root of the characteristic polynomial:</div>
+      <div class="mblock purple">
+        \[ a{\color{#b48fd4}{u_1''}}{\color{#e8b86d}{e^{rt}}} + {\color{#b48fd4}{u_1'}}{\color{#e8b86d}{e^{rt}}}(2ar+b) = 0 \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum sp">3</div>
+    <div class="sc">
+      <div class="slbl">The repeated-root condition kills the \(u_1'\) term too</div>
+      <div class="stxt">Since \(r\) is a <em>repeated</em> root of \(ax^2+bx+c\), it is also a root of the derivative \(2ax+b\), so \(2ar+b = 0\):</div>
+      <div class="mblock purple">
+        \[ a{\color{#b48fd4}{u_1''}}{\color{#e8b86d}{e^{rt}}} = 0 \;\Rightarrow\; {\color{#b48fd4}{u_1''}} = 0 \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum sp">4</div>
+    <div class="sc">
+      <div class="slbl">Integrate twice — the \(t\) emerges naturally</div>
+      <div class="mblock purple">
+        \[ {\color{#b48fd4}{u_1''}} = 0 \;\Rightarrow\; {\color{#b48fd4}{u_1'}} = F \;\Rightarrow\; {\color{#b48fd4}{u_1}} = Ft + G \]
+      </div>
+      <div class="mblock purple">
+        \[ y = (Ft+G){\color{#e8b86d}{e^{rt}}} = F\cdot{\color{#7eb8a4}{te^{rt}}} + G\cdot{\color{#e8b86d}{e^{rt}}} \]
+      </div>
+      <div class="stxt">The \(G e^{rt}\) part is just \(y_1\) again. The genuinely new solution is \({\color{#7eb8a4}{te^{rt}}}\). This is why multiplying by \(t\) works — it's not a guess, it falls directly out of VOP.</div>
+      <div class="tip">This derivation is why the method generalizes: for a 10th-order equation with \(r\) as a repeated root, the same VOP argument produces \(te^{rt}, t^2 e^{rt}, \ldots\) as the additional solutions. Brute-force checking would be impractical at that scale.</div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">Conclusion</div>
+    When \(r\) is a repeated real root, the second linearly independent solution is \(te^{rt}\).<br>
+    It emerges from VOP: \(u_1''=0 \Rightarrow u_1 = Ft+G\), so \(y = (Ft+G)e^{rt}\).
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Repeated nonreal eigenvalue -->
+<div class="card" id="add2">
+<div class="card-hdr" onclick="tog('add2')">
+  <span class="badge b-add">Addendum · Example</span>
+  <span class="card-eq">\(y^{(4)} + 2y'' + y = 0\)</span>
+  <span class="card-topic">Repeated nonreal eigenvalue</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum sp">1</div>
+    <div class="sc">
+      <div class="slbl">Characteristic equation</div>
+      <div class="mblock purple">
+        \[ r^4 + 2r^2 + 1 = (r^2+1)^2 = 0 \;\Rightarrow\; r = i, i, -i, -i \]
+      </div>
+      <div class="stxt">Repeated nonreal eigenvalue — unusual since second-order equations can't have these. Being fourth-order, we need <strong>four</strong> linearly independent solutions.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum sp">2</div>
+    <div class="sc">
+      <div class="slbl">Solutions from the non-repeated case</div>
+      <div class="stxt">The roots \(r = \pm i\) (with \(\alpha=0, \beta=1\)) give the standard trig solutions:</div>
+      <div class="mblock purple">
+        \[ {\color{#e8b86d}{\cos t}}, \quad {\color{#7eb8a4}{\sin t}} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum sp">3</div>
+    <div class="sc">
+      <div class="slbl">Extra solutions from the repeated roots — multiply by \(t\)</div>
+      <div class="stxt">By the same logic as \(te^{rt}\) for repeated real roots, repeated complex roots give:</div>
+      <div class="mblock purple">
+        \[ {\color{#e8b86d}{t\cos t}}, \quad {\color{#7eb8a4}{t\sin t}} \]
+      </div>
+      <div class="info">The justification follows the same VOP argument: repeated roots of the characteristic polynomial are also roots of its derivative, causing the \(u_1'\) term to vanish and forcing \(u_1'' = 0 \Rightarrow u_1 = Ft+G\).</div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1\cos t + c_2\sin t + c_3\,t\cos t + c_4\,t\sin t \]
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end addendum -->
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TAB 4 — PRACTICE                              -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="sec" id="s-practice">
+<div class="sec-title">Practice Problems</div>
+<p class="sec-sub">Lecture examples are clearly marked. All others are original problems generated for extra practice.</p>
+
+<div class="sec-divider">
+  <div class="sec-divider-lbl" style="background:var(--bg)">VOP with nonconstant coefficients</div>
+  <div style="flex:1;height:1px;background:var(--border2)"></div>
+</div>
+
+<!-- New 1 -->
+<div class="card" id="p1">
+<div class="card-hdr" onclick="tog('p1')">
+  <span class="badge b-new">New · 1</span>
+  <span class="card-eq">\(t^2 y'' - 2ty' + 2y = t^3,\quad y_1 = t,\; y_2 = t^2\)</span>
+  <span class="card-topic">VOP, given \(y_1, y_2\)</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Standard form — divide by \(t^2\)</div>
+      <div class="stxt">\(a(t) = t^2\), so divide: \(f(t)/a(t) = t^3/t^2 = t\).</div>
+      <div class="mblock teal">
+        \[ y'' - \frac{2}{t}y' + \frac{2}{t^2}y = t \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Wronskian</div>
+      <div class="mblock teal">
+        \[ {\color{#8b9eca}{W}} = \begin{vmatrix}{\color{#e8b86d}{t}} & {\color{#7eb8a4}{t^2}} \\ {\color{#e8b86d}{1}} & {\color{#7eb8a4}{2t}}\end{vmatrix} = 2t^2 - t^2 = {\color{#8b9eca}{t^2}} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Compute \(u_1'\) and \(u_2'\)</div>
+      <div class="mblock teal">
+        \[ u_1' = \frac{-{\color{#7eb8a4}{t^2}}\cdot t}{{\color{#8b9eca}{t^2}}} = \frac{-t^3}{t^2} = -t \;\Rightarrow\; {\color{#e8b86d}{u_1 = -\tfrac{t^2}{2}}} \]
+      </div>
+      <div class="mblock teal">
+        \[ u_2' = \frac{{\color{#e8b86d}{t}}\cdot t}{{\color{#8b9eca}{t^2}}} = \frac{t^2}{t^2} = 1 \;\Rightarrow\; {\color{#7eb8a4}{u_2 = t}} \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">4</div>
+    <div class="sc">
+      <div class="slbl">Assemble \(y_p\)</div>
+      <div class="mblock teal">
+        \[ y_p = {\color{#e8b86d}{-\tfrac{t^2}{2}}}\cdot{\color{#e8b86d}{t}} + {\color{#7eb8a4}{t}}\cdot{\color{#7eb8a4}{t^2}} = -\tfrac{t^3}{2} + t^3 = \tfrac{t^3}{2} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ y = c_1 t + c_2 t^2 + \tfrac{t^3}{2} \]
+  </div>
+</div>
+</div>
+</div>
+
+<div class="sec-divider">
+  <div class="sec-divider-lbl" style="background:var(--bg)">Systems in matrix form</div>
+  <div style="flex:1;height:1px;background:var(--border2)"></div>
+</div>
+
+<!-- New 2 -->
+<div class="card" id="p2">
+<div class="card-hdr" onclick="tog('p2')">
+  <span class="badge b-new">New · 2</span>
+  <span class="card-eq">Write \(y'' - 5y' + 6y = 0\) as a first-order system \(\mathbf{x}' = A\mathbf{x}\)</span>
+  <span class="card-topic">Single ODE → system</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Introduce state variables</div>
+      <div class="stxt">Let \({\color{#e8b86d}{x_1 = y}}\) and \({\color{#7eb8a4}{x_2 = y'}}\). Then \(x_1' = y' = x_2\) and \(x_2' = y'' = 5y' - 6y = 5x_2 - 6x_1\).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Matrix form</div>
+      <div class="mblock teal">
+        \[ \begin{bmatrix}{\color{#e8b86d}{x_1}}\\{\color{#7eb8a4}{x_2}}\end{bmatrix}' = {\color{#8b9eca}{\begin{bmatrix}0 & 1 \\ -6 & 5\end{bmatrix}}}\begin{bmatrix}{\color{#e8b86d}{x_1}}\\{\color{#7eb8a4}{x_2}}\end{bmatrix} \]
+      </div>
+      <div class="stxt">Eigenvalues of \(A\): \(r^2 - 5r + 6 = (r-2)(r-3) = 0\) → \(r = 2, 3\). These match the characteristic roots of the original ODE — as expected.</div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">Answer</div>
+    \[ A = {\color{#8b9eca}{\begin{bmatrix}0 & 1 \\ -6 & 5\end{bmatrix}}}, \qquad \text{eigenvalues } \lambda = 2, 3 \]
+  </div>
+</div>
+</div>
+</div>
+
+<div class="sec-divider">
+  <div class="sec-divider-lbl" style="background:var(--bg)">Complex eigenvalue systems</div>
+  <div style="flex:1;height:1px;background:var(--border2)"></div>
+</div>
+
+<!-- New 3 -->
+<div class="card" id="p3">
+<div class="card-hdr" onclick="tog('p3')">
+  <span class="badge b-new">New · 3</span>
+  <span class="card-eq">\(x_1' = x_2,\quad x_2' = -4x_1\)</span>
+  <span class="card-topic">Pure imaginary eigenvalues</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Matrix and eigenvalues</div>
+      <div class="mblock teal">
+        \[ {\color{#8b9eca}{A}} = \begin{bmatrix}0 & 1 \\ -4 & 0\end{bmatrix}, \quad \det(A - \lambda I) = \lambda^2 + 4 = 0 \;\Rightarrow\; {\color{#c47b7b}{\lambda = \pm 2i}} \]
+      </div>
+      <div class="stxt">So \({\color{#c47b7b}{\alpha = 0}}\) and \({\color{#c47b7b}{\beta = 2}}\). Work with \(\lambda = 2i\).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Find eigenvector for \(\lambda = 2i\)</div>
+      <div class="mblock teal">
+        \[ A - 2iI = \begin{bmatrix}-2i & 1 \\ -4 & -2i\end{bmatrix} \]
+      </div>
+      <div class="stxt">First row: \(-2i\,y_1 + y_2 = 0\). Pick \(y_1 = 1\) → \(y_2 = 2i\).</div>
+      <div class="mblock teal">
+        \[ \text{Eigenvector: }\begin{bmatrix}1\\2i\end{bmatrix} = \underbrace{\begin{bmatrix}1\\0\end{bmatrix}}_{{\color{#e8b86d}{\mathbf{a}}}} + \underbrace{\begin{bmatrix}0\\2\end{bmatrix}}_{{\color{#7eb8a4}{\mathbf{b}}}}i \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Apply \(w_1, w_2\) formulas — note \(\alpha=0\) so no exponential decay</div>
+      <div class="mblock teal">
+        \[ {\color{#e8b86d}{w_1}} = e^{{\color{#c47b7b}{0\cdot t}}}\!\left[\cos({\color{#c47b7b}{2}}t)\begin{bmatrix}{\color{#e8b86d}{1}}\\{\color{#e8b86d}{0}}\end{bmatrix} - \sin({\color{#c47b7b}{2}}t)\begin{bmatrix}{\color{#7eb8a4}{0}}\\{\color{#7eb8a4}{2}}\end{bmatrix}\right] = \begin{bmatrix}\cos 2t \\ -2\sin 2t\end{bmatrix} \]
+      </div>
+      <div class="mblock teal">
+        \[ {\color{#7eb8a4}{w_2}} = \left[\sin({\color{#c47b7b}{2}}t)\begin{bmatrix}{\color{#e8b86d}{1}}\\{\color{#e8b86d}{0}}\end{bmatrix} + \cos({\color{#c47b7b}{2}}t)\begin{bmatrix}{\color{#7eb8a4}{0}}\\{\color{#7eb8a4}{2}}\end{bmatrix}\right] = \begin{bmatrix}\sin 2t \\ 2\cos 2t\end{bmatrix} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ \mathbf{x}(t) = c_1\begin{bmatrix}\cos 2t \\ -2\sin 2t\end{bmatrix} + c_2\begin{bmatrix}\sin 2t \\ 2\cos 2t\end{bmatrix} \]
+    <div style="font-size:12px;color:var(--muted);margin-top:.5rem">Note: \(\alpha=0\) means oscillation with no decay — this is the vector-system analogue of \(y''+4y=0\).</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- New 4 -->
+<div class="card" id="p4">
+<div class="card-hdr" onclick="tog('p4')">
+  <span class="badge b-new">New · 4</span>
+  <span class="card-eq">\(\mathbf{x}' = \begin{bmatrix}2 & -5 \\ 1 & -2\end{bmatrix}\mathbf{x}\)</span>
+  <span class="card-topic">Pure imaginary — verify \(\alpha = 0\)</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Eigenvalues</div>
+      <div class="mblock teal">
+        \[ \det(A-\lambda I) = (2-\lambda)(-2-\lambda)+5 = -4+\lambda^2+5 = \lambda^2+1 = 0 \;\Rightarrow\; {\color{#c47b7b}{\lambda = \pm i}} \]
+      </div>
+      <div class="stxt">\({\color{#c47b7b}{\alpha=0}},\; {\color{#c47b7b}{\beta=1}}\). Work with \(\lambda = i\).</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Eigenvector for \(\lambda = i\)</div>
+      <div class="mblock teal">
+        \[ A - iI = \begin{bmatrix}2-i & -5 \\ 1 & -2-i\end{bmatrix} \]
+      </div>
+      <div class="stxt">First row: \((2-i)y_1 - 5y_2 = 0\). Pick \(y_1 = 5\) → \(y_2 = 2-i\).</div>
+      <div class="mblock teal">
+        \[ \text{Eigenvector: }\begin{bmatrix}5\\2-i\end{bmatrix} = \underbrace{\begin{bmatrix}5\\2\end{bmatrix}}_{{\color{#e8b86d}{\mathbf{a}}}} + \underbrace{\begin{bmatrix}0\\-1\end{bmatrix}}_{{\color{#7eb8a4}{\mathbf{b}}}}i \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Apply \(w_1, w_2\) formulas</div>
+      <div class="mblock teal">
+        \[ {\color{#e8b86d}{w_1}} = \cos t\begin{bmatrix}{\color{#e8b86d}{5}}\\{\color{#e8b86d}{2}}\end{bmatrix} - \sin t\begin{bmatrix}{\color{#7eb8a4}{0}}\\{\color{#7eb8a4}{-1}}\end{bmatrix} = \begin{bmatrix}5\cos t \\ 2\cos t + \sin t\end{bmatrix} \]
+      </div>
+      <div class="mblock teal">
+        \[ {\color{#7eb8a4}{w_2}} = \sin t\begin{bmatrix}{\color{#e8b86d}{5}}\\{\color{#e8b86d}{2}}\end{bmatrix} + \cos t\begin{bmatrix}{\color{#7eb8a4}{0}}\\{\color{#7eb8a4}{-1}}\end{bmatrix} = \begin{bmatrix}5\sin t \\ 2\sin t - \cos t\end{bmatrix} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ \mathbf{x}(t) = c_1\begin{bmatrix}5\cos t \\ 2\cos t + \sin t\end{bmatrix} + c_2\begin{bmatrix}5\sin t \\ 2\sin t - \cos t\end{bmatrix} \]
+  </div>
+</div>
+</div>
+</div>
+
+<!-- New 5 -->
+<div class="card" id="p5">
+<div class="card-hdr" onclick="tog('p5')">
+  <span class="badge b-new">New · 5</span>
+  <span class="card-eq">\(\mathbf{x}' = \begin{bmatrix}1 & -2 \\ 4 & 1\end{bmatrix}\mathbf{x}\)</span>
+  <span class="card-topic">Complex with nonzero real part \(\alpha \neq 0\)</span>
+  <span class="arrow">▾</span>
+</div>
+<div class="card-body">
+<div class="steps">
+  <div class="step">
+    <div class="snum st">1</div>
+    <div class="sc">
+      <div class="slbl">Eigenvalues</div>
+      <div class="mblock teal">
+        \[ \det(A-\lambda I) = (1-\lambda)^2 + 8 = 0 \;\Rightarrow\; (1-\lambda)^2 = -8 \;\Rightarrow\; {\color{#c47b7b}{\lambda = 1 \pm 2\sqrt{2}\,i}} \]
+      </div>
+      <div class="stxt">\({\color{#c47b7b}{\alpha = 1}},\; {\color{#c47b7b}{\beta = 2\sqrt{2}}}\). Since \(\alpha > 0\), solutions <strong>grow</strong> over time.</div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">2</div>
+    <div class="sc">
+      <div class="slbl">Eigenvector for \(\lambda = 1+2\sqrt{2}\,i\)</div>
+      <div class="mblock teal">
+        \[ A - (1+2\sqrt{2}\,i)I = \begin{bmatrix}-2\sqrt{2}\,i & -2 \\ 4 & -2\sqrt{2}\,i\end{bmatrix} \]
+      </div>
+      <div class="stxt">From first row: \(-2\sqrt{2}\,i\,y_1 - 2y_2 = 0\). Pick \(y_1 = 1\) → \(y_2 = -\sqrt{2}\,i\).</div>
+      <div class="mblock teal">
+        \[ \text{Eigenvector: }\begin{bmatrix}1\\-\sqrt{2}\,i\end{bmatrix} = \underbrace{\begin{bmatrix}1\\0\end{bmatrix}}_{{\color{#e8b86d}{\mathbf{a}}}} + \underbrace{\begin{bmatrix}0\\-\sqrt{2}\end{bmatrix}}_{{\color{#7eb8a4}{\mathbf{b}}}}i \]
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="snum st">3</div>
+    <div class="sc">
+      <div class="slbl">Apply \(w_1, w_2\) with \(e^{\alpha t} = e^t\)</div>
+      <div class="mblock teal">
+        \[ {\color{#e8b86d}{w_1}} = e^{{\color{#c47b7b}{t}}}\!\left[\cos({\color{#c47b7b}{2\sqrt{2}}}t)\begin{bmatrix}{\color{#e8b86d}{1}}\\{\color{#e8b86d}{0}}\end{bmatrix} - \sin({\color{#c47b7b}{2\sqrt{2}}}t)\begin{bmatrix}{\color{#7eb8a4}{0}}\\{\color{#7eb8a4}{-\sqrt{2}}}\end{bmatrix}\right] = e^t\begin{bmatrix}\cos(2\sqrt{2}\,t) \\ \sqrt{2}\sin(2\sqrt{2}\,t)\end{bmatrix} \]
+      </div>
+      <div class="mblock teal">
+        \[ {\color{#7eb8a4}{w_2}} = e^{{\color{#c47b7b}{t}}}\!\left[\sin({\color{#c47b7b}{2\sqrt{2}}}t)\begin{bmatrix}{\color{#e8b86d}{1}}\\{\color{#e8b86d}{0}}\end{bmatrix} + \cos({\color{#c47b7b}{2\sqrt{2}}}t)\begin{bmatrix}{\color{#7eb8a4}{0}}\\{\color{#7eb8a4}{-\sqrt{2}}}\end{bmatrix}\right] = e^t\begin{bmatrix}\sin(2\sqrt{2}\,t) \\ -\sqrt{2}\cos(2\sqrt{2}\,t)\end{bmatrix} \]
+      </div>
+    </div>
+  </div>
+  <div class="ans">
+    <div class="ans-lbl">General solution</div>
+    \[ \mathbf{x}(t) = c_1\, e^t\begin{bmatrix}\cos(2\sqrt{2}\,t) \\ \sqrt{2}\sin(2\sqrt{2}\,t)\end{bmatrix} + c_2\, e^t\begin{bmatrix}\sin(2\sqrt{2}\,t) \\ -\sqrt{2}\cos(2\sqrt{2}\,t)\end{bmatrix} \]
+    <div style="font-size:12px;color:var(--muted);margin-top:.5rem">Since \(\alpha = 1 > 0\), both components grow exponentially while oscillating — an unstable spiral.</div>
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- end practice -->
+
+<div style="text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--faint);margin-top:3rem;letter-spacing:.1em;text-transform:uppercase">end of lectures 32, 33 &amp; 34 summary</div>
+</div><!-- wrap -->
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('s-' + id).classList.add('on');
+  btn.classList.add('on');
+  if (window.MathJax) MathJax.typesetPromise();
+}
+function tog(id) {
+  const c = document.getElementById(id);
+  c.classList.toggle('open');
+  if (c.classList.contains('open') && window.MathJax) MathJax.typesetPromise([c]);
+}
+window.addEventListener('load', () => {
+  if (window.MathJax) MathJax.typesetPromise();
+});
+</script>
+</body>
+</html>

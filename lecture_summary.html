@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture Notes Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e10;
+    --bg2: #16161a;
+    --bg3: #1e1e24;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #e8e6e0;
+    --muted: #8a8880;
+    --accent1: #c8a96e;
+    --accent2: #7eb8a4;
+    --accent3: #c47b7b;
+    --accent4: #8b9eca;
+    --glow1: rgba(200,169,110,0.12);
+    --glow2: rgba(126,184,164,0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .noise {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+    position: relative; z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent1);
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* Tab nav */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 2.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .tab:hover { color: var(--text); background: var(--bg3); }
+
+  .tab.active {
+    background: var(--bg3);
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* Section title */
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  /* Cards grid */
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  @media (max-width: 600px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card.gold::before { background: var(--glow1); }
+  .card.teal::before { background: var(--glow2); }
+  .card:hover::before { opacity: 1; }
+
+  .card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .card-body {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .accent-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+
+  /* Equation blocks */
+  .eq-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent1);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    color: var(--accent1);
+    margin: 0.8rem 0;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+  }
+
+  .eq-block.teal { border-left-color: var(--accent2); color: var(--accent2); }
+  .eq-block.red { border-left-color: var(--accent3); color: var(--accent3); }
+  .eq-block.blue { border-left-color: var(--accent4); color: var(--accent4); }
+
+  /* Wide card */
+  .card-wide {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .card-wide:hover { border-color: var(--border2); }
+
+  .card-wide .card-title {
+    font-size: 14px;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pill-gold { background: rgba(200,169,110,0.15); color: var(--accent1); }
+  .pill-teal { background: rgba(126,184,164,0.15); color: var(--accent2); }
+  .pill-red  { background: rgba(196,123,123,0.15); color: var(--accent3); }
+  .pill-blue { background: rgba(139,158,202,0.15); color: var(--accent4); }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem; }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .step-n {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--bg);
+    background: var(--accent1);
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-weight: 500;
+  }
+
+  .step-n.teal { background: var(--accent2); }
+  .step-n.red  { background: var(--accent3); }
+  .step-n.blue { background: var(--accent4); }
+
+  /* Warning box */
+  .warning {
+    background: rgba(196,123,123,0.08);
+    border: 1px solid rgba(196,123,123,0.25);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    color: #d9a0a0;
+    line-height: 1.6;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .warning-icon {
+    font-size: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Tip box */
+  .tip {
+    background: rgba(126,184,164,0.07);
+    border: 1px solid rgba(126,184,164,0.2);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 13px;
+    color: #9ed4c4;
+    line-height: 1.6;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+
+  /* Comparison table */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .compare-col {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem 1.3rem;
+  }
+
+  .compare-head {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .compare-item {
+    font-size: 12.5px;
+    color: var(--muted);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .compare-item:last-child { border-bottom: none; }
+
+  .check { color: var(--accent2); flex-shrink: 0; }
+  .cross { color: var(--accent3); flex-shrink: 0; }
+
+  /* Formula highlight */
+  .formula-big {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: var(--accent4);
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    letter-spacing: 0.04em;
+    line-height: 1.8;
+  }
+
+  /* Scroll hint */
+  .scroll-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 3rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="container">
+
+  <div class="header">
+    <div class="label">Lecture Notes — 30 &amp; 31</div>
+    <h1>Nonhomogeneous<br><em>Second-Order ODEs</em></h1>
+    <p class="subtitle">Method of Undetermined Coefficients &nbsp;·&nbsp; Variation of Parameters &nbsp;·&nbsp; Superposition</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('muc')">Lec 30 — MUC</button>
+    <button class="tab" onclick="switchTab('sup')">Superposition</button>
+    <button class="tab" onclick="switchTab('vop')">Lec 31 — Var. of Params</button>
+    <button class="tab" onclick="switchTab('compare')">Method Comparison</button>
+  </div>
+
+  <!-- TAB 1: MUC -->
+  <div class="panel active" id="tab-muc">
+    <div class="section-title">Method of Undetermined Coefficients</div>
+    <p class="section-sub">Finding a particular solution y<sub>p</sub> to ay″ + by′ + cy = f(t) by guessing a form and solving for the constants.</p>
+
+    <div class="card-wide">
+      <div class="card-title">
+        Three standard guesses for y<sub>p</sub>
+        <span class="pill pill-gold">Core rules</span>
+      </div>
+      <div class="grid grid-3">
+        <div>
+          <div class="card-num">Case 1 — Polynomial</div>
+          <div class="eq-block">f(t) = polynomial<br>→ try y_p = same degree poly</div>
+          <div class="card-body" style="font-size:12px">e.g. f(t)=3t²+1 → try At²+Bt+C</div>
+        </div>
+        <div>
+          <div class="card-num">Case 2 — Exponential</div>
+          <div class="eq-block">f(t) = e^(kt)<br>→ try y_p = Ae^(kt)</div>
+          <div class="card-body" style="font-size:12px">k must be constant. A absorbs the coefficient.</div>
+        </div>
+        <div>
+          <div class="card-num">Case 3 — Trig</div>
+          <div class="eq-block">f(t) = cos(kt) or sin(kt)<br>→ try Acos(kt)+Bsin(kt)</div>
+          <div class="card-body" style="font-size:12px">Always guess <em>both</em> sin and cos even if only one appears in f(t).</div>
+        </div>
+      </div>
+      <div class="tip">
+        Products of these? Use the product of the individual guesses. e.g. f(t) = e<sup>−4x</sup>sin x → try e<sup>−4x</sup>(A cos x + B sin x). No extra constant C needed out front — it's redundant.
+      </div>
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">
+        The three-question checklist
+        <span class="pill pill-blue">Process</span>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n">1</div>
+          <div>Is MUC even viable for this f(t)? Only works for polynomials, exponentials, sin/cos, and products/sums of these. <strong style="color:var(--accent3)">tan t, ln t, 1/t → MUC fails.</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <div>What is the correct form to try for y<sub>p</sub>? Use the table above, check for overlap (see below).</div>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <div>Differentiate y<sub>p</sub>, plug into the ODE, equate coefficients → solve the linear system for A, B, etc.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title" style="font-size:1.2rem; margin-bottom:0.4rem">The Overlap Problem</div>
+    <p class="section-sub">The most important nuance — when your guess y<sub>p</sub> coincidentally satisfies the homogeneous equation.</p>
+
+    <div class="grid grid-2">
+      <div class="card gold">
+        <div class="card-num">When overlap occurs</div>
+        <div class="card-title">Your guess lives in y<sub>c</sub></div>
+        <div class="card-body">
+          If your proposed y<sub>p</sub> is already a solution of the homogeneous equation, plugging it in gives 0 on the left — never equal to f(t). The guess is useless.
+        </div>
+        <div class="eq-block" style="margin-top:0.75rem">Example: y″ + y = cos t<br>y_c has cos t → overlap!</div>
+      </div>
+      <div class="card teal">
+        <div class="card-num">The fix</div>
+        <div class="card-title">Multiply by t (or t²)</div>
+        <div class="card-body">
+          Multiply the usual guess by t. If the overlap root is a <em>double</em> root, multiply by t². Same idea as repeated roots in the homogeneous case.
+        </div>
+        <div class="eq-block teal" style="margin-top:0.75rem">→ try y_p = t(A cos t + B sin t)</div>
+      </div>
+    </div>
+
+    <div class="warning" style="margin-top:1rem">
+      <span class="warning-icon">⚠</span>
+      <div><strong style="color:var(--accent3)">Overlap test:</strong> two functions overlap if their ratio is a polynomial. cos t / cos t = 1 ✓ overlap. e<sup>t</sup>sin(3t) / sin(3t) = e<sup>t</sup> ✗ not a polynomial → no overlap. Don't be fooled by shared trig terms when exponentials differ!</div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title" style="font-size:1.2rem; margin-bottom:0.4rem">Efficiency tips</div>
+    <div class="grid grid-2" style="margin-top:0.5rem">
+      <div class="card">
+        <div class="card-num">No redundant constants</div>
+        <div class="card-body">When guessing y<sub>p</sub> = Ce<sup>−4x</sup>(A cos x + B sin x), the C is redundant — CA is just one constant. Keep it lean; extra unknowns make the algebra longer for no reason.</div>
+      </div>
+      <div class="card">
+        <div class="card-num">Don't include homogeneous terms</div>
+        <div class="card-body">In y″+y = t cos t, after multiplying by t you get (At²+Bt)cos t + (Ct²+Dt)sin t. Do NOT add extra constant cos t or sin t — those contribute nothing (homogeneous solutions).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: SUPERPOSITION -->
+  <div class="panel" id="tab-sup">
+    <div class="section-title">Superposition Principle &amp; General Solution</div>
+    <p class="section-sub">How particular solutions combine, and how to assemble the full general solution.</p>
+
+    <div class="formula-big">
+      y(t) = y<sub>c</sub> + y<sub>p</sub><br>
+      <span style="font-size:12px; color:var(--muted)">General solution = complementary + particular</span>
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">
+        Why this works — the superposition principle
+        <span class="pill pill-teal">Theory</span>
+      </div>
+      <div class="card-body" style="font-size:13px; line-height:1.7; color:var(--muted)">
+        If y₁ solves ay″+by′+cy = f₁(t) and y₂ solves ay″+by′+cy = f₂(t), then k₁y₁ + k₂y₂ solves ay″+by′+cy = k₁f₁(t) + k₂f₂(t). This follows directly from linearity of the derivative operator — it behaves well under addition and scalar multiplication, exactly like linear algebra over matrices.
+      </div>
+      <div class="grid grid-2" style="margin-top:1rem">
+        <div>
+          <div class="eq-block teal">ay″+by′+cy = k₁f₁+k₂f₂<br>↕<br>solution: k₁y₁ + k₂y₂</div>
+        </div>
+        <div>
+          <div class="eq-block blue">Special case: k₁=1, f₂=0<br>→ y₂ solves homogeneous<br>→ this is y_c!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">
+        Why the difference of two solutions is homogeneous
+        <span class="pill pill-gold">Key insight</span>
+      </div>
+      <div class="card-body" style="font-size:13px; line-height:1.7; color:var(--muted)">
+        Any two solutions to ay″+by′+cy = f(t) differ by a solution of ay″+by′+cy = 0. This is identical to the matrix equation Ax = b logic: any solution = particular solution + null space. The y<sub>c</sub> term (with its free constants c₁, c₂) plays the role of the null space — it generalizes the solution.
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title" style="font-size:1.2rem; margin-bottom:1rem">Step-by-step: full general solution</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div>Solve the complementary equation ay″+by′+cy = 0 → get y<sub>c</sub> = c₁y₁ + c₂y₂</div>
+      </div>
+      <div class="step">
+        <div class="step-n teal">2</div>
+        <div>Check if there is overlap between y<sub>c</sub> and f(t) before guessing y<sub>p</sub></div>
+      </div>
+      <div class="step">
+        <div class="step-n teal">3</div>
+        <div>Find any one particular solution y<sub>p</sub> using MUC or variation of parameters</div>
+      </div>
+      <div class="step">
+        <div class="step-n blue">4</div>
+        <div>Write y(t) = y<sub>c</sub> + y<sub>p</sub>. If initial conditions given, plug in to find c₁, c₂.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: VARIATION OF PARAMETERS -->
+  <div class="panel" id="tab-vop">
+    <div class="section-title">Variation of Parameters (B4.6)</div>
+    <p class="section-sub">A more powerful method that handles f(t) = tan t, ln t, and other functions MUC cannot touch — but requires integrals.</p>
+
+    <div class="card-wide">
+      <div class="card-title">
+        Core idea
+        <span class="pill pill-teal">Intuition</span>
+      </div>
+      <div class="card-body" style="font-size:13px; line-height:1.7; color:var(--muted)">
+        Instead of constants c₁, c₂ in y<sub>c</sub> = c₁y₁ + c₂y₂, let them become unknown <em>functions</em> u₁(t), u₂(t). Try y<sub>p</sub> = u₁(t)y₁(t) + u₂(t)y₂(t). When you plug in and simplify, the y₁, y₂ terms cancel (since they satisfy the homogeneous equation), leaving a system of two first-order equations — much easier than the original second-order problem.
+      </div>
+    </div>
+
+    <div class="formula-big">
+      y<sub>p</sub> = u₁(t)·y₁(t) + u₂(t)·y₂(t)
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">
+        The simplifying assumption &amp; system to solve
+        <span class="pill pill-blue">Setup</span>
+      </div>
+      <div class="card-body" style="font-size:13px; margin-bottom:0.75rem; color:var(--muted)">
+        We impose the constraint u₁′y₁ + u₂′y₂ = 0 to eliminate u₁″, u₂″ from the equation. This turns the problem into two first-order equations:
+      </div>
+      <div class="grid grid-2">
+        <div class="eq-block teal">u₁′y₁ + u₂′y₂ = 0</div>
+        <div class="eq-block teal">u₁′y₁′ + u₂′y₂′ = f(t)/a</div>
+      </div>
+      <div class="card-body" style="font-size:12.5px; margin-top:0.5rem; color:var(--muted)">
+        Solve via Cramer's Rule. The denominator is the Wronskian W = y₁y₂′ − y₁′y₂.
+      </div>
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">
+        Explicit formulas via Cramer's Rule
+        <span class="pill pill-gold">Formula</span>
+      </div>
+      <div class="grid grid-2">
+        <div>
+          <div class="card-num">u₁′</div>
+          <div class="eq-block">u₁′ = −f(t)·y₂ / (a·W)</div>
+          <div class="card-body" style="font-size:12px; margin-top:6px">Then integrate to get u₁(t). No +C needed (we only want one particular solution).</div>
+        </div>
+        <div>
+          <div class="card-num">u₂′</div>
+          <div class="eq-block">u₂′ = f(t)·y₁ / (a·W)</div>
+          <div class="card-body" style="font-size:12px; margin-top:6px">Then integrate to get u₂(t). Same logic — skip the +C.</div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:1rem">
+        The Wronskian W = |y₁ y₂; y₁′ y₂′| appears in the denominator. Since y₁, y₂ are linearly independent solutions, W ≠ 0. The denominator is always clean.
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="warning-icon">⚠</span>
+      <div><strong style="color:var(--accent3)">The delicacy warning:</strong> VOP works in principle for any f(t), but the integrals ∫u₁′dt and ∫u₂′dt are often impossible or extremely hard. These problems must be carefully designed to make the integrals work out. A slight change (e.g. tan(2t) vs tan(3t)) can make it unsolvable. Integration by parts and trig integrals come up frequently.</div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title" style="font-size:1.2rem; margin-bottom:0.4rem">Why not always use VOP?</div>
+    <div class="grid grid-2" style="margin-top:0.75rem">
+      <div class="card">
+        <div class="card-num">When MUC is better</div>
+        <div class="card-body">f(t) is a polynomial, exponential, or trig function → MUC gives a quick algebraic system. No integration needed. Much faster.</div>
+      </div>
+      <div class="card">
+        <div class="card-num">When VOP is necessary</div>
+        <div class="card-body">f(t) = tan t, sec t, ln t, t⁻¹eᵗ, etc. — functions MUC can't handle. VOP is the only option, but expect messy integrals.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: COMPARISON -->
+  <div class="panel" id="tab-compare">
+    <div class="section-title">Method Comparison</div>
+    <p class="section-sub">Quick reference for choosing between MUC and Variation of Parameters.</p>
+
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-head">
+          <span class="pill pill-gold">MUC</span>
+          Method of Undetermined Coefficients
+        </div>
+        <div class="compare-item"><span class="check">✓</span> Works for polynomials, e<sup>kt</sup>, sin/cos, products of these</div>
+        <div class="compare-item"><span class="check">✓</span> Pure algebra — no integration</div>
+        <div class="compare-item"><span class="check">✓</span> Faster when applicable</div>
+        <div class="compare-item"><span class="cross">✗</span> Fails for tan, sec, ln, 1/t, etc.</div>
+        <div class="compare-item"><span class="cross">✗</span> Overlap requires careful t-multiplication</div>
+        <div class="compare-item"><span class="cross">✗</span> Only constant-coefficient equations</div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head">
+          <span class="pill pill-teal">VOP</span>
+          Variation of Parameters
+        </div>
+        <div class="compare-item"><span class="check">✓</span> Works for any f(t) in principle</div>
+        <div class="compare-item"><span class="check">✓</span> Can handle non-constant coefficients too</div>
+        <div class="compare-item"><span class="check">✓</span> No overlap issue to worry about</div>
+        <div class="compare-item"><span class="cross">✗</span> Requires computing integrals</div>
+        <div class="compare-item"><span class="cross">✗</span> Integrals often very hard or impossible</div>
+        <div class="compare-item"><span class="cross">✗</span> Problems must be designed carefully</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title" style="font-size:1.2rem; margin-bottom:1rem">Key formulas at a glance</div>
+
+    <div class="card-wide">
+      <div class="card-title">General solution structure <span class="pill pill-blue">Always</span></div>
+      <div class="eq-block blue" style="text-align:center; font-size:14px">y(t) = y_c + y_p &nbsp;&nbsp; where &nbsp;&nbsp; y_c = c₁y₁ + c₂y₂</div>
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">VOP formulas <span class="pill pill-teal">Cramer's Rule</span></div>
+      <div class="grid grid-2">
+        <div class="eq-block teal">u₁′ = −y₂·f / (a·W)<br>u₂′ = y₁·f / (a·W)</div>
+        <div class="eq-block blue">W = y₁y₂′ − y₁′y₂<br>(Wronskian)</div>
+      </div>
+    </div>
+
+    <div class="card-wide">
+      <div class="card-title">MUC overlap fix <span class="pill pill-gold">Critical rule</span></div>
+      <div class="grid grid-3">
+        <div>
+          <div class="card-num">No overlap</div>
+          <div class="eq-block">Use standard guess<br>as-is</div>
+        </div>
+        <div>
+          <div class="card-num">Single overlap</div>
+          <div class="eq-block">Multiply guess by t</div>
+        </div>
+        <div>
+          <div class="card-num">Double overlap</div>
+          <div class="eq-block red">Multiply guess by t²</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:1rem">
+      <strong style="color:var(--accent2)">Linear algebra connection:</strong> Everything here mirrors Ax = b. The null space is y<sub>c</sub>, a particular solution is y<sub>p</sub>, the general solution is their sum. The Wronskian is the determinant of the fundamental matrix. Superposition is linearity of the operator.
+    </div>
+  </div>
+
+  <div class="scroll-hint">end of notes summary</div>
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
