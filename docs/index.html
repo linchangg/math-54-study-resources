@@ -7500,6 +7500,16 @@ window.addEventListener('load', () => {
     }
   });
 
+  // Cross-origin PDFs often fail to render directly inside browser iframes
+  // on GitHub Pages even when "open in new tab" works. Route remote lecture
+  // slide PDFs through Google's embedded viewer for the in-page preview only.
+  document.querySelectorAll('iframe.pdf-frame[src*="ocf.berkeley.edu/~asharma/Math54/Lecture"]').forEach((frame) => {
+    const rawSrc = frame.getAttribute('src');
+    if (!rawSrc) return;
+    const wrappedSrc = 'https://docs.google.com/gview?embedded=1&url=' + encodeURIComponent(rawSrc);
+    frame.setAttribute('src', wrappedSrc);
+  });
+
   // Default note placeholders (Sections 2–7 + Lectures 29–31)
   // Keeps HTML structure stable while clearly marking unfinished notes.
   const notesPlaceholderIds = [
