@@ -7475,6 +7475,31 @@ function lwTog(id) {
   el.classList.toggle('closed');
 }
 window.addEventListener('load', () => {
+  // Normalize textbook PDF URLs for GitHub Pages.
+  // On project pages, the site may live under "/repo-name/" instead of "/",
+  // and some deployments are sensitive to whether the current URL has a trailing slash.
+  const currentPath = window.location.pathname;
+  const repoSegment = '/math-54-study-resources/';
+  let siteBase;
+  if (currentPath.includes(repoSegment)) {
+    siteBase = repoSegment;
+  } else if (currentPath.endsWith('/')) {
+    siteBase = currentPath;
+  } else {
+    siteBase = currentPath.slice(0, currentPath.lastIndexOf('/') + 1);
+  }
+  const normalizeAssetUrl = (relativePath) =>
+    siteBase.replace(/\/+$/, '/') + relativePath.replace(/^\.?\//, '');
+
+  document.querySelectorAll('a[href^="textbook-pdfs/"], iframe[src^="textbook-pdfs/"]').forEach((el) => {
+    if (el.hasAttribute('href')) {
+      el.setAttribute('href', normalizeAssetUrl(el.getAttribute('href')));
+    }
+    if (el.hasAttribute('src')) {
+      el.setAttribute('src', normalizeAssetUrl(el.getAttribute('src')));
+    }
+  });
+
   // Default note placeholders (Sections 2–7 + Lectures 29–31)
   // Keeps HTML structure stable while clearly marking unfinished notes.
   const notesPlaceholderIds = [
