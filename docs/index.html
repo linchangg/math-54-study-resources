@@ -78,6 +78,10 @@ h1 em{font-style:italic;color:var(--gold)}
 .gs-mark{background:rgba(232,184,109,.2);color:#f2d8ad;padding:0 .1em;border-radius:2px}
 .global-search-empty{padding:.9rem .95rem;font-size:12px;color:var(--muted);background:var(--bg3);border:1px dashed var(--border2);border-radius:12px}
 .search-side-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin:0 0 .5rem .1rem}
+.search-notepad-wrap{margin-top:1rem}
+.search-notepad{width:100%;height:42vh;min-height:220px;max-height:52vh;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:.8rem .85rem;color:var(--text);font-family:'Syne',sans-serif;font-size:13px;line-height:1.55;resize:vertical;outline:none}
+.search-notepad::placeholder{color:var(--faint)}
+.search-notepad:focus{border-color:rgba(126,184,164,.45);box-shadow:0 0 0 2px rgba(126,184,164,.12)}
 .search-hit-live{background:rgba(232,184,109,.28);color:var(--text);border-radius:3px;padding:0 .09em;box-shadow:0 0 0 1px rgba(232,184,109,.3);animation:searchPulse 1.2s ease 1}
 @keyframes searchPulse{0%{background:rgba(232,184,109,.42)}100%{background:rgba(232,184,109,.24)}}
 
@@ -173,6 +177,22 @@ mjx-container{color:var(--text)}
 .lec-tab.active{color:var(--gold);border-color:rgba(232,184,109,.4);background:rgba(232,184,109,.07)}
 .lec-tab-pane{display:none}.lec-tab-pane.active{display:block}
 .no-problems{background:var(--bg2);border:1px dashed var(--border2);border-radius:10px;padding:2rem;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase}
+
+/* ── FINAL REVIEW PROBLEMS ── */
+.fr-problems-wrap{display:flex;flex-direction:column;gap:.7rem}
+.fr-problems-intro{font-size:12px;color:var(--muted);line-height:1.6;padding:.85rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px}
+.fr-problem-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .15s,background .15s}
+.fr-problem-card:hover{border-color:var(--border2)}
+.fr-problem-card[open]{background:var(--bg3);border-color:rgba(232,184,109,.28)}
+.fr-problem-card summary{list-style:none;cursor:pointer;padding:.9rem 1rem;display:flex;gap:.7rem;align-items:flex-start}
+.fr-problem-card summary::-webkit-details-marker{display:none}
+.fr-problem-num{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:.1rem}
+.fr-problem-kind{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal);background:rgba(126,184,164,.14);border:1px solid rgba(126,184,164,.35);border-radius:999px;padding:.16rem .46rem;white-space:nowrap;margin-top:.1rem}
+.fr-problem-question{font-size:13px;line-height:1.6;color:var(--text);flex:1}
+.fr-problem-solution{border-top:1px solid var(--border);padding:1rem 1.05rem 1.1rem}
+.fr-problem-solution p{font-size:13px;line-height:1.7;color:#d2cfc8;margin:0}
+.fr-problem-solution strong{color:var(--text)}
+
 /* ── PDF VIEWER ── */
 .pdf-viewer-wrap{display:flex;flex-direction:column;gap:.8rem}
 .pdf-viewer-toolbar{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
@@ -770,6 +790,7 @@ mjx-container{color:var(--text)}
 <div class="lec-tabs">
   <button class="lec-tab active" onclick="switchTab('finalreview','formula',this)">Formula Sheet</button>
   <button class="lec-tab" onclick="switchTab('finalreview','final',this)">Final Review</button>
+  <button class="lec-tab" onclick="switchTab('finalreview','problems',this)">Problems</button>
 </div>
 
 <div id="finalreview-formula" class="lec-tab-pane active">
@@ -789,6 +810,705 @@ mjx-container{color:var(--text)}
       <a class="pdf-open-btn" href="final-review-pdfs/final-review.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
     </div>
     <iframe class="pdf-frame" src="final-review-pdfs/final-review.pdf#navpanes=0"></iframe>
+  </div>
+</div>
+
+<div id="finalreview-problems" class="lec-tab-pane">
+  <div class="fr-problems-wrap">
+    <div class="fr-problems-intro">99 final review questions from the PDF, each with a concise worked solution. Expand any card to view details.</div>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 1</span>
+        <span class="fr-problem-question">If two real matrices are row equivalent, then solving a linear system with each of them equal to the same vector will yield the same solution set.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Row-equivalent matrices satisfy B=EA for some invertible E, so Ax=b is equivalent to Bx=Eb, not generally Bx=b. If you keep the same right-hand side, the solution sets can change. Example: A=[1], B=[2], b=1 gives x=1 vs x=1/2.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 2</span>
+        <span class="fr-problem-question">If A is a real square matrix which is its own inverse, then AT is also its own inverse.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> If A is its own inverse, then A^2=I. Taking transpose gives (A^T)^2=(A^2)^T=I, so A^T is also its own inverse.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 3</span>
+        <span class="fr-problem-question">If f(x) is differentiable at x = d, then f ′(x) is continuous at x = d.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Differentiability of f at x=d does not force continuity of f' at d. Standard counterexamples have f differentiable everywhere but f' oscillatory/discontinuous at one point.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 4</span>
+        <span class="fr-problem-question">If A and B are real square invertible matrices of the same size, then AB and BA have the same characteristic polynomial.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> Since A and B are invertible, BA=A^{-1}(AB)A, so AB and BA are similar. Similar matrices have the same characteristic polynomial.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 5</span>
+        <span class="fr-problem-question">An nth order linear differential homogeneous equation can always be ex- pressed as a system of n first order linear differential equations.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> Any nth-order linear homogeneous ODE can be rewritten by setting x_1=y, x_2=y', ..., x_n=y^{(n-1)}. This gives an equivalent first-order linear system of size n.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 6</span>
+        <span class="fr-problem-question">Every square matrix A with only 0s and 1s as entries has the same deter- minant as its reduced row echelon form.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Determinant is changed by row operations used to reach RREF (swaps/sign changes, scalings). So det(A) is not generally equal to det(RREF(A)).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 7</span>
+        <span class="fr-problem-question">Two real matrices which have the same rank and nullity as each other must be of the same size.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Same rank/nullity forces the same number of columns n (by nullity=n-rank), but rows can differ. So sizes need not match.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 8</span>
+        <span class="fr-problem-question">In R5 amongst all the points which satisfy x + y + z + v + w = 1, there is a unique one which is closest to (1 , 2, 5, 7, 11).</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> The set x+y+z+v+w=1 is an affine hyperplane, a closed convex set. In Euclidean space, nearest-point projection onto such a set is unique.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 9</span>
+        <span class="fr-problem-question">For A an m × n real matrix, if A : Rn → Rm is one-to-one, then AT : Rm → Rn is one-to-one.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> A one-to-one A:R^n→R^m implies rank(A)=n, but A^T:R^m→R^n would be one-to-one only if rank(A^T)=m. That need not hold unless m≤n, so not guaranteed.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 10</span>
+        <span class="fr-problem-question">If A is an n × n real matrix all of whose entries are the same, then 0 is an eigenvalue of algebraic multiplicity at least n − 1 in A.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> If all entries are equal to c, then A=cJ where J has eigenvalues n and 0 (mult. n-1). Hence A has eigenvalue 0 with algebraic multiplicity at least n-1.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 11</span>
+        <span class="fr-problem-question">A nontrivial real inner product space always contains a vector of length 1.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> In a nontrivial inner product space pick any nonzero v; then u=v/||v|| has length 1. So a unit vector always exists.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 12</span>
+        <span class="fr-problem-question">If A is a real square matrix all of whose cofactors are 0, then all entries of A are the same.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> All cofactors zero means adj(A)=0, which implies rank(A)≤n-2, but it does not force all entries equal. Many nonconstant singular matrices satisfy this.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 13</span>
+        <span class="fr-problem-question">For A a real matrix, if the linear systems Ax = b and Ax = c both have infinitely many solutions then so will the system Ax = b + c</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> If Ax=b and Ax=c each have infinitely many solutions, then b,c∈Col(A) and Null(A) is nontrivial. Since b+c∈Col(A), Ax=b+c is consistent, and adding any null vector gives infinitely many solutions.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 14</span>
+        <span class="fr-problem-question">If E is an elementary matrix which swaps two rows, then the matrix EA has the same eigenvalues as A.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Left-multiplying by a row-swap matrix gives EA, which is generally not similar to A. Similarity preserves eigenvalues; row swaps do not have to.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 15</span>
+        <span class="fr-problem-question">In a linear homogeneous differential equation if y = sin t is a solution to the equation, then y = cos t is as well.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> This is not true for arbitrary linear homogeneous ODEs (especially variable-coefficient ones). Having sin t as a solution does not automatically imply cos t is one.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 16</span>
+        <span class="fr-problem-question">If λ = 1 is an eigenvalue of both two real matrices A and B of the same size, then it will be an eigenvalue of AB.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Counterexample: A=diag(1,2), B=diag(2,1). Both have eigenvalue 1, but AB=2I has only eigenvalue 2.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 17</span>
+        <span class="fr-problem-question">Two real matrices of the same size with the same pivot positions have the same reduced row echelon form.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Same pivot positions do not determine the full RREF entries. Example [[1,1],[0,0]] and [[1,2],[0,0]] have the same pivot position but different RREFs.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 18</span>
+        <span class="fr-problem-question">The inverse of a real symmetric matrix (if it exists) is also symmetric.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> If A is symmetric and invertible, then A^{-1} exists and (A^{-1})^T=(A^T)^{-1}=A^{-1}. So A^{-1} is symmetric.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 19</span>
+        <span class="fr-problem-question">Any even function will have its Fourier series (if it exists) not having any sin terms.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> For an even function on symmetric interval [-L,L], b_n=(1/L)∫_{-L}^L f(x)sin(...)dx=0 since even·odd is odd. So no sine terms appear.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 20</span>
+        <span class="fr-problem-question">If we arrange the columns of a matrix in an arbitrary order, the determi- nant of the matrix stays the same or is the negative of what it originally was.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> Any column reordering is a permutation, and determinant is multiplied by sign(permutation), which is ±1. So the new determinant is either det(A) or -det(A).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 21</span>
+        <span class="fr-problem-question">There exists a matrix A with orthonormal columns which has more columns than rows.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Orthonormal columns are linearly independent. In R^m, you can have at most m independent columns, so more columns than rows is impossible.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 22</span>
+        <span class="fr-problem-question">If A is a real matrix with a real eigenvalue λ, then it is possible for there to be a nonreal eigenvector for A which corresponds to the eigenvalue λ.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> If λ is real and v is a real eigenvector, then any nonreal scalar multiple (e.g., (1+i)v) is a nonreal eigenvector for the same λ. So it is possible.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 23</span>
+        <span class="fr-problem-question">If A is a matrix in row echelon form, then any position in A which is 0 must remain 0 in the reduced row echelon form of A.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> During reduction from echelon form to RREF, row replacement can create nonzero entries where zeros were before (typically above pivots). So zeros are not all preserved.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 24</span>
+        <span class="fr-problem-question">A 2 × 2 real matrix with a repeated eigenvalue is only diagonalizable over R if it is already a diagonal matrix.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> A 2x2 real matrix with repeated eigenvalue λ is diagonalizable iff it has two independent eigenvectors, which then forces it to be similar to diag(λ,λ)=λI. Hence it must already be diagonal (indeed scalar).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 25</span>
+        <span class="fr-problem-question">For the differential equation y′′ + 2y′ + 8y = t5et when finding a particular solution of the form yp = p(t)et where p(t) is a fifth degree polynomial, the particular solution which is of that form is unique.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> For y''+2y'+8y=t^5e^t, a trial y_p=e^tp_5(t) has no resonance with homogeneous roots -1±i√7. Therefore the linear system for polynomial coefficients has a unique solution.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 26</span>
+        <span class="fr-problem-question">For a matrix A, if in the reduced row echelon form of A the top k rows are exactly the nonzero rows, then the top k rows in A are a basis for the row space of A.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> The nonzero rows of RREF(A) form a row-space basis, not necessarily the top k rows of original A. Those original rows can be dependent.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 27</span>
+        <span class="fr-problem-question">If a matrix A is diagonalizable over R, i.e. can be written in the form P DP −1 where D is a diagonal matrix, then the D which accomplishes this is unique.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> D is not unique as an ordered matrix because diagonal entries can be permuted with corresponding column swaps in P. Only the multiset of eigenvalues is fixed.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 28</span>
+        <span class="fr-problem-question">Two tanks with the same amount of liquid both send 1 L/min of their contents to the other tank. If the first tank starts with 2 kg of dissolved salt and the second with none, then at some moment both tanks will contain 1 kg of salt.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> With equal exchange rates and equal volumes, the difference in salt amounts decays exponentially and typically never hits exactly zero at finite time unless initially zero. Here 2 kg vs 0 kg approaches 1 and 1 asymptotically.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 29</span>
+        <span class="fr-problem-question">A real symmetric matrix is never similar to a nonsymmetric real matrix.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Symmetry is not preserved under arbitrary similarity, only under orthogonal similarity. A symmetric matrix can be similar (via non-orthogonal P) to a nonsymmetric matrix.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 30</span>
+        <span class="fr-problem-question">If A, B, C are three real matrices for which the products AB, BC , and CA are all defined, then A, B, C must all be square matrices of the same size.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> Dimensional compatibility of AB, BC, CA does not force equal square sizes. Example sizes 1x2, 2x3, 3x1 make all three products defined.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 31</span>
+        <span class="fr-problem-question">In a basis B = {b1, ..., bn} of Rn, if we switch the position (in the given list) of two of the vectors in B, the change of basis matrix PB would be impacted by switching those same two corresponding rows.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>False.</strong> The change-of-basis matrix with basis vectors as columns is affected by swapping those columns, not rows. So switching basis vector order swaps corresponding columns.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 32</span>
+        <span class="fr-problem-question">For ⟨, ⟩ an inner product, we have for nonzero vectorsu and v, ⟨u, v⟩ = ||u|| || v|| only when u and v are positive multiples of each other.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True.</strong> Equality ⟨u,v⟩=||u||||v|| is the equality case of Cauchy-Schwarz with positive sign, so angle is 0. Thus u and v are positive scalar multiples.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 33</span>
+        <span class="fr-problem-question">If we know the two linearly independent solutions to ty′′ + y = 0, we can use variation of parameters to try to find a particular solution to ty′′ + y = tan t</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>True (locally).</strong> If two independent homogeneous solutions for t y''+y=0 are known, variation of parameters can be set up for t y''+y=tan t on intervals where coefficients/forcing are defined (t≠0 and tan t finite).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 34</span>
+        <span class="fr-problem-question">(a) Give an example of a 2 × 2 real triangular matrix which is not diago- nalizable over R or explain why no such matrix exists. (b) Do the same for a 3 × 3 matrix instead.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) Example: \(\begin{bmatrix}1&1\\0&1\end{bmatrix}\) is triangular and not diagonalizable (single eigenvalue 1 with one eigenvector). (b) Example: \(\begin{bmatrix}2&1&0\\0&2&1\\0&0&2\end{bmatrix}\) is triangular and not diagonalizable for the same Jordan-block reason.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 35</span>
+        <span class="fr-problem-question">Find the form of particular solution for y′′ + 3y′ + 2y = sin3 t starting with a form with as few unknown constants as is possible (you do not actually need to compute the particular solution, just its form).</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Use \(\sin^3 t=\frac{3\sin t-\sin 3t}{4}\). Since homogeneous roots for \(y''+3y'+2y\) are -1,-2, there is no resonance with \(\sin t\) or \(\sin3t\). Minimal trial: \(y_p=A\sin t+B\cos t+C\sin3t+D\cos3t\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 36</span>
+        <span class="fr-problem-question">(a) Suppose for R2 as a vector space we have a linear transformation T from R2 to R2 which maps every point on the line y = x to itself. Will T have to map every point in the plane to itself? Prove why if so, and if not show this is not guaranteed. (b) Same question just now instead every point on y = x + 1 is mapped to itself.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) No. A non-identity linear map can fix every point on y=x, e.g. projection onto that line: \(T(x,y)=((x+y)/2,(x+y)/2)\). (b) Yes: if linear T fixes every point of y=x+1, then it fixes two independent vectors (e.g. (1,1) and (0,1)), forcing T=I on all of R^2.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 37</span>
+        <span class="fr-problem-question">Diagonalize the matrix A =   1 2 3 1 3 −1 1 4 3   over R. That is, attempt to write A = P DP −1 for real matrices P and D, D being diagonal. Find P and D if this is possible.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Characteristic polynomial is \((\lambda-1)(\lambda-2)(\lambda-4)\), so A is diagonalizable over R. One eigenbasis is \(v_1=(8,-3,2)\) for λ=1, \(v_2=(5,-2,3)\) for λ=2, \(v_3=(1,0,1)\) for λ=4. Thus \(P=[v_1\ v_2\ v_3]\), \(D=\mathrm{diag}(1,2,4)\), and \(A=PDP^{-1}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 38</span>
+        <span class="fr-problem-question">In R4 in the subspace whose basis is {(1, 0, 0, 0), (2, 1, 0, 0), (−1, 2, 2, 1)} find the point which is closest to (1 , 3, 5, 7).</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let \(W=\mathrm{span}\{v_1,v_2,v_3\}\) with given basis vectors and project \(b=(1,3,5,7)\) onto W via normal equations \((B^TB)c=B^Tb\). Solving gives \(c=(12,-19/5,17/5)\). So the closest point is \(p=(1,3,34/5,17/5)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 39</span>
+        <span class="fr-problem-question">Tanks A and B each start with 1 kg of dissolved salt. Tank A has 100 L of liquid at the beginning while tank B has 50 L. Each continuously sends 2 L/min of their contents into the other tank. Based on this, detemrine the amount of salt in each tank at time t and determine the long-term behaviour of each in that respect.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let a(t), b(t) be salt (kg) in tanks A (100 L) and B (50 L). Then \(a'=\frac{b}{25}-\frac{a}{50},\ b'=\frac{a}{50}-\frac{b}{25}\), with a(0)=b(0)=1 and a+b=2. Solving: \(a(t)=\frac{4}{3}-\frac{1}{3}e^{-3t/50},\ b(t)=\frac{2}{3}+\frac{1}{3}e^{-3t/50}\), so long-term \((a,b)\to(4/3,2/3)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 40</span>
+        <span class="fr-problem-question">Put the matrix  1 5 9 3 7 11   into reduced row echelon form.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Row-reduce \(\begin{bmatrix}1&5&9\\3&7&11\end{bmatrix}\): R2→R2-3R1 gives \([0,-8,-16]\), then scale to \([0,1,2]\), then R1→R1-5R2 gives \([1,0,-1]\). Final RREF is \(\begin{bmatrix}1&0&-1\\0&1&2\end{bmatrix}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 41</span>
+        <span class="fr-problem-question">Find the best fitting parabola for the points (0 , 0), (1, 10), (−1, 5), (2, 5).</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Fit \(y=ax^2+bx+c\) by least squares using points (0,0),(1,10),(-1,5),(2,5). Solving normal equations yields \(a=0,b=1,c=9/2\). Best-fit parabola is \(y=x+\frac{9}{2}\) (degenerates to a line).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 42</span>
+        <span class="fr-problem-question">Solve the system of equations x1 + x2 + x3 = 5 x1 + 2x2 + 3x3 = 0 x1 + 4x2 + 9x3 = 3 using Cramer’s Rule.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>From the system, subtract first equation from second and third: \(x_2+2x_3=-5\), \(3x_2+8x_3=-2\). Solve to get \(x_3=13/2,\ x_2=-18\), then \(x_1=5-x_2-x_3=33/2\). Final answer: \((x_1,x_2,x_3)=(33/2,-18,13/2)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 43</span>
+        <span class="fr-problem-question">Determine the inverse of the matrix A =   1 3 5 3 5 7 2 6 9  </span>
+      </summary>
+      <div class="fr-problem-solution"><p>For \(A=\begin{bmatrix}1&3&5\\3&5&7\\2&6&9\end{bmatrix}\), \(\det A=4\neq0\), so inverse exists. Cofactor/adjugate gives \(\mathrm{adj}(A)=\begin{bmatrix}3&3&-4\\-13&-1&8\\8&0&-4\end{bmatrix}\). Hence \(A^{-1}=\frac14\begin{bmatrix}3&3&-4\\-13&-1&8\\8&0&-4\end{bmatrix}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 44</span>
+        <span class="fr-problem-question">Find a singular value decomposition of the matrix A =   0 0 1 0 0 0 0 0 1  </span>
+      </summary>
+      <div class="fr-problem-solution"><p>Only the third column is nonzero, equal to \((1,0,1)^T\), so rank is 1. Singular value is \(\sigma_1=\|(1,0,1)\|=\sqrt2\), with \(u_1=(1,0,1)/\sqrt2\) and \(v_1=e_3\). One valid SVD is \(A=U\Sigma V^T\) with \(\Sigma=\mathrm{diag}(\sqrt2,0,0)\) and any orthonormal completion for U,V.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 45</span>
+        <span class="fr-problem-question">Find the general solution to the differential equation y′′ + 2y′ + 5y = et sin t</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Homogeneous equation: roots \(-1\pm2i\), so \(y_h=e^{-t}(C_1\cos2t+C_2\sin2t)\). For forcing \(e^t\sin t\), try \(y_p=e^t(A\cos t+B\sin t)\). Solving gives \(y_p=e^t\big(\frac{1}{10}\sin t-\frac{1}{20}\cos t\big)\), so \(y=y_h+y_p\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 46</span>
+        <span class="fr-problem-question">Consider the basis on R2 B =     1 0   ,  1 1      If the matrix  2 3 4 5   is the change of coordinates matrix fromB to another basis C, determine the elements of the basis C.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let \(M\) be the coordinate-change matrix from B to C, so \([v]_C=M[v]_B\) and therefore \(C\,M=B\) in standard coordinates. With \(B=[(1,0),(1,1)]\) and \(M=\begin{bmatrix}2&3\\4&5\end{bmatrix}\), compute \(C=BM^{-1}\). This gives basis vectors for C as \(c_1=(-1/2,2),\ c_2=(1/2,-1)\) (equivalent scaled forms are fine).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 47</span>
+        <span class="fr-problem-question">In R4 extend the orthogonal set      1 0 0 0   ,   0 1 1 1      to an orthogonal basis for R4.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Given orthogonal vectors \(u_1=(1,0,0,0)\), \(u_2=(0,1,1,1)\), choose two more orthogonal to both and to each other. A valid choice is \(u_3=(0,1,-1,0)\), \(u_4=(0,1,1,-2)\). Then \(\{u_1,u_2,u_3,u_4\}\) is an orthogonal basis of \(\mathbb R^4\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 48</span>
+        <span class="fr-problem-question">Determine the Fourier Series for f(x) = sin2 x on [−π, π].</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Use identity \(\sin^2x=\frac{1-\cos2x}{2}\). So the Fourier series on [-π,π] is exactly that expression: \(a_0=1\), \(a_2=-1\), all other coefficients 0. Final series: \(\sin^2x=\frac12-\frac12\cos2x\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 49</span>
+        <span class="fr-problem-question">Construct a 3 × 3 real matrix whose adjugate matrix is   0 0 1 0 1 0 1 0 0   or explain why no such matrix exists.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>No such real 3x3 matrix exists. If \(\mathrm{adj}(A)=P\), then \(\det(\mathrm{adj}(A))=\det(A)^2\ge0\). But the given adjugate matrix is a permutation matrix with determinant -1, contradiction.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 50</span>
+        <span class="fr-problem-question">Solve the system of linear differential equations x′ 1 = x1 + x2 + x3 x′ 2 = 4x2 + 3x3 x′ 3 = −2x1 + 2x2 + 4x3</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Write \(x'=Mx\) with \(M=\begin{bmatrix}1&1&1\\0&4&3\\-2&2&4\end{bmatrix}\). Eigenvalues are \(1,2,6\), with eigenvectors e.g. \(v_1=(1,-2,2),\ v_2=(-1,-3,2),\ v_3=(1,3,2)\). So \(x(t)=c_1e^t v_1+c_2e^{2t}v_2+c_3e^{6t}v_3\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 51</span>
+        <span class="fr-problem-question">Determine the QR Factorization of   3 2 0 2 4 1  </span>
+      </summary>
+      <div class="fr-problem-solution"><p>For columns \(a_1=(3,0,4), a_2=(2,2,1)\), set \(q_1=a_1/\|a_1\|=(3/5,0,4/5)\). Then \(r_{12}=q_1\cdot a_2=2\), \(u_2=a_2-2q_1=(4/5,2,-3/5)\), \(q_2=u_2/\|u_2\|\) with \(\|u_2\|=\sqrt5\). Thus \(Q=[q_1\ q_2]\), \(R=\begin{bmatrix}5&2\\0&\sqrt5\end{bmatrix}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 52</span>
+        <span class="fr-problem-question">Solve the linear system   1 1 2 3 4 −2 −2 4    x1 x2   =   1 0 3 0   If there is no solution, instead determine the point(s) which get you as close to (in terms of length) to the proposed answer as possible.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>This overdetermined system is solved in least-squares sense via normal equations \((A^TA)x=A^Tb\). Here \(A^TA=\begin{bmatrix}25&-9\\-9&30\end{bmatrix}\), \(A^Tb=(13,-5)^T\). Solving gives \(x_1=115/223,\ x_2=-8/669\), the closest point to the inconsistent target.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 53</span>
+        <span class="fr-problem-question">For the system of equations x1 + 2x2 + 3x3 = 10 2x1 + 5x2 − 2x3 = 20 find the general solution, putting your final answer in parametric vector form.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let \(x_3=t\). Then equations give \(x_1+2x_2=10-3t\), \(2x_1+5x_2=20+2t\), so \(x_2=8t\), \(x_1=10-19t\). Parametric vector form: \((x_1,x_2,x_3)=(10,0,0)+t(-19,8,1)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 54</span>
+        <span class="fr-problem-question">Find an orthogonal basis for the column space of   1 3 8 2 5 13 6 7 15  </span>
+      </summary>
+      <div class="fr-problem-solution"><p>Use Gram-Schmidt on columns \(c_1=(1,2,6), c_2=(3,5,7), c_3=(8,13,15)\). Since rank is 2, an orthogonal basis for Col(A) can be \(u_1=c_1\), \(u_2=c_2-\frac{c_2\cdot c_1}{c_1\cdot c_1}c_1\). A scaled integer pair is \(u_1=(1,2,6),\ u_2=(68,95,-43)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 55</span>
+        <span class="fr-problem-question">If T : V → V is a linear transformation on a vector space V , will the set of points that T maps to themselves always be a subspace of V ? Prove why if so, and if not explain why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes. The set of fixed points is \(\{v:T(v)=v\}=\ker(T-I)\). Kernels of linear maps are subspaces, so this set is always a subspace.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 56</span>
+        <span class="fr-problem-question">Suppose we write A =  1 −5 2 3   in the form P CP −1 for real matrices P and C where P is an invertible 2 × 2 matrix and C is a 2 × 2 rotation + scaling style matrix. Determine a possible P and C for this.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>For \(A=\begin{bmatrix}1&-5\\2&3\end{bmatrix}\), eigenvalues are \(2\pm3i\), so real canonical block is \(C=\begin{bmatrix}2&-3\\3&2\end{bmatrix}\). Taking real/imaginary parts of a complex eigenvector gives one possible \(P=\begin{bmatrix}5&0\\-1&-3\end{bmatrix}\). Then \(A=PCP^{-1}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 57</span>
+        <span class="fr-problem-question">Find the general solution to the differential equation y′′ + 4y = tan t</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Homogeneous part: \(y_h=C_1\cos2t+C_2\sin2t\). Using variation of parameters with \(y_1=\cos2t, y_2=\sin2t, W=2\), one convenient particular is expressed by integrals: \(y_p=-y_1\int\frac{y_2\tan t}{2}dt+y_2\int\frac{y_1\tan t}{2}dt\). Therefore \(y=y_h+y_p\), valid on intervals avoiding poles of \(\tan t\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 58</span>
+        <span class="fr-problem-question">Find the matrices P and D in the orthogonal diagonalization of   1 2 0 2 1 0 0 0 3   i.e. write this in the form P DP −1 where P is a real orthogonal matrix and D a real diagonal matrix.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Matrix is symmetric, so orthogonally diagonalizable. Eigenvectors: for λ=3, take \((1,1,0)\) and \((0,0,1)\); for λ=-1, take \((1,-1,0)\). Normalize to get orthogonal P, e.g. columns \((1,1,0)/\sqrt2,(1,-1,0)/\sqrt2,(0,0,1)\), and \(D=\mathrm{diag}(3,-1,3)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 59</span>
+        <span class="fr-problem-question">Find all the eigenvalues and associated eigenvectors of   1 3 5 2 4 6 −5 1 7  </span>
+      </summary>
+      <div class="fr-problem-solution"><p>Characteristic polynomial is \(-\lambda(\lambda^2-12\lambda+52)\), so eigenvalues are \(0,6\pm4i\). For λ=0, an eigenvector is \((1,-2,1)\). Over \(\mathbb C\), eigenvectors for \(6\pm4i\) come from \(\ker(A-(6\pm4i)I)\), e.g. one pair is proportional to \((7\mp32i,6\mp44i,29)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 60</span>
+        <span class="fr-problem-question">Diagonalize the matrix  1 1 0 1   over C if possible, and if not explain why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>\(A=\begin{bmatrix}1&1\\0&1\end{bmatrix}\) has only eigenvalue 1 (algebraic multiplicity 2). But \(A-I\) has rank 1, so eigenspace is 1-dimensional. Therefore A is not diagonalizable over \(\mathbb C\) (Jordan block).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 61</span>
+        <span class="fr-problem-question">Say A is an invertible matrix. (a) Will the matrix A2 always be invertible? Explain. (b) Will the matrix A2 + A always be invertible? Explain.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) Yes: if A invertible, then \(A^2\) invertible with inverse \((A^{-1})^2\). (b) Not always: \(A^2+A=A(A+I)\), so if -1 is an eigenvalue of A then \(A+I\) is singular. Example A=-I gives \(A^2+A=0\), not invertible.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 62</span>
+        <span class="fr-problem-question">Solve the system of linear differential equations x′ 1 = x1 + x2 x′ 2 = −x1 + 3x2 with x1(0) = 1, x2(0) = 3</span>
+      </summary>
+      <div class="fr-problem-solution"><p>With \(x'=Ax\), \(A=\begin{bmatrix}1&1\\-1&3\end{bmatrix}=2I+N\), where \(N^2=0\). So \(e^{At}=e^{2t}(I+tN)\). Using \(x(0)=(1,3)\), solution is \(x_1(t)=e^{2t}(1+2t),\ x_2(t)=e^{2t}(3+2t)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 63</span>
+        <span class="fr-problem-question">Say U and V are matrices which both have orthonormal columns. If the product U V is defined, will it also have to have orthonormal columns? Prove why if so, and if not explain why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes, whenever UV is defined and U,V each have orthonormal columns. Compute \((UV)^T(UV)=V^T(U^TU)V=V^TV=I\). So columns of UV are orthonormal.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 64</span>
+        <span class="fr-problem-question">Consider T : P3 → R2 defined by T (a + bx + cx2 + dx3) = (a + 2d, b − 2c) (a) Show that T is a linear transformation. (b) Find the matrix whose matrix transformation associates with T (R2 using usual basis and P3 using the typical basis {1, x, x2, x3}).</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) T is linear since each output component is a linear combination of coefficients a,b,c,d. (b) Using bases \(\{1,x,x^2,x^3\}\) and standard basis of \(\mathbb R^2\): \(T(1)=(1,0), T(x)=(0,1), T(x^2)=(0,-2), T(x^3)=(2,0)\). Matrix is \(\begin{bmatrix}1&0&0&2\\0&1&-2&0\end{bmatrix}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 65</span>
+        <span class="fr-problem-question">In R5, consider the subspace W spanned by the three vectors: {(1, 0, 0, 0, 0), (1, 1, 1, 1, 1), (1, 2, 3, 4, 5)}. Find a basis for W ⊥.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let \(w=(x_1,...,x_5)\in W^\perp\). Orthogonality to the three spanning vectors gives \(x_1=0\), \(x_2+x_3+x_4+x_5=0\), \(2x_2+3x_3+4x_4+5x_5=0\). Solving yields basis \(\{(0,1,-2,1,0),(0,2,-3,0,1)\}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 66</span>
+        <span class="fr-problem-question">Consider A to be the n × n matrix for which every diagonal entry and every entry which is directly above a diagonal entry (i.e. ai(i+1) for each 1 ≤ i ≤ n − 1) is equal to 1 with every other entry of the matrix being 0. Determine A−1.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Write A=I+N where N has 1 on the superdiagonal and is nilpotent (\(N^n=0\)). Then \((I+N)^{-1}=I-N+N^2-\cdots+(-1)^{n-1}N^{n-1}\). Entrywise: \((A^{-1})_{ij}=0\) for j&lt;i, and \((A^{-1})_{ij}=(-1)^{j-i}\) for j≥i.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 67</span>
+        <span class="fr-problem-question">Find the number of 3 × 2 matrices U whose entries are integers in [ −3, 3] for which U T U =  9 0 0 9  </span>
+      </summary>
+      <div class="fr-problem-solution"><p>Columns u,v of U must satisfy \(u\cdot u=v\cdot v=9\) and \(u\cdot v=0\). Integer vectors in \([-3,3]^3\) with norm 3 are finite; direct enumeration gives 30 choices for u and then orthogonality-compatible counts for v. Total number of such matrices is <strong>120</strong>.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 68</span>
+        <span class="fr-problem-question">(a) For n > 1 of your choosing, find an n × n matrix with integer entries with exactly one entry odd and the rest even and whose inverse also has integer entries. Or if no such matrix exists, prove why. (b) Do the same just with exactly one entry being even and the rest being odd, but here the matrix must be its own inverse.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) No such matrix for n&gt;1: modulo 2 it has exactly one 1-entry, so rank mod 2 is at most 1, hence determinant is even and inverse cannot be integer (not unimodular). (b) Such a self-inverse matrix exists; for n=2, \(\begin{bmatrix}0&1\\1&0\end{bmatrix}\) has exactly one even entry (0), others odd, and squares to I.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 69</span>
+        <span class="fr-problem-question">Consider the function f(x) defined by f(x) = ∞X n=1 sin(n2x) n2 (a) Show that f(x) exists at every point. (b) What is happening if you try to compute f ′(x) at any point?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) \(\sum_{n\ge1}|\sin(n^2x)|/n^2\le\sum1/n^2\), so f(x) converges absolutely (hence exists) for every x. (b) Termwise derivative would be \(\sum \cos(n^2x)\), whose terms generally do not tend to 0, so differentiation fails in the naive sense and f is not classically differentiable by termwise differentiation at generic points.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 70</span>
+        <span class="fr-problem-question">Do two similar matrices A and B always have the same rank? If so, prove why, if not explain why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes. If B=P^{-1}AP with P invertible, then rank(B)=rank(P^{-1}AP)=rank(A) because multiplication by invertible matrices does not change rank.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 71</span>
+        <span class="fr-problem-question">For t > 1 we see that y = ln t is a solution to the differential equation (ln t)y′′ + y t2 = 0 Knowing that find another solution to this differential equation which is linearly independent from ln t (your final answer can be in the form of an integral).</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Given one solution \(y_1=\ln t\) for \((\ln t)y''+y/t^2=0\), rewrite as \(y''+\frac{1}{t^2\ln t}y=0\), so p(t)=0. Reduction of order gives \(y_2=y_1\int\frac{e^{-\int p}}{y_1^2}dt=(\ln t)\int\frac{dt}{(\ln t)^2}\). This is linearly independent from \(\ln t\) on t&gt;1.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 72</span>
+        <span class="fr-problem-question">If A is a 3 × 3 matrix in row echelon form, must A2 also be in row echelon form? If so, prove why, and if not give an example as to why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p><strong>Yes for 3x3 row-echelon A.</strong> Such A is upper-triangular in pivot structure with zero rows at bottom; products of upper-triangular/pivot-ordered forms remain upper-triangular and keep zero rows at bottom. Hence \(A^2\) is also in row echelon form.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 73</span>
+        <span class="fr-problem-question">Say both {v1, v2, ..., vn} and {w1, w2, ..., wn} are linearly dependent sets of vectors in the same vector space. Will the set{v1 + w1, v2 + w2, ..., vn + wn} also be linearly dependent?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>No, not always. Counterexample in \(\mathbb R^2\): \(v_1=(1,0),v_2=(2,0)\) is dependent; \(w_1=(0,1),w_2=(0,-1)\) is dependent; but sums \((1,1),(2,-1)\) are independent (determinant -3). So dependence need not be preserved.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 74</span>
+        <span class="fr-problem-question">Say on a vector space V we have two inner products, denoted ⟨u, v⟩A and ⟨u, v⟩B. Then for each u, v ∈ V if we define ⟨u, v⟩C = ⟨u, v⟩A + ⟨u, v⟩B is ⟨u, v⟩C always an inner product?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes. Linearity and symmetry are preserved under addition, and positive-definiteness holds since \(\langle u,u\rangle_C=\langle u,u\rangle_A+\langle u,u\rangle_B&gt;0\) for \(u\ne0\). Therefore \(\langle\cdot,\cdot\rangle_C\) is an inner product.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 75</span>
+        <span class="fr-problem-question">Find the general solution to the linear system x′ 1 = x1 + x2 + x3 x′ 2 = 3x2 + x3 x′ 3 = x3</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Solve triangularly: \(x_3'=x_3\Rightarrow x_3=C_3e^t\). Then \(x_2'-3x_2=x_3\Rightarrow x_2=C_2e^{3t}-\frac{C_3}{2}e^t\). Finally \(x_1'-x_1=x_2+x_3\Rightarrow x_1=C_1e^t+\frac{C_2}{2}e^{3t}+\frac{C_3}{2}te^t\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 76</span>
+        <span class="fr-problem-question">Consider the matrix A =   −1 1 1 1 1 −1 1 1 1 1 −1 1 1 1 1 −1   (a) Find the eigenvalues of A (try not to do this by brute forcing it). (b) Use (a) to find the orthogonal diagonalization of A.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Observe \(A=J-2I\) (J = all-ones 4x4). J has eigenvalues 4 (for \(\mathbf1\)) and 0 (mult. 3), so A has eigenvalues 2 (once) and -2 (mult. 3). Orthogonal diagonalization: take \(p_1=\mathbf1/2\) for λ=2 and any orthonormal basis of \(\{x:\sum x_i=0\}\) for λ=-2; then \(P^TAP=D=\mathrm{diag}(2,-2,-2,-2)\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 77</span>
+        <span class="fr-problem-question">(a) If S is any subset of Rn, then prove that S⊥ is a subspace of Rn. (b) Can any element of Rn always be written as a sum of an element in S with an element in S⊥?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) \(S^\perp=\{x:x\cdot s=0\ \forall s\in S\}\) is closed under addition/scalars, so it is a subspace. (b) Not for arbitrary subset S; decomposition \(x=s+u,\ s\in S, u\in S^\perp\) is guaranteed when S is a subspace (then \(\mathbb R^n=S\oplus S^\perp\)), but can fail for non-subspace subsets.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 78</span>
+        <span class="fr-problem-question">Is the determinant of a square matrix always the product of its eigenvalues? If so, explain why, and if not demonstrate why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes (over \(\mathbb C\), counting algebraic multiplicity). The characteristic polynomial is \(\det(\lambda I-A)=\prod(\lambda-\lambda_i)\), so at \(\lambda=0\), \(\det(-A)=(-1)^n\prod\lambda_i\). Hence \(\det A=\prod\lambda_i\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 79</span>
+        <span class="fr-problem-question">For m > n say T : Rn → Rm is a one-to-one linear transformation. (a) Show there always exists a function S : Rm → Rn so that S(T (x)) = x for all x in Rn. (b) Does there always exist a linear transformation S : Rm → Rn which has this same property?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) Yes: since T is injective, each y in Im(T) has unique preimage; define S(y)=that preimage on Im(T), and define S arbitrarily off Im(T). (b) Yes, a linear left inverse exists: choose basis of Im(T), map it back to basis of \(\mathbb R^n\), extend linearly on a direct-sum complement of Im(T).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 80</span>
+        <span class="fr-problem-question">(a) Find two linearly independent solutions to the homogeneous equation t2y′′ − 2y = 0 (b) Use your answer in (a) to find a particular solution to t2y′′ − 2y = ln t</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) Cauchy-Euler trial \(y=t^r\): \(r(r-1)-2=0\Rightarrow r=2,-1\), so independent solutions are \(t^2, t^{-1}\). (b) For \(t^2y''-2y=\ln t\), try \(y_p=A\ln t+B\); substitution gives \(-2A\ln t+(-A-2B)=\ln t\), so \(A=-1/2, B=1/4\). Thus \(y_p=-\frac12\ln t+\frac14\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 81</span>
+        <span class="fr-problem-question">(a) Show that for a real matrix A that A and AT always have the same number of pivots. (b) Will the pivot locations for A correspond to those in AT , i.e. if the ij-th position of A is a pivot position then will the ji-th position of AT also be a pivot position?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) Yes: number of pivots is rank, and \(\mathrm{rank}(A)=\mathrm{rank}(A^T)\). (b) Pivot locations generally do <em>not</em> transpose directly, because pivot positions are defined after row reduction and can move; only pivot count is guaranteed.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 82</span>
+        <span class="fr-problem-question">(a) Find the Fourier sin series of f(x) = x − x2, 0 < x < 1 (b) Use your answer in (a) to find the sum of the series ∞X n=1 (−1)n−1 (2n − 1)3 = 1 − 1 33 + 1 53 − 1 73 + ...</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) On (0,1), sine-series coefficients are \(b_n=2\int_0^1(x-x^2)\sin(n\pi x)dx=\frac{4(1-(-1)^n)}{n^3\pi^3}\), so only odd n survive: \(x-x^2=\frac{8}{\pi^3}\sum_{m\ge1}\frac{\sin((2m-1)\pi x)}{(2m-1)^3}\). (b) Set x=1/2 to get \(1/4=\frac{8}{\pi^3}\sum_{m\ge1}\frac{(-1)^{m-1}}{(2m-1)^3}\), hence \(\sum_{m\ge1}\frac{(-1)^{m-1}}{(2m-1)^3}=\pi^3/32\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 83</span>
+        <span class="fr-problem-question">Say on a vector space V we have two inner products, denoted ⟨u, v⟩A and ⟨u, v⟩B for which for every u ∈ V we have ||u||A = ||u||B i.e. the length of every vector under the first inner product is the same as that in the second one. Does this force the two inner products to be exactly the same, i.e. must we have ⟨u, v⟩A = ⟨u, v⟩B for every u, v ∈ V ?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes (real inner-product space). Equal norms for all vectors imply equal inner products via polarization: \(\langle u,v\rangle=\frac14(\|u+v\|^2-\|u-v\|^2)\). Since both norms agree for every input, the resulting inner products agree for every pair.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 84</span>
+        <span class="fr-problem-question">Say A and B are square matrices of the same size with A and B having the same characteristic polynomial. Will then A2 and B2 have to have the same characteristic polynomial?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Yes. Same characteristic polynomial means same eigenvalue multiset \(\{\lambda_i\}\). Then \(A^2\) and \(B^2\) have eigenvalues \(\{\lambda_i^2\}\) with multiplicities, so their characteristic polynomials match.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 85</span>
+        <span class="fr-problem-question">Find the general solution to the linear system x′′ 1 = 13x′ 1 + 30x2 x′′ 2 = 30x1 + 13x′ 2</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let \(u=x_1+x_2\), \(v=x_1-x_2\). Then \(u''=13u'+30u\) and \(v''=13v'-30v\), with roots \(15,-2\) and \(10,3\), respectively. So \(u=C_1e^{15t}+C_2e^{-2t},\ v=C_3e^{10t}+C_4e^{3t}\), and \(x_1=(u+v)/2,\ x_2=(u-v)/2\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 86</span>
+        <span class="fr-problem-question">Say T : R2 → R2 is a linear transformation for which for every v ∈ R2, we have ||T (v)|| = ||v||. Must T be a rotation about the origin, i.e. every point is rotated via the same angle and same direction via the origin?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>No. A linear norm-preserving map on \(\mathbb R^2\) is orthogonal, so it can be a rotation <em>or</em> a reflection (or composition with reflection). Counterexample: reflection \(T(x,y)=(x,-y)\) preserves norms but is not a rotation.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 87</span>
+        <span class="fr-problem-question">Is every 2 × 2 symmetric matrix in C diagonalizable over C? If so, prove why, and if not give an example of one which is not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>No. Counterexample: \(A=\begin{bmatrix}i&1\\1&-i\end{bmatrix}\) is complex symmetric (\(A^T=A\)) and has repeated eigenvalue 0 with only one eigendirection (nonzero nilpotent behavior). Hence not every 2x2 complex symmetric matrix is diagonalizable.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 88</span>
+        <span class="fr-problem-question">Say A and B are real matrices of the same size for which rank A = a and rank B = b. Prove that rank( A + B) ≤ a + b.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let U=Col(A), V=Col(B). Every column of A+B lies in U+V, so \(\mathrm{rank}(A+B)=\dim\mathrm{Col}(A+B)\le\dim(U+V)\le\dim U+\dim V=\mathrm{rank}(A)+\mathrm{rank}(B)=a+b\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 89</span>
+        <span class="fr-problem-question">When taking the projection of a vector y on a subspace W of Rn, we can compute that projection via the formula pX i=1 (y · ui)ui where {u1, u2, ..., up} is any orthonormal basis for W . Prove that this for- mula does always give the same overall value, no matter what orthonormal basis we choose for W .</span>
+      </summary>
+      <div class="fr-problem-solution"><p>The projection p of y onto W is uniquely characterized by p∈W and y-p∈W^\perp. For any orthonormal basis \(\{u_i\}\) of W, \(p=\sum (y\cdot u_i)u_i\) satisfies exactly those two properties, hence must be the unique projection. Therefore different orthonormal bases yield the same p.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 90</span>
+        <span class="fr-problem-question">(a) Using Maclaurin Series find a nontrivial solution to y′′ − 3t2y′ − 6ty = 0 (b) From (a) find a particular solution to y′′ − 3t2y′ − 6ty = t</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) A nontrivial homogeneous solution is \(y_1=e^{t^3}\) (its Maclaurin series is \(1+t^3+t^6/2!+\cdots\)). (b) A particular solution can be obtained by variation of parameters using a second independent homogeneous solution (from reduction of order), giving an integral-form \(y_p\); any equivalent particular is valid.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 91</span>
+        <span class="fr-problem-question">Say K is the n × n matrix all of whose entries are 1. For A and B similar n × n matrices, will A + K and B + K always be similar as well? Prove why if so, and if not demonstrate why not.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Not always. If B=P^{-1}AP, then \(B+K=P^{-1}AP+K\), while \(P^{-1}(A+K)P=P^{-1}AP+P^{-1}KP\); these match only when \(P^{-1}KP=K\). Counterexamples exist where A and B are similar but A+K and B+K have different determinants/characteristic polynomials, so not similar.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 92</span>
+        <span class="fr-problem-question">Two tanks A and B each start with pure water, A having 30 L of liquid and B having 12 L. Each receives an outside influx of 2 L/min of salt water with concentration 1 kg/L of salt. In addition, A sends 1 L/min of its contents to B and B does the same along with both tanks being drained at 2 L/min. Determine formulas for the amount of salt in each tank at time t.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Let a(t),b(t) be salt (kg) in A (30 L) and B (12 L). ODEs are \(a'=2+b/12-a/10\), \(b'=2+a/30-b/4\), with a(0)=b(0)=0. Equilibrium is (30,12), and solution is \((a,b)=(30,12)+c_1e^{\lambda_1 t}v_1+c_2e^{\lambda_2 t}v_2\), where \(\lambda_{1,2}=-7/40\pm\sqrt{281}/120\); constants from initial data.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 93</span>
+        <span class="fr-problem-question">Say A is 10 × 10 matrix whose entries are the integers in [1 , 100], each written exactly once. What is the minimum possible rank of A?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Minimum possible rank is <strong>2</strong>. Rank 1 is impossible for a 10x10 matrix containing all integers 1..100 exactly once (rank-1 multiplicative structure is too restrictive), while rank 2 is achievable, e.g. by arranging entries as \(A_{ij}=10(i-1)+j\), which can be written as sum of two rank-1 matrices.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 94</span>
+        <span class="fr-problem-question">Consider the n × n matrix An where all diagonal entries are 0 and all nondiagonal entries are 1. Determine det An.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>\(A_n\) has 0 on diagonal and 1 off-diagonal, so \(A_n=J-I\). Eigenvalues are \(n-1\) (for all-ones vector) and \(-1\) with multiplicity n-1. Therefore \(\det(A_n)=(n-1)(-1)^{n-1}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 95</span>
+        <span class="fr-problem-question">For D =   1 2 0 3 0 1 2 3 4  , consider on R3 the following ⟨u, v⟩ = (Du) · (Dv) where on the right side that is the usual dot product. (a) Show that this is an inner product on R3 (b) The xy-plane being a subspace of R3, find the orthogonal complement of that subspace under this inner product.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) \(\langle u,v\rangle=(Du)\cdot(Dv)=u^T(D^TD)v\) is an inner product because \(D^TD\) is symmetric positive-definite (D is invertible, det D=-23). (b) For xy-plane vectors \((x,y,0)\), orthogonality to w under this product gives two linear constraints; solving yields a 1D complement. One basis vector is \((-47,-80,118)\), so \((xy\text{-plane})^\perp=\mathrm{span}\{(-47,-80,118)\}\).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 96</span>
+        <span class="fr-problem-question">(a) If T : V → V is a linear transformation from a finite dimensional vector space V onto itself, then must T be one-to-one? (b) Is this true when V is infinite dimensional?</span>
+      </summary>
+      <div class="fr-problem-solution"><p>(a) Yes for finite-dimensional V: onto implies rank=dimV, so nullity=0 and T is one-to-one (rank-nullity). (b) False in infinite dimensions; e.g. derivative T on polynomial space P is onto but kernel is nontrivial (constants).</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 97</span>
+        <span class="fr-problem-question">Say σ1 ≥ σ2 ≥ ... ≥ σn ≥ 0, is a sequence of nonnegative real numbers. Does there always exist a 2 × n real matrix A for which the singular values of A are exactly σ1, σ2, ..., σn? If so, demonstrate why, and if not, explain why that is not necessarily guaranteed to exist.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>Not always. A 2xn matrix has at most 2 nonzero singular values, so existence requires \(\sigma_3=\cdots=\sigma_n=0\). If that condition holds, take \(A=\begin{bmatrix}\sigma_1&0&0&\cdots&0\\0&\sigma_2&0&\cdots&0\end{bmatrix}\) (padding zeros) to realize them.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 98</span>
+        <span class="fr-problem-question">Say A and B are real n × n matrices both of which have exactly n − 1 pivots. Determine all the possibilities for how many pivots the matrix AB might have.</span>
+      </summary>
+      <div class="fr-problem-solution"><p>If rank(A)=rank(B)=n-1, then \(\mathrm{rank}(AB)\le n-1\) and Sylvester gives \(\mathrm{rank}(AB)\ge\mathrm{rank}(A)+\mathrm{rank}(B)-n=n-2\). So only possibilities are \(n-2\) or \(n-1\). Both occur for suitable choices.</p></div>
+    </details>
+    <details class="fr-problem-card">
+      <summary>
+        <span class="fr-problem-num">Problem 99</span>
+        <span class="fr-problem-question">Find the general solution to the linear system x′ 1 = 2x1 + x2 + x3 + x4 x′ 2 = x1 + 2x2 + x3 + x4 x′ 3 = x1 + x2 + 2x3 + x4 x′ 4 = x1 + x2 + x3 + 2x4</span>
+      </summary>
+      <div class="fr-problem-solution"><p>The matrix is \(A=J+I\) (J all ones, size 4). J has eigenvalues 4 and 0 (mult. 3), so A has eigenvalues 5 and 1 (mult. 3). Hence general solution is \(x(t)=c_1e^{5t}\mathbf1+e^t w\) with \(w\cdot\mathbf1=0\), equivalently \(x_i(t)=C e^{5t}+D_i e^t\) and \(D_1+D_2+D_3+D_4=0\).</p></div>
+    </details>
   </div>
 </div>
 </div><!-- end s-finalreview -->
@@ -4130,7 +4850,7 @@ mjx-container{color:var(--text)}
       <span class="l33-arrow">▾</span>
     </div>
     <div class="l33-worked-body">
-      <p class="l33-step-body">Let \(H = \left\{\begin{bmatrix}a\\b\\c\end{bmatrix} : a + 2b - c = 0\right\}\). Is \(H\) a subspace of \(\mathbb{R}^3\)?</p>
+      <p class="l33-step-body">Let \[H = \left\{\begin{bmatrix}a\\b\\c\end{bmatrix} : a + 2b - c = 0\right\}\]. Is \(H\) a subspace of \(\mathbb{R}^3\)?</p>
       <div class="l33-step">
         <div class="l33-step-num">1</div>
         <div class="l33-step-content">
@@ -4168,6 +4888,462 @@ mjx-container{color:var(--text)}
   <div class="l33-callout tip"><strong>The two main ways subspaces arise.</strong> (1) As the solution set of a homogeneous system \(A\mathbf{x}=\mathbf{0}\) — this gives the null space. (2) As the span of a set of vectors — this gives column spaces and row spaces. Section 4.2 formalizes both of these.</div>
 </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════════════
+     POLYNOMIAL VECTOR SPACES — DEEP DIVE
+     ══════════════════════════════════════════════════════════ -->
+<div class="l33-chunk" style="border-top:1px solid var(--border2);padding-top:3rem;margin-top:3.5rem">
+  <div class="l33-chunk-label">Part 5 · The Part Sharma Loves to Test</div>
+  <div class="l33-h2">Polynomial Vector Spaces — Complete Deep Dive</div>
+  <p class="l33-p">Everything above covers the general theory. This section is entirely dedicated to <strong>polynomial vector spaces</strong> — the setting Sharma consistently tests in exams but rarely explains at the board. We will build intuition from the ground up, cover every type of problem you can encounter, and walk through the exact exam question from the screenshot with full justification.</p>
+</div>
+
+<!-- WHY POLYNOMIALS ARE A VECTOR SPACE -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5A — Why \(\mathbb{P}_n\) is a Vector Space</div>
+  <div class="l33-h2">Polynomials as vectors: the key mental shift</div>
+  <p class="l33-p">When you first see \(\mathbb{P}_3 = \{\text{polynomials of degree} \leq 3\}\) called a "vector space," it can feel strange. Vectors are supposed to be arrows or columns of numbers — not formulas. The key mental shift is this: <strong>a polynomial is nothing more than a list of coefficients</strong>. The polynomial \(a_0 + a_1x + a_2x^2 + a_3x^3\) is completely determined by the four numbers \((a_0, a_1, a_2, a_3)\). Once you see it that way, \(\mathbb{P}_3\) is secretly just \(\mathbb{R}^4\) in disguise.</p>
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">The isomorphism: \(\mathbb{P}_3 \cong \mathbb{R}^4\)</div>
+    \[a_0 + a_1x + a_2x^2 + a_3x^3 \longleftrightarrow \begin{bmatrix}a_0\\a_1\\a_2\\a_3\end{bmatrix}\]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">This is not just a metaphor — it is a genuine vector space isomorphism. Every operation (addition, scalar multiplication, linear independence, basis, dimension) works identically in both spaces. The standard basis for \(\mathbb{P}_3\) is \(\{1, x, x^2, x^3\}\), which corresponds to the standard basis \(\{\mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3, \mathbf{e}_4\}\) in \(\mathbb{R}^4\).</div>
+  </div>
+  <div class="l33-two-col">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--teal)">Addition in \(\mathbb{P}_3\)</div>
+      <div class="l33-col-box-body">
+        \((1+2x+x^2) + (3-x+4x^3)\)<br><br>
+        \(= (1+3) + (2-1)x + (1)x^2 + (4)x^3\)<br><br>
+        \(= 4 + x + x^2 + 4x^3\)<br><br>
+        Just add the coefficients of matching powers. Exactly like adding vectors.
+      </div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--gold)">Scalar multiplication in \(\mathbb{P}_3\)</div>
+      <div class="l33-col-box-body">
+        \(3 \cdot (2 - x + 5x^3)\)<br><br>
+        \(= 6 - 3x + 15x^3\)<br><br>
+        \(= 6 + (-3)x + 0\cdot x^2 + 15x^3\)<br><br>
+        Distribute the scalar across every term. Exactly like scaling a vector.
+      </div>
+    </div>
+  </div>
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>The zero polynomial is the zero vector.</strong> The zero vector in \(\mathbb{P}_n\) is the polynomial that is identically zero: \(p(x) = 0\) (not the constant polynomial \(p(x)=0\) meaning "all coefficients are zero"). This is the polynomial \(0 + 0\cdot x + 0\cdot x^2 + \cdots = 0\). <strong>On any subspace check, the first thing you must verify is that the zero polynomial belongs to the set.</strong></div>
+  </div>
+</div>
+
+<!-- THE COORDINATE TRICK -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5B — The Master Strategy: Coordinates</div>
+  <div class="l33-h2">Convert every polynomial problem into a linear algebra problem in \(\mathbb{R}^{n+1}\)</div>
+  <p class="l33-p">Since \(\mathbb{P}_n\cong\mathbb{R}^{n+1}\), you can solve any polynomial problem by <strong>converting to coordinate vectors</strong>, doing the computation in \(\mathbb{R}^{n+1}\), then converting back. This is the single most powerful technique for these problems.</p>
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">The coordinate vector of a polynomial in \(\mathbb{P}_3\) w.r.t. standard basis \(\{1,x,x^2,x^3\}\)</div>
+    \[p(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3 \quad\longleftrightarrow\quad [p]_\mathcal{B} = \begin{bmatrix}a_0\\a_1\\a_2\\a_3\end{bmatrix} \in \mathbb{R}^4.\]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">Any question about polynomials — linear independence, spanning, basis, subspace — can be reduced to the corresponding question about these coordinate vectors in \(\mathbb{R}^4\).</div>
+  </div>
+  <div class="l33-annotation blue">
+    <div class="l33-annotation-icon">📌</div>
+    <div class="l33-annotation-text"><strong>Practical consequence: linear independence of polynomials.</strong> A set of polynomials \(\{p_1,p_2,\ldots,p_k\}\) is linearly independent in \(\mathbb{P}_n\) if and only if their coordinate vectors \(\{[p_1]_\mathcal{B},\ldots,[p_k]_\mathcal{B}\}\) are linearly independent in \(\mathbb{R}^{n+1}\). To check: form the matrix with these vectors as columns and row-reduce. Independent iff all columns are pivot columns.</div>
+  </div>
+  <div class="l33-worked open" id="s41-coord-ex">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-coord-ex')">
+      <span class="badge b-lec">Key Technique</span>
+      <span class="l33-worked-title">Are \(\{1+x^2,\; x+x^3,\; 2+x-x^2+x^3\}\) linearly independent in \(\mathbb{P}_3\)?</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Write coordinate vectors w.r.t. \(\{1,x,x^2,x^3\}\)</div>
+          <div class="l33-step-body">
+            \[1+x^2 \to \begin{bmatrix}1\\0\\1\\0\end{bmatrix},\quad x+x^3 \to \begin{bmatrix}0\\1\\0\\1\end{bmatrix},\quad 2+x-x^2+x^3 \to \begin{bmatrix}2\\1\\-1\\1\end{bmatrix}.\]
+          </div>
+        </div>
+      </div>
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Form the matrix and row-reduce</div>
+          <div class="l33-step-body">
+            \[\begin{bmatrix}1&0&2\\0&1&1\\1&0&-1\\0&1&1\end{bmatrix}\xrightarrow{R_3-R_1}\begin{bmatrix}1&0&2\\0&1&1\\0&0&-3\\0&0&0\end{bmatrix}.\]
+            Three pivot columns — <strong>linearly independent</strong>.
+          </div>
+        </div>
+      </div>
+      <div class="l33-final">
+        <div class="l33-final-lbl">Conclusion</div>
+        The three polynomials are linearly independent in \(\mathbb{P}_3\). The coordinate method reduces what looks like an abstract polynomial question to a routine row-reduction computation.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVALUATION CONDITIONS — THE CORE EXAM TYPE -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5C — Evaluation Conditions: the Most Common Exam Type</div>
+  <div class="l33-h2">When the subspace is defined by \(p(a)=\text{something}\)</div>
+  <p class="l33-p">The most common type of polynomial subspace question on Sharma's exams defines the subspace via <strong>evaluation conditions</strong>: something like \(p(2) = 0\), or \(p(-1) = p(3)\), or \(p(-2)=p(5)=0\). The key insight is that evaluating a polynomial at a point is a <strong>linear operation on the coefficients</strong>.</p>
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">Why evaluation is a linear constraint</div>
+    \[p(x) = a_0 + a_1x + a_2x^2 + a_3x^3 \implies p(c) = a_0 + a_1c + a_2c^2 + a_3c^3.\]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">The condition \(p(c) = 0\) is the linear equation \(a_0 + ca_1 + c^2a_2 + c^3a_3 = 0\) in the coefficients \(a_0,a_1,a_2,a_3\). This is a <em>homogeneous</em> linear constraint. This is why the zero polynomial always satisfies it: \(0+0+0+0=0\checkmark\).</div>
+  </div>
+  <div class="l33-annotation red">
+    <div class="l33-annotation-icon">⚠️</div>
+    <div class="l33-annotation-text"><strong>Non-homogeneous conditions never give subspaces.</strong> A condition like \(p(2)=5\) defines a set that is <em>not</em> a subspace — the zero polynomial satisfies \(0(2)=0\neq5\). Only conditions of the form \(p(c)=0\) or \(p(a)=p(b)\) (which is equivalent to \(p(a)-p(b)=0\)) define subspaces. Always check: does the zero polynomial satisfy the condition?</div>
+  </div>
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>The factoring trick for root conditions.</strong> If \(p(c)=0\) for some constant \(c\), then \((x-c)\) is a <em>factor</em> of \(p(x)\). This is by the Factor Theorem. So \(\mathcal{S}=\{p\in\mathbb{P}_3:p(c)=0\}\) consists exactly of the polynomials in \(\mathbb{P}_3\) that have \((x-c)\) as a factor. If \(p(-2)=0\) AND \(p(5)=0\), then <em>both</em> \((x+2)\) and \((x-5)\) divide \(p\), so \((x+2)(x-5)\) divides \(p\). This geometric insight is the key to finding the basis quickly — which is exactly what the exam question requires.</div>
+  </div>
+</div>
+
+<!-- THE SHARMA EXAM QUESTION — FULL WALKTHROUGH -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5D — Sharma Exam Question Fully Solved</div>
+  <div class="l33-h2">The exact exam problem: \(p(-2)=p(5)=0\) in \(\mathbb{P}_3\)</div>
+  <p class="l33-p">This is the question from the screenshot, solved completely with every step justified. Read this before any exam that involves polynomial vector spaces.</p>
+
+  <div class="l33-worked open" id="s41-sharma-q">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-sharma-q')">
+      <span class="badge b-new">Sharma Exam Question</span>
+      <span class="l33-worked-title">Let \(\mathcal{S}=\{p\in\mathbb{P}_3 : p(-2)=p(5)=0\}\). (a) Prove \(\mathcal{S}\) is a subspace. (b) Find a basis for \(\mathcal{S}\).</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+
+      <div class="l33-annotation blue" style="margin-bottom:1.5rem">
+        <div class="l33-annotation-icon">🗺️</div>
+        <div class="l33-annotation-text"><strong>Overall strategy before starting.</strong> Part (a) uses the 3-condition subspace test — but we prove it for polynomials, not vectors. Part (b) uses the factoring insight: every \(p\in\mathcal{S}\) must be divisible by \((x+2)(x-5)\). Since \(\deg(p)\leq3\), the quotient has degree \(\leq1\), giving exactly a 2-dimensional family.</div>
+      </div>
+
+      <p style="font-size:15px;font-weight:500;color:var(--text);margin-bottom:1.2rem">Part (a): Prove \(\mathcal{S}\) is a subspace of \(\mathbb{P}_3\)</p>
+
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Check the zero vector (zero polynomial) is in \(\mathcal{S}\)</div>
+          <div class="l33-step-body">
+            The zero polynomial is \(p(x) = 0\). We evaluate: \(p(-2) = 0\) and \(p(5) = 0\). Both conditions are satisfied. <strong>The zero polynomial is in \(\mathcal{S}\)</strong>. \(\checkmark\)
+            <div class="l33-callout tip" style="margin-top:.7rem">This is always the first step. If the zero polynomial doesn't satisfy the defining condition, you can stop immediately — the set is not a subspace.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Check closure under addition</div>
+          <div class="l33-step-body">
+            Let \(p, q \in \mathcal{S}\), meaning \(p(-2)=0\), \(p(5)=0\), \(q(-2)=0\), \(q(5)=0\). We must show \(p+q\in\mathcal{S}\).<br><br>
+            Evaluate \((p+q)\) at \(x=-2\): \[(p+q)(-2) = p(-2) + q(-2) = 0 + 0 = 0.\checkmark\]
+            Evaluate \((p+q)\) at \(x=5\): \[(p+q)(5) = p(5) + q(5) = 0 + 0 = 0.\checkmark\]
+            So \(p+q\in\mathcal{S}\). \(\checkmark\)
+            <div class="l33-callout tip" style="margin-top:.7rem">The key algebraic fact: \((p+q)(c) = p(c)+q(c)\) always holds for polynomials. This is what makes evaluation a linear operation — it respects addition.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Check closure under scalar multiplication</div>
+          <div class="l33-step-body">
+            Let \(p\in\mathcal{S}\) and let \(c\in\mathbb{R}\) be any scalar. We must show \(cp\in\mathcal{S}\).<br><br>
+            Evaluate \((cp)\) at \(x=-2\): \[(cp)(-2) = c\cdot p(-2) = c\cdot 0 = 0.\checkmark\]
+            Evaluate \((cp)\) at \(x=5\): \[(cp)(5) = c\cdot p(5) = c\cdot 0 = 0.\checkmark\]
+            So \(cp\in\mathcal{S}\). \(\checkmark\)
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-final" style="margin-bottom:2rem">
+        <div class="l33-final-lbl">Conclusion for Part (a)</div>
+        The zero polynomial is in \(\mathcal{S}\), and \(\mathcal{S}\) is closed under addition and scalar multiplication. Therefore \(\mathcal{S}\) is a subspace of \(\mathbb{P}_3\). \(\blacksquare\)
+        <div class="l33-final-note">You may notice the proof never needed to write \(p(x) = a_0+a_1x+a_2x^2+a_3x^3\) explicitly. That's the advantage of using properties of evaluation: the argument is clean and short.</div>
+      </div>
+
+      <p style="font-size:15px;font-weight:500;color:var(--text);margin-bottom:1.2rem">Part (b): Find a basis for \(\mathcal{S}\)</p>
+
+      <div class="l33-step">
+        <div class="l33-step-num">4</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Use the factoring insight to describe all elements of \(\mathcal{S}\)</div>
+          <div class="l33-step-body">
+            Every \(p\in\mathcal{S}\) has roots at \(x=-2\) and \(x=5\). By the Factor Theorem, \((x+2)\) and \((x-5)\) both divide \(p(x)\). Since \(\deg(p)\leq 3\) and \((x+2)(x-5)\) has degree 2, we can write:
+            \[p(x) = (x+2)(x-5)\cdot q(x)\]
+            where \(q(x)\) must be a polynomial of degree \(\leq 1\) (otherwise \(p\) would have degree \(\geq 4\), outside \(\mathbb{P}_3\)). So:
+            \[q(x) = \alpha + \beta x \quad\text{for some }\alpha,\beta\in\mathbb{R}.\]
+            Therefore every element of \(\mathcal{S}\) has the form:
+            \[p(x) = (x+2)(x-5)(\alpha+\beta x) = \alpha(x+2)(x-5) + \beta\cdot x(x+2)(x-5).\]
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">5</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Identify the natural spanning set</div>
+          <div class="l33-step-body">
+            Setting \(\alpha=1, \beta=0\) gives \(p_1(x) = (x+2)(x-5) = x^2-3x-10\).<br>
+            Setting \(\alpha=0, \beta=1\) gives \(p_2(x) = x(x+2)(x-5) = x^3-3x^2-10x\).<br><br>
+            Every element of \(\mathcal{S}\) is \(\alpha\, p_1 + \beta\, p_2\), so \(\mathcal{S} = \text{Span}\{p_1, p_2\}\).
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">6</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Verify linear independence</div>
+          <div class="l33-step-body">
+            We need to show \(\alpha\,p_1 + \beta\,p_2 = 0\) implies \(\alpha=\beta=0\). Suppose:
+            \[\alpha(x^2-3x-10) + \beta(x^3-3x^2-10x) = 0.\]
+            This is the zero polynomial, so every coefficient must be zero:
+            <div style="margin:.7rem 0;padding:.8rem 1.2rem;background:var(--bg3);border-radius:9px;border-left:3px solid var(--gold)">
+              Degree 3 coefficient: \(\beta = 0\).<br>
+              Degree 2 coefficient: \(\alpha - 3\beta = 0 \Rightarrow \alpha = 0\).<br>
+              (Degrees 1 and 0 are automatically satisfied now.)
+            </div>
+            So \(\alpha=\beta=0\). The set \(\{p_1, p_2\}\) is <strong>linearly independent</strong>. \(\checkmark\)
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-final">
+        <div class="l33-final-lbl">Basis and Dimension of \(\mathcal{S}\)</div>
+        \[\boxed{\mathcal{B} = \{(x+2)(x-5),\; x(x+2)(x-5)\} = \{x^2-3x-10,\; x^3-3x^2-10x\}}\]
+        <div class="l33-final-note">\(\dim(\mathcal{S}) = 2\). Notice the dimension makes sense: \(\mathbb{P}_3\) has dimension 4, and we imposed 2 independent constraints (\(p(-2)=0\) and \(p(5)=0\)), so we expect \(4-2=2\) free parameters remaining.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EVERY TYPE OF POLYNOMIAL SUBSPACE PROBLEM -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5E — Every Type of Problem You Will Encounter</div>
+  <div class="l33-h2">A complete taxonomy of polynomial subspace questions</div>
+  <p class="l33-p">Here are all the configurations Sharma (and Lay) use for polynomial subspace problems, with a worked strategy for each.</p>
+
+  <!-- TYPE 1 -->
+  <div class="l33-worked open" id="s41-type1">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-type1')">
+      <span class="badge b-hw">Type 1</span>
+      <span class="l33-worked-title">Single evaluation condition: \(\mathcal{S}=\{p\in\mathbb{P}_3 : p(c)=0\}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body"><strong>Example:</strong> \(\mathcal{S}=\{p\in\mathbb{P}_3 : p(2)=0\}\). Find a basis.</p>
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Describe all elements algebraically</div>
+          <div class="l33-step-body">Write \(p(x)=a_0+a_1x+a_2x^2+a_3x^3\). Then \(p(2)=a_0+2a_1+4a_2+8a_3=0\), so \(a_0 = -2a_1-4a_2-8a_3\). Every element has 3 free parameters (\(a_1,a_2,a_3\)), so \(\dim(\mathcal{S})=3\).</div>
+        </div>
+      </div>
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Factor method (faster)</div>
+          <div class="l33-step-body">\(p(2)=0\Rightarrow (x-2)\mid p(x)\). Since \(\deg p\leq3\): \(p(x)=(x-2)(a+bx+cx^2)\) for \(a,b,c\in\mathbb{R}\).
+          Basis: \(\{(x-2),\;x(x-2),\;x^2(x-2)\} = \{x-2,\;x^2-2x,\;x^3-2x^2\}\).</div>
+        </div>
+      </div>
+      <div class="l33-final">
+        <div class="l33-final-lbl">Basis and Dimension</div>
+        \(\mathcal{B}=\{x-2,\;x^2-2x,\;x^3-2x^2\}\). \(\dim(\mathcal{S})=3\). <span style="font-size:13px;color:var(--muted)">One root condition reduces dimension by 1.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPE 2 -->
+  <div class="l33-worked open" id="s41-type2">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-type2')">
+      <span class="badge b-hw">Type 2</span>
+      <span class="l33-worked-title">Equal evaluation: \(\mathcal{S}=\{p\in\mathbb{P}_3 : p(a)=p(b)\}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body"><strong>Example:</strong> \(\mathcal{S}=\{p\in\mathbb{P}_3 : p(0)=p(1)\}\). Find a basis.</p>
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Convert to a root condition</div>
+          <div class="l33-step-body">\(p(0)=p(1)\) is equivalent to \(p(0)-p(1)=0\), i.e., the polynomial \(q(x)=p(0)-p(1)\) — but more usefully, define \(r(x)=p(x)-p(0)\). Wait — the cleaner approach: \(p(0)=p(1)\Leftrightarrow\) the polynomial \(p\) takes equal values at 0 and 1. Define \(g(x)=p(x)\); then \(g(0)=g(1)\Leftrightarrow(g(0)-g(1))=0\). Let \(h(x) = p(x) - p(0) \cdot \text{(constant)}\)... Actually the cleanest: the condition \(p(0)=p(1)\) means \(p(0)-p(1)=0\), which (by Factor Theorem applied to the <em>difference</em>) means \((x-0)(x-1)=(x^2-x)\) divides \(p(x)-p(0)\). Let \(c=p(0)\). Then every such \(p\) looks like \(p(x) = c + x(x-1)\cdot q(x)\) where \(q\) has degree \(\leq 1\).</div>
+        </div>
+      </div>
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Coefficient method (often cleaner for equal-value conditions)</div>
+          <div class="l33-step-body">Write \(p(x)=a+bx+cx^2+dx^3\). Then \(p(0)=a\) and \(p(1)=a+b+c+d\). Condition: \(a=a+b+c+d\Rightarrow b+c+d=0\Rightarrow b=-c-d\). Free parameters: \(a,c,d\).
+          \[p(x)=a+(-c-d)x+cx^2+dx^3=a\cdot1+c(x^2-x)+d(x^3-x).\]</div>
+        </div>
+      </div>
+      <div class="l33-final">
+        <div class="l33-final-lbl">Basis and Dimension</div>
+        \(\mathcal{B}=\{1,\;x^2-x,\;x^3-x\}\). \(\dim(\mathcal{S})=3\). One equal-value condition also reduces dimension by 1.
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPE 3 -->
+  <div class="l33-worked open" id="s41-type3">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-type3')">
+      <span class="badge b-hw">Type 3</span>
+      <span class="l33-worked-title">Derivative condition: \(\mathcal{S}=\{p\in\mathbb{P}_3 : p'(0)=0\}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body">Conditions involving the derivative are also linear — and come up on exams!</p>
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Apply the condition to the general form</div>
+          <div class="l33-step-body">Write \(p(x)=a+bx+cx^2+dx^3\). Then \(p'(x)=b+2cx+3dx^2\), so \(p'(0)=b=0\). Free parameters: \(a,c,d\).
+          \[p(x) = a + cx^2 + dx^3.\]</div>
+        </div>
+      </div>
+      <div class="l33-final">
+        <div class="l33-final-lbl">Basis</div>
+        \(\mathcal{B}=\{1,\;x^2,\;x^3\}\). \(\dim(\mathcal{S})=3\). Subspace proof: \(p'(0)=0\) is a homogeneous linear condition on the coefficient \(b\), so the same evaluation proof pattern works (differentiation and evaluation are both linear operations).
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPE 4 -->
+  <div class="l33-worked open" id="s41-type4">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-type4')">
+      <span class="badge b-hw">Type 4</span>
+      <span class="l33-worked-title">Mixed conditions: \(p(-2)=p(5)=0\) — the Sharma exam type</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body">Two root conditions — this is exactly the exam question. The dimension-counting argument is important to know.</p>
+      <div class="l33-annotation blue">
+        <div class="l33-annotation-icon">📌</div>
+        <div class="l33-annotation-text"><strong>Dimension counting: a powerful shortcut.</strong> \(\mathbb{P}_3\) has dimension 4. Each independent homogeneous linear condition on the coefficients reduces the dimension by 1. Two independent conditions (\(p(-2)=0\) and \(p(5)=0\)) reduce it by 2, giving \(\dim(\mathcal{S})=4-2=2\). This is a sanity check: if your basis has more or fewer than 2 vectors, something is wrong.</div>
+      </div>
+      <div class="l33-final">
+        <div class="l33-final-lbl">General Rule</div>
+        If you impose \(k\) independent evaluation conditions of the form \(p(c_i)=0\), then \(\dim(\mathcal{S})=(n+1)-k\) in \(\mathbb{P}_n\). The basis is \(\{(x-c_1)\cdots(x-c_k),\; x(x-c_1)\cdots(x-c_k),\;\ldots\}\) (up to \(n-k\) additional \(x\)-factors).
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPE 5: COEFFICIENT CONDITIONS -->
+  <div class="l33-worked open" id="s41-type5">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-type5')">
+      <span class="badge b-hw">Type 5</span>
+      <span class="l33-worked-title">Coefficient condition: \(\mathcal{S}=\{p\in\mathbb{P}_3 : \text{(sum of coefficients)}=0\}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body"><strong>Example:</strong> \(\mathcal{S}=\{a+bx+cx^2+dx^3\in\mathbb{P}_3 : a+2b-c=0\}\). Note: the "sum of coefficients = 0" condition is just \(p(1)=0\). Coefficient conditions are evaluation conditions in disguise!</p>
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Solve the constraint</div>
+          <div class="l33-step-body">\(a+2b-c=0\Rightarrow a=c-2b\). Free: \(b,c,d\). Write:
+          \[p(x)=(c-2b)+bx+cx^2+dx^3=b(-2+x)+c(1+x^2)+d\cdot x^3.\]</div>
+        </div>
+      </div>
+      <div class="l33-final">
+        <div class="l33-final-lbl">Basis</div>
+        \(\mathcal{B}=\{x-2,\;1+x^2,\;x^3\}\). \(\dim(\mathcal{S})=3\). Check: these three polynomials satisfy \(a+2b-c=0\) and are independent.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROVING LINEAR INDEPENDENCE IN Pn -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5F — How to Prove Linear Independence in \(\mathbb{P}_n\)</div>
+  <div class="l33-h2">Two methods — matching coefficients is almost always the right one</div>
+  <p class="l33-p">On exams, you will often need to prove that a set of polynomials is linearly independent. Here are both methods and when to use each.</p>
+
+  <div class="l33-two-col">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--teal)">Method 1: Match coefficients (the standard method)</div>
+      <div class="l33-col-box-body">
+        Set up \(c_1 p_1 + c_2 p_2 + \cdots + c_k p_k = 0\) (zero polynomial). Expand the left side and collect by powers of \(x\). Set each coefficient equal to 0. If the only solution is \(c_1=\cdots=c_k=0\), the set is independent.<br><br>
+        <strong>When to use:</strong> Always — it's the most rigorous. Works for any set of polynomials.
+      </div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--gold)">Method 2: Coordinate vectors (the fast method)</div>
+      <div class="l33-col-box-body">
+        Convert each polynomial to its coordinate vector in \(\mathbb{R}^{n+1}\). Form the matrix with these vectors as columns. Row-reduce: independent iff all columns are pivot columns.<br><br>
+        <strong>When to use:</strong> When you have 3+ polynomials and want to avoid messy algebra. Also useful for finding which subset of a large set is independent.
+      </div>
+    </div>
+  </div>
+
+  <div class="l33-worked open" id="s41-indep-ex">
+    <div class="l33-worked-hdr" onclick="lwTog('s41-indep-ex')">
+      <span class="badge b-lec">Key Example</span>
+      <span class="l33-worked-title">Prove \(\{x-2,\; 1+x^2,\; x^3\}\) is a basis for the subspace \(a+2b-c=0\) in \(\mathbb{P}_3\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Verify each polynomial is in \(\mathcal{S}\)</div>
+          <div class="l33-step-body">
+            \(x-2\): coefficients \((a,b,c,d)=(-2,1,0,0)\). Check: \(-2+2(1)-0=0\checkmark\).<br>
+            \(1+x^2\): coefficients \((1,0,1,0)\). Check: \(1+2(0)-1=0\checkmark\).<br>
+            \(x^3\): coefficients \((0,0,0,1)\). Check: \(0+2(0)-0=0\checkmark\).
+          </div>
+        </div>
+      </div>
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Prove linear independence by matching coefficients</div>
+          <div class="l33-step-body">
+            Suppose \(\alpha(x-2)+\beta(1+x^2)+\gamma x^3=0\). Expanding:
+            \[(-2\alpha+\beta)+(\alpha)x+(\beta)x^2+(\gamma)x^3=0.\]
+            Matching coefficients of \(x^3\): \(\gamma=0\). Of \(x^2\): \(\beta=0\). Of \(x^1\): \(\alpha=0\). <strong>Only trivial solution — independent.</strong>
+          </div>
+        </div>
+      </div>
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Conclude it's a basis</div>
+          <div class="l33-step-body">We showed earlier that every element of \(\mathcal{S}\) can be written as a linear combination of these three polynomials (they span \(\mathcal{S}\)). They are independent. Therefore they form a basis. \(\blacksquare\)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIMENSION COUNTING SUMMARY -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5G — The Dimension Argument: a Powerful Shortcut</div>
+  <div class="l33-h2">Using dimension to verify your basis is complete</div>
+  <p class="l33-p">Once you know the dimension of a subspace, you can use the Basis Theorem as a shortcut: in a \(k\)-dimensional subspace, any \(k\) linearly independent vectors automatically form a basis. This lets you skip the spanning verification once you have independence.</p>
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">How to determine \(\dim(\mathcal{S})\) for polynomial subspaces</div>
+    <div style="font-size:14px;color:#c8c6c0;line-height:2.1;margin-top:.7rem">
+      Start with \(\dim(\mathbb{P}_n)=n+1\).<br>
+      Each independent homogeneous condition on the coefficients reduces the dimension by 1.<br>
+      Each root condition \(p(c)=0\) is one independent constraint (reduces dim by 1).<br>
+      Two root conditions \(p(a)=p(b)=0\) at distinct points: reduces dim by 2.<br>
+      One equal-value condition \(p(a)=p(b)\) (i.e., \(p(a)-p(b)=0\)): reduces dim by 1.
+    </div>
+  </div>
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>The workflow for every exam question:</strong> (1) Identify the type of condition. (2) Count how many independent constraints there are. (3) Compute \(\dim(\mathcal{S})\). (4) Find that many independent polynomials satisfying the condition — your basis. (5) Verify they're independent (by matching coefficients) and each satisfies the condition. The dimension count is your sanity check throughout.</div>
+  </div>
+</div>
 <div id="sec4-1-practice" class="lec-tab-pane">
 <div class="l33-chunk">
   <div class="l33-chunk-label">Practice Set · Section 4.1</div>
@@ -4194,7 +5370,7 @@ mjx-container{color:var(--text)}
   <div class="l33-worked open" id="s41t4">
     <div class="l33-worked-hdr" onclick="lwTog('s41t4')"><span class="badge b-hw">Textbook 4.1 #4</span><span class="l33-worked-title">Subspace check: a plane in \(\mathbb{R}^3\)</span><span class="l33-arrow">▾</span></div>
     <div class="l33-worked-body">
-      <p class="l33-step-body">Is \(H = \left\{\begin{bmatrix}a\\b\\c\end{bmatrix} : 2a - b + 3c = 0\right\}\) a subspace of \(\mathbb{R}^3\)?</p>
+      <p class="l33-step-body">Is \[H = \left\{\begin{bmatrix}a\\b\\c\end{bmatrix} : 2a - b + 3c = 0\right\}\] a subspace of \(\mathbb{R}^3\)?</p>
       <div class="ans"><div class="ans-lbl">Solution</div>
       (i) \(\mathbf{0}\): \(2(0)-0+3(0)=0\checkmark\).<br>
       (ii) If \(2a_1-b_1+3c_1=0\) and \(2a_2-b_2+3c_2=0\), then \(2(a_1+a_2)-(b_1+b_2)+3(c_1+c_2)=0\checkmark\).<br>
@@ -4206,7 +5382,7 @@ mjx-container{color:var(--text)}
   <div class="l33-worked open" id="s41t6">
     <div class="l33-worked-hdr" onclick="lwTog('s41t6')"><span class="badge b-hw">Textbook 4.1 #6</span><span class="l33-worked-title">Subspace check: a shifted plane (fails)</span><span class="l33-arrow">▾</span></div>
     <div class="l33-worked-body">
-      <p class="l33-step-body">Is \(H = \left\{\begin{bmatrix}a\\b\\c\end{bmatrix} : a + b + c = 1\right\}\) a subspace of \(\mathbb{R}^3\)?</p>
+      <p class="l33-step-body">Is \[H = \left\{\begin{bmatrix}a\\b\\c\end{bmatrix} : a + b + c = 1\right\}\] a subspace of \(\mathbb{R}^3\)?</p>
       <div class="ans"><div class="ans-lbl">Solution</div>
       <strong>No.</strong> Check (i): does \(\mathbf{0}\in H\)? We need \(0+0+0=1\), which is false. The zero vector is not in \(H\). This is a plane in \(\mathbb{R}^3\), but it does <em>not</em> pass through the origin — it is an affine subspace, not a linear one. One failed condition is sufficient to conclude it is not a subspace.</div>
     </div>
@@ -6556,39 +7732,28 @@ mjx-container{color:var(--text)}
 <div id="sec6-4-content" class="lec-tab-pane active">
 <div class="l33-hero">
   <div class="l33-chunk-label">Section 6.4 · Building Orthonormal Bases</div>
-  <div class="l33-h2">The Gram–Schmidt Process</div>
-  <p class="l33-p" style="font-size:16px">Section 6.4 answers a practical question: given any basis for a subspace, how do you convert it to an orthogonal (or orthonormal) basis? The <strong>Gram-Schmidt process</strong> does exactly this by a sequence of projections, subtracting off the previously found orthogonal components one by one. The result is also the \(QR\) factorization — a matrix decomposition central to numerical linear algebra.</p>
+  <div class="l33-h2">The Gram–Schmidt Process &amp; QR Factorization</div>
+  <p class="l33-p" style="font-size:16px">Section 6.4 answers two related questions: how do you turn any basis into an orthogonal one, and what does that process look like as a matrix factorization? The <strong>Gram-Schmidt process</strong> builds orthogonality one vector at a time by projecting out all previously established directions. The resulting <strong>\(QR\) factorization</strong> \(A=QR\) is one of the most important decompositions in applied linear algebra — used in least-squares solving, eigenvalue algorithms, and signal processing.</p>
 </div>
 
+<!-- ══ PART 1: GRAM-SCHMIDT ══ -->
 <div class="l33-chunk">
-  <div class="l33-chunk-label">Part 1 — The Algorithm</div>
+  <div class="l33-chunk-label">Part 1 — The Gram-Schmidt Algorithm</div>
   <div class="l33-h2">Orthogonalizing step by step</div>
-  <p class="l33-p">Given a linearly independent set \(\{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_p\}\) that spans a subspace \(W\), produce an orthogonal basis \(\{\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_p\}\) for \(W\) as follows:</p>
-  <div class="l33-step">
-    <div class="l33-step-num">1</div>
-    <div class="l33-step-content">
-      <div class="l33-step-title">Start: \(\mathbf{v}_1 = \mathbf{x}_1\)</div>
-      <div class="l33-step-body">The first vector is taken as-is.</div>
-    </div>
-  </div>
-  <div class="l33-step">
-    <div class="l33-step-num">2</div>
-    <div class="l33-step-content">
-      <div class="l33-step-title">Subtract the projection onto the previous vectors</div>
-      <div class="l33-step-body">\[\mathbf{v}_k = \mathbf{x}_k - \text{proj}_{W_{k-1}}\mathbf{x}_k = \mathbf{x}_k - \frac{\mathbf{x}_k\cdot\mathbf{v}_1}{\mathbf{v}_1\cdot\mathbf{v}_1}\mathbf{v}_1 - \frac{\mathbf{x}_k\cdot\mathbf{v}_2}{\mathbf{v}_2\cdot\mathbf{v}_2}\mathbf{v}_2 - \cdots - \frac{\mathbf{x}_k\cdot\mathbf{v}_{k-1}}{\mathbf{v}_{k-1}\cdot\mathbf{v}_{k-1}}\mathbf{v}_{k-1}.\]
-      Each \(\mathbf{v}_k\) is \(\mathbf{x}_k\) with the component in the span of previous \(\mathbf{v}_i\)'s removed.</div>
-    </div>
-  </div>
-  <div class="l33-step">
-    <div class="l33-step-num">3</div>
-    <div class="l33-step-content">
-      <div class="l33-step-title">Normalize if orthonormal basis is desired</div>
-      <div class="l33-step-body">\(\mathbf{e}_k = \mathbf{v}_k / \|\mathbf{v}_k\|\). The set \(\{\mathbf{e}_1,\ldots,\mathbf{e}_p\}\) is an orthonormal basis for \(W\).</div>
-    </div>
+  <p class="l33-p">Given a linearly independent set \(\{\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_p\}\) spanning a subspace \(W\subseteq\mathbb{R}^m\), the Gram-Schmidt process produces an <strong>orthogonal</strong> basis \(\{\mathbf{v}_1,\mathbf{v}_2,\ldots,\mathbf{v}_p\}\) for the same \(W\):</p>
+  <div class="l33-eq-block">
+    <div class="l33-eq-label">Gram-Schmidt formulas</div>
+    \[\begin{aligned}
+    \mathbf{v}_1 &= \mathbf{x}_1\\
+    \mathbf{v}_2 &= \mathbf{x}_2 - \frac{\mathbf{x}_2\cdot\mathbf{v}_1}{\mathbf{v}_1\cdot\mathbf{v}_1}\,\mathbf{v}_1\\
+    \mathbf{v}_3 &= \mathbf{x}_3 - \frac{\mathbf{x}_3\cdot\mathbf{v}_1}{\mathbf{v}_1\cdot\mathbf{v}_1}\,\mathbf{v}_1 - \frac{\mathbf{x}_3\cdot\mathbf{v}_2}{\mathbf{v}_2\cdot\mathbf{v}_2}\,\mathbf{v}_2\\
+    \mathbf{v}_k &= \mathbf{x}_k - \sum_{j=1}^{k-1}\frac{\mathbf{x}_k\cdot\mathbf{v}_j}{\mathbf{v}_j\cdot\mathbf{v}_j}\,\mathbf{v}_j
+    \end{aligned}\]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">Each \(\mathbf{v}_k\) is \(\mathbf{x}_k\) with its projection onto every previously built direction subtracted off. The result is a vector orthogonal to all of \(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1}\).</div>
   </div>
   <div class="l33-annotation">
     <div class="l33-annotation-icon">⚠️</div>
-    <div class="l33-annotation-text"><strong>Span is preserved at every step.</strong> \(\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\} = \text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\) for each \(k\). We are not changing the subspace — only the basis vectors within it. If at any step \(\mathbf{v}_k=\mathbf{0}\), then \(\mathbf{x}_k\) was in the span of the previous vectors and the original set was linearly dependent.</div>
+    <div class="l33-annotation-text"><strong>Span is preserved at every step.</strong> \(\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}=\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\) for each \(k\). We are not changing the subspace — only the basis vectors within it. If \(\mathbf{v}_k=\mathbf{0}\) at any step, then \(\mathbf{x}_k\) was already in the span of the previous vectors and the original set was linearly dependent.</div>
   </div>
   <div class="l33-worked open" id="s64-gs-ex">
     <div class="l33-worked-hdr" onclick="lwTog('s64-gs-ex')">
@@ -6602,43 +7767,211 @@ mjx-container{color:var(--text)}
         <div class="l33-step-num">1</div>
         <div class="l33-step-content">
           <div class="l33-step-title">\(\mathbf{v}_1 = \mathbf{x}_1\)</div>
-          <div class="l33-step-body">\(\mathbf{v}_1 = (1,1,1,1)\), \(\|\mathbf{v}_1\|^2=4\).</div>
+          <div class="l33-step-body">\[\mathbf{v}_1=\begin{bmatrix}1\\1\\1\\1\end{bmatrix},\qquad \|\mathbf{v}_1\|^2 = 1+1+1+1=4.\]</div>
         </div>
       </div>
       <div class="l33-step">
         <div class="l33-step-num">2</div>
         <div class="l33-step-content">
-          <div class="l33-step-title">\(\mathbf{v}_2 = \mathbf{x}_2 - \frac{\mathbf{x}_2\cdot\mathbf{v}_1}{4}\mathbf{v}_1\)</div>
-          <div class="l33-step-body">\(\mathbf{x}_2\cdot\mathbf{v}_1=0+1+1+1=3\). \(\mathbf{v}_2=(0,1,1,1)-\frac{3}{4}(1,1,1,1)=(-\frac{3}{4},\frac{1}{4},\frac{1}{4},\frac{1}{4})\). Scale: \(\mathbf{v}_2=(-3,1,1,1)\), \(\|\mathbf{v}_2\|^2=12\).</div>
+          <div class="l33-step-title">\(\mathbf{v}_2 = \mathbf{x}_2 - \dfrac{\mathbf{x}_2\cdot\mathbf{v}_1}{\|\mathbf{v}_1\|^2}\mathbf{v}_1\)</div>
+          <div class="l33-step-body">
+            \[\mathbf{x}_2\cdot\mathbf{v}_1 = 0+1+1+1=3.\]
+            \[\mathbf{v}_2 = \begin{bmatrix}0\\1\\1\\1\end{bmatrix}-\frac{3}{4}\begin{bmatrix}1\\1\\1\\1\end{bmatrix}=\begin{bmatrix}-3/4\\1/4\\1/4\\1/4\end{bmatrix}.\]
+            Scaling by 4 to clear fractions (allowed since we only need an orthogonal basis, not orthonormal):
+            \[\mathbf{v}_2=\begin{bmatrix}-3\\1\\1\\1\end{bmatrix},\qquad\|\mathbf{v}_2\|^2=9+1+1+1=12.\]
+          </div>
         </div>
       </div>
       <div class="l33-step">
         <div class="l33-step-num">3</div>
         <div class="l33-step-content">
-          <div class="l33-step-title">\(\mathbf{v}_3 = \mathbf{x}_3 - \frac{\mathbf{x}_3\cdot\mathbf{v}_1}{4}\mathbf{v}_1 - \frac{\mathbf{x}_3\cdot\mathbf{v}_2}{12}\mathbf{v}_2\)</div>
-          <div class="l33-step-body">\(\mathbf{x}_3\cdot\mathbf{v}_1=2\), \(\mathbf{x}_3\cdot\mathbf{v}_2=0+0+1+1=2\).<br>
-          \(\mathbf{v}_3=(0,0,1,1)-\frac{1}{2}(1,1,1,1)-\frac{1}{6}(-3,1,1,1)=(0,0,1,1)-(1/2,1/2,1/2,1/2)+(1/2,-1/6,-1/6,-1/6)=(0,-2/3,1/3,1/3)\). Scale: \(\mathbf{v}_3=(0,-2,1,1)\), \(\|\mathbf{v}_3\|^2=6\).</div>
+          <div class="l33-step-title">\(\mathbf{v}_3 = \mathbf{x}_3 - \dfrac{\mathbf{x}_3\cdot\mathbf{v}_1}{\|\mathbf{v}_1\|^2}\mathbf{v}_1 - \dfrac{\mathbf{x}_3\cdot\mathbf{v}_2}{\|\mathbf{v}_2\|^2}\mathbf{v}_2\)</div>
+          <div class="l33-step-body">
+            \[\mathbf{x}_3\cdot\mathbf{v}_1 = 0+0+1+1=2,\qquad \mathbf{x}_3\cdot\mathbf{v}_2=0+0+1+1=2.\]
+            \[\mathbf{v}_3 = \begin{bmatrix}0\\0\\1\\1\end{bmatrix}-\frac{2}{4}\begin{bmatrix}1\\1\\1\\1\end{bmatrix}-\frac{2}{12}\begin{bmatrix}-3\\1\\1\\1\end{bmatrix} = \begin{bmatrix}0\\0\\1\\1\end{bmatrix}-\begin{bmatrix}1/2\\1/2\\1/2\\1/2\end{bmatrix}-\begin{bmatrix}-1/2\\1/6\\1/6\\1/6\end{bmatrix}=\begin{bmatrix}0\\-2/3\\1/3\\1/3\end{bmatrix}.\]
+            Scale by 3: \(\mathbf{v}_3=(0,-2,1,1)\), \(\|\mathbf{v}_3\|^2=0+4+1+1=6\).
+          </div>
         </div>
       </div>
       <div class="l33-final">
-        <div class="l33-final-lbl">Orthogonal basis for \(W\)</div>
-        \[\left\{\begin{bmatrix}1\\1\\1\\1\end{bmatrix},\begin{bmatrix}-3\\1\\1\\1\end{bmatrix},\begin{bmatrix}0\\-2\\1\\1\end{bmatrix}\right\}.\]
-        Verify: each pair has zero dot product (check all three pairs).
+        <div class="l33-final-lbl">Orthogonal basis for \(W=\text{Span}\{\mathbf{x}_1,\mathbf{x}_2,\mathbf{x}_3\}\)</div>
+        \[\left\{\begin{bmatrix}1\\1\\1\\1\end{bmatrix},\;\begin{bmatrix}-3\\1\\1\\1\end{bmatrix},\;\begin{bmatrix}0\\-2\\1\\1\end{bmatrix}\right\}\]
+        <div class="l33-final-note">Orthogonality check: \(\mathbf{v}_1\cdot\mathbf{v}_2=-3+1+1+1=0\checkmark\), \(\mathbf{v}_1\cdot\mathbf{v}_3=0-2+1+1=0\checkmark\), \(\mathbf{v}_2\cdot\mathbf{v}_3=0-2+1+1=0\checkmark\).</div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══ PART 2: QR FACTORIZATION ══ -->
 <div class="l33-chunk">
   <div class="l33-chunk-label">Part 2 — The \(QR\) Factorization</div>
-  <div class="l33-h2">The matrix form of Gram-Schmidt</div>
-  <p class="l33-p"><strong>Theorem.</strong> If \(A\) is an \(m\times n\) matrix with linearly independent columns, then \(A = QR\), where \(Q\) is an \(m\times n\) matrix with orthonormal columns (the result of Gram-Schmidt), and \(R\) is an \(n\times n\) upper triangular invertible matrix.</p>
+  <div class="l33-h2">Encoding Gram-Schmidt as a matrix equation</div>
+  <p class="l33-p"><strong>Theorem.</strong> If \(A\) is an \(m\times n\) matrix with linearly independent columns, then \(A=QR\) where \(Q\) is an \(m\times n\) matrix with orthonormal columns and \(R\) is an \(n\times n\) upper triangular matrix with positive diagonal entries.</p>
   <div class="l33-eq-block">
-    <div class="l33-eq-label">QR Factorization</div>
-    \[A = QR, \qquad Q^TQ = I_n, \qquad R \text{ upper triangular, invertible}.\]
-    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">The entries of \(R\): \(r_{kk} = \|\mathbf{v}_k\|\) and \(r_{jk} = \mathbf{x}_k\cdot\mathbf{e}_j\) for \(j < k\). \(QR\) is the standard decomposition used in numerical algorithms for solving least-squares problems and eigenvalue computation (the \(QR\) algorithm).</div>
+    <div class="l33-eq-label">The \(QR\) factorization at a glance</div>
+    \[A = QR,\qquad Q^TQ=I_n,\qquad R = \begin{bmatrix}r_{11}&r_{12}&r_{13}&\cdots\\0&r_{22}&r_{23}&\cdots\\0&0&r_{33}&\cdots\\\vdots&&&\ddots\end{bmatrix}.\]
   </div>
-  <div class="l33-callout tip"><strong>Why \(R\) is upper triangular.</strong> In Gram-Schmidt, each \(\mathbf{x}_k\) is written as a linear combination of \(\mathbf{e}_1,\ldots,\mathbf{e}_k\). No \(\mathbf{e}_j\) with \(j>k\) appears in the expression for \(\mathbf{x}_k\). When you stack these as columns of \(R = Q^T A\), only the upper triangle is populated — exactly upper triangular.</div>
+  <div class="l33-annotation blue">
+    <div class="l33-annotation-icon">📌</div>
+    <div class="l33-annotation-text"><strong>Where does \(Q\) come from?</strong> Run Gram-Schmidt on the columns of \(A\) to get orthogonal vectors \(\mathbf{v}_1,\ldots,\mathbf{v}_n\). Normalize each: \(\mathbf{e}_k = \mathbf{v}_k/\|\mathbf{v}_k\|\). The columns of \(Q\) are exactly \(\mathbf{e}_1,\ldots,\mathbf{e}_n\). That's it.</div>
+  </div>
+</div>
+
+<!-- ══ PART 3: HOW TO GET R ══ -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 3 — How to Find \(R\): Three Equivalent Methods</div>
+  <div class="l33-h2">This is what every explanation leaves out</div>
+  <p class="l33-p">Once you have \(Q\), there are three ways to get \(R\). All give the same answer. Know which one to use when.</p>
+
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>Why \(R\) is upper triangular.</strong> During Gram-Schmidt, column \(k\) of \(A\) gets decomposed as \(\mathbf{x}_k = r_{1k}\mathbf{e}_1 + r_{2k}\mathbf{e}_2 + \cdots + r_{kk}\mathbf{e}_k\) — only the first \(k\) unit vectors appear. This means the \(k\)-th column of \(R\) has zeros in rows \(k+1\) through \(n\). Stacked for all \(k\), the result is upper triangular.</div>
+  </div>
+
+  <div class="l33-two-col" style="margin-top:1.2rem">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--teal)">Method A — Formula: \(R = Q^T A\)</div>
+      <div class="l33-col-box-body">
+        Since \(A=QR\) and \(Q^TQ=I\), multiply both sides on the left by \(Q^T\):
+        \[Q^T A = Q^T(QR) = (Q^TQ)R = I\cdot R = R.\]
+        So \(R = Q^T A\) always. This is the fastest method once you have \(Q\). Just multiply.
+      </div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--gold)">Method B — Entry formula directly</div>
+      <div class="l33-col-box-body">
+        The entries of \(R\) come directly from the Gram-Schmidt steps:
+        \[r_{jk} = \mathbf{x}_k\cdot\mathbf{e}_j \quad\text{for }j\leq k,\]
+        \[r_{jk} = 0 \quad\text{for }j>k.\]
+        Diagonal: \(r_{kk} = \|\mathbf{v}_k\|\) (norm of the unnormalized \(\mathbf{v}_k\)).
+      </div>
+    </div>
+  </div>
+  <div class="l33-eq-block" style="margin-top:1.2rem">
+    <div class="l33-eq-label">The entry formula spelled out for a \(3\times3\) case</div>
+    \[R = \begin{bmatrix}
+    \mathbf{x}_1\cdot\mathbf{e}_1 & \mathbf{x}_2\cdot\mathbf{e}_1 & \mathbf{x}_3\cdot\mathbf{e}_1 \\
+    0 & \mathbf{x}_2\cdot\mathbf{e}_2 & \mathbf{x}_3\cdot\mathbf{e}_2 \\
+    0 & 0 & \mathbf{x}_3\cdot\mathbf{e}_3
+    \end{bmatrix}
+    =\begin{bmatrix}
+    \|\mathbf{v}_1\| & \mathbf{x}_2\cdot\mathbf{e}_1 & \mathbf{x}_3\cdot\mathbf{e}_1 \\
+    0 & \|\mathbf{v}_2\| & \mathbf{x}_3\cdot\mathbf{e}_2 \\
+    0 & 0 & \|\mathbf{v}_3\|
+    \end{bmatrix}.\]
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">The diagonal entry \(r_{kk}=\|\mathbf{v}_k\|\) is always positive (that's why \(R\) has positive diagonal). The off-diagonal upper entries are the projections of each column \(\mathbf{x}_k\) onto the earlier unit vectors \(\mathbf{e}_j\) — exactly the projection coefficients from the Gram-Schmidt formula.</div>
+  </div>
+  <div class="l33-col-box" style="margin-top:1rem">
+    <div class="l33-col-box-title" style="color:var(--blue)">Method C — Read from Gram-Schmidt directly (no extra work)</div>
+    <div class="l33-col-box-body">
+      During Gram-Schmidt you already computed all the projection scalars. Rewrite the Gram-Schmidt equations in the form \(\mathbf{x}_k = \sum_{j=1}^k r_{jk}\mathbf{e}_j\):<br><br>
+      \(\mathbf{x}_1 = \|\mathbf{v}_1\|\mathbf{e}_1\) — so \(r_{11}=\|\mathbf{v}_1\|\).<br>
+      \(\mathbf{x}_2 = (\mathbf{x}_2\cdot\mathbf{e}_1)\mathbf{e}_1 + \|\mathbf{v}_2\|\mathbf{e}_2\) — so \(r_{12}=\mathbf{x}_2\cdot\mathbf{e}_1\), \(r_{22}=\|\mathbf{v}_2\|\).<br>
+      \(\mathbf{x}_3 = (\mathbf{x}_3\cdot\mathbf{e}_1)\mathbf{e}_1+(\mathbf{x}_3\cdot\mathbf{e}_2)\mathbf{e}_2+\|\mathbf{v}_3\|\mathbf{e}_3\).<br><br>
+      This method gives \(R\) by <em>re-reading</em> the Gram-Schmidt work — no new computation.
+    </div>
+  </div>
+</div>
+
+<!-- ══ PART 4: FULL QR WORKED EXAMPLE ══ -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 4 — Complete \(QR\) Example from Scratch</div>
+  <div class="l33-h2">Gram-Schmidt then read off \(Q\) and \(R\) in one unified computation</div>
+
+  <div class="l33-worked open" id="s64-qr-main">
+    <div class="l33-worked-hdr" onclick="lwTog('s64-qr-main')">
+      <span class="badge b-lec">Full Worked Example</span>
+      <span class="l33-worked-title">Find the \(QR\) factorization of \(A=\begin{bmatrix}1&1&0\\1&0&1\\0&1&1\end{bmatrix}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body">Columns of \(A\): \(\mathbf{x}_1=\begin{bmatrix}1\\1\\0\end{bmatrix}\), \(\mathbf{x}_2=\begin{bmatrix}1\\0\\1\end{bmatrix}\), \(\mathbf{x}_3=\begin{bmatrix}0\\1\\1\end{bmatrix}\).</p>
+
+      <div class="l33-step">
+        <div class="l33-step-num">1</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Gram-Schmidt: find \(\mathbf{v}_1\) and normalize to \(\mathbf{e}_1\)</div>
+          <div class="l33-step-body">
+            \[\mathbf{v}_1 = \mathbf{x}_1 = \begin{bmatrix}1\\1\\0\end{bmatrix},\qquad \|\mathbf{v}_1\|^2 = 2,\qquad \|\mathbf{v}_1\|=\sqrt{2}.\]
+            \[\mathbf{e}_1 = \frac{\mathbf{v}_1}{\|\mathbf{v}_1\|}=\frac{1}{\sqrt{2}}\begin{bmatrix}1\\1\\0\end{bmatrix}.\]
+            <strong>First column of \(R\):</strong> \(r_{11}=\|\mathbf{v}_1\|=\sqrt{2}\). Entries below: all zero.
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">2</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Gram-Schmidt: find \(\mathbf{v}_2\) and normalize to \(\mathbf{e}_2\)</div>
+          <div class="l33-step-body">
+            Compute the projection scalar:
+            \[\mathbf{x}_2\cdot\mathbf{v}_1 = 1\cdot1+0\cdot1+1\cdot0=1.\]
+            Subtract the projection of \(\mathbf{x}_2\) onto \(\mathbf{v}_1\):
+            \[\mathbf{v}_2 = \mathbf{x}_2 - \frac{\mathbf{x}_2\cdot\mathbf{v}_1}{\|\mathbf{v}_1\|^2}\mathbf{v}_1 = \begin{bmatrix}1\\0\\1\end{bmatrix}-\frac{1}{2}\begin{bmatrix}1\\1\\0\end{bmatrix}=\begin{bmatrix}1/2\\-1/2\\1\end{bmatrix}.\]
+            \[\|\mathbf{v}_2\|^2=\tfrac{1}{4}+\tfrac{1}{4}+1=\tfrac{3}{2},\qquad \|\mathbf{v}_2\|=\sqrt{\tfrac{3}{2}}=\frac{\sqrt{6}}{2}.\]
+            \[\mathbf{e}_2 = \frac{\mathbf{v}_2}{\|\mathbf{v}_2\|}=\frac{2}{\sqrt{6}}\begin{bmatrix}1/2\\-1/2\\1\end{bmatrix}=\frac{1}{\sqrt{6}}\begin{bmatrix}1\\-1\\2\end{bmatrix}.\]
+            <strong>Second column of \(R\):</strong>
+            \[r_{12} = \mathbf{x}_2\cdot\mathbf{e}_1 = \frac{1}{\sqrt{2}}(1+0+0)=\frac{1}{\sqrt{2}},\qquad r_{22}=\|\mathbf{v}_2\|=\frac{\sqrt{6}}{2}.\]
+            Entry \(r_{32}=0\) (upper triangular).
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-step">
+        <div class="l33-step-num">3</div>
+        <div class="l33-step-content">
+          <div class="l33-step-title">Gram-Schmidt: find \(\mathbf{v}_3\) and normalize to \(\mathbf{e}_3\)</div>
+          <div class="l33-step-body">
+            Compute both projection scalars:
+            \[\mathbf{x}_3\cdot\mathbf{v}_1 = 0\cdot1+1\cdot1+1\cdot0=1,\qquad \mathbf{x}_3\cdot\mathbf{v}_2=0\cdot\tfrac{1}{2}+1\cdot(-\tfrac{1}{2})+1\cdot1=\tfrac{1}{2}.\]
+            Subtract both projections:
+            \[\mathbf{v}_3 = \begin{bmatrix}0\\1\\1\end{bmatrix}-\frac{1}{2}\begin{bmatrix}1\\1\\0\end{bmatrix}-\frac{1/2}{3/2}\begin{bmatrix}1/2\\-1/2\\1\end{bmatrix}=\begin{bmatrix}0\\1\\1\end{bmatrix}-\begin{bmatrix}1/2\\1/2\\0\end{bmatrix}-\frac{1}{3}\begin{bmatrix}1/2\\-1/2\\1\end{bmatrix}.\]
+            \[=\begin{bmatrix}0\\1\\1\end{bmatrix}-\begin{bmatrix}1/2\\1/2\\0\end{bmatrix}-\begin{bmatrix}1/6\\-1/6\\1/3\end{bmatrix}=\begin{bmatrix}-2/3\\2/3\\2/3\end{bmatrix}.\]
+            \[\|\mathbf{v}_3\|^2 = \tfrac{4}{9}+\tfrac{4}{9}+\tfrac{4}{9}=\tfrac{4}{3},\qquad \|\mathbf{v}_3\|=\frac{2}{\sqrt{3}}=\frac{2\sqrt{3}}{3}.\]
+            \[\mathbf{e}_3=\frac{\mathbf{v}_3}{\|\mathbf{v}_3\|}=\frac{3}{2\sqrt{3}}\begin{bmatrix}-2/3\\2/3\\2/3\end{bmatrix}=\frac{1}{\sqrt{3}}\begin{bmatrix}-1\\1\\1\end{bmatrix}.\]
+            <strong>Third column of \(R\):</strong>
+            \[r_{13}=\mathbf{x}_3\cdot\mathbf{e}_1=\frac{1}{\sqrt{2}}(0+1+0)=\frac{1}{\sqrt{2}},\quad r_{23}=\mathbf{x}_3\cdot\mathbf{e}_2=\frac{1}{\sqrt{6}}(0-1+2)=\frac{1}{\sqrt{6}},\quad r_{33}=\|\mathbf{v}_3\|=\frac{2}{\sqrt{3}}.\]
+          </div>
+        </div>
+      </div>
+
+      <div class="l33-final">
+        <div class="l33-final-lbl">Result: \(A = QR\)</div>
+        \[Q = \begin{bmatrix}\dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{6}} & \dfrac{-1}{\sqrt{3}}\\ \dfrac{1}{\sqrt{2}} & \dfrac{-1}{\sqrt{6}} & \dfrac{1}{\sqrt{3}}\\ 0 & \dfrac{2}{\sqrt{6}} & \dfrac{1}{\sqrt{3}}\end{bmatrix}, \qquad R = \begin{bmatrix}\sqrt{2} & \dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}}\\ 0 & \dfrac{\sqrt{6}}{2} & \dfrac{1}{\sqrt{6}}\\ 0 & 0 & \dfrac{2}{\sqrt{3}}\end{bmatrix}.\]
+        <div class="l33-final-note">Verify: compute \(Q^TQ\) (should be \(I_3\)) and \(QR\) (should equal \(A\)). The diagonal entries of \(R\) are \(\|\mathbf{v}_1\|, \|\mathbf{v}_2\|, \|\mathbf{v}_3\|\) — all positive, confirming this is the unique \(QR\) factorization with positive \(R\) diagonal.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PART 5: VERIFICATION AND SHORTCUT ══ -->
+<div class="l33-chunk">
+  <div class="l33-chunk-label">Part 5 — Verifying Your Answer and a Useful Shortcut</div>
+  <div class="l33-h2">How to check and how to avoid common mistakes</div>
+  <div class="l33-two-col">
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--teal)">Verification checklist</div>
+      <div class="l33-col-box-body">
+        \(\checkmark\) \(Q^TQ=I_n\) (columns of \(Q\) are orthonormal)<br><br>
+        \(\checkmark\) \(QR=A\) (the factorization is correct)<br><br>
+        \(\checkmark\) \(R\) is upper triangular with positive diagonal<br><br>
+        \(\checkmark\) Each column of \(Q\) has unit length<br><br>
+        If \(QR\neq A\), most likely error: wrong projection scalar (double-check the dot products in Gram-Schmidt).
+      </div>
+    </div>
+    <div class="l33-col-box">
+      <div class="l33-col-box-title" style="color:var(--gold)">Common mistakes</div>
+      <div class="l33-col-box-body">
+        Scaling \(\mathbf{v}_k\) and then using the scaled version in later projection steps — if you scale, use the <em>scaled</em> vector going forward.<br><br>
+        Forgetting to normalize for \(\mathbf{e}_k\) — the columns of \(Q\) must have unit length.<br><br>
+        Using \(\mathbf{x}_k\cdot\mathbf{e}_j\) in the projection but accidentally using \(\mathbf{x}_k\cdot\mathbf{v}_j/\|\mathbf{v}_j\|^2\) — these are different things (but give the same \(\mathbf{v}_k\)).
+      </div>
+    </div>
+  </div>
+  <div class="l33-annotation teal">
+    <div class="l33-annotation-icon">💡</div>
+    <div class="l33-annotation-text"><strong>The fastest path to \(R\):</strong> Once you finish Gram-Schmidt, you already have all the projection scalars written down. Organize them into \(R\) without recomputing: the \((j,k)\) entry of \(R\) for \(j\leq k\) is the scalar that multiplied \(\mathbf{e}_j\) when you wrote \(\mathbf{x}_k\) in the Gram-Schmidt decomposition, and the diagonal entry \(r_{kk}=\|\mathbf{v}_k\|\). Just read off your own scratch work.</div>
+  </div>
 </div>
 </div>
 <div id="sec6-4-practice" class="lec-tab-pane">
@@ -6646,55 +7979,133 @@ mjx-container{color:var(--text)}
   <div class="l33-chunk-label">Practice Set · Section 6.4</div>
   <div class="l33-callout info"><strong>Color key:</strong> <span class="badge b-lec">Slide Example</span> &middot; <span class="badge b-hw">Textbook Problem</span> from Section 6.4 of Lay.</div>
 
+  <!-- Problem 1 -->
   <div class="l33-worked open" id="s64p1">
-    <div class="l33-worked-hdr" onclick="lwTog('s64p1')"><span class="badge b-lec">Slide Example</span><span class="l33-worked-title">Gram-Schmidt on two vectors in \(\mathbb{R}^3\)</span><span class="l33-arrow">▾</span></div>
+    <div class="l33-worked-hdr" onclick="lwTog('s64p1')">
+      <span class="badge b-lec">Slide Example</span>
+      <span class="l33-worked-title">Gram-Schmidt then find \(Q\) and \(R\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
     <div class="l33-worked-body">
-      \[\mathbf{x}_1=\begin{bmatrix}3\\0\\-1\end{bmatrix},\quad\mathbf{x}_2=\begin{bmatrix}8\\5\\-6\end{bmatrix}\]
+      \[A = \begin{bmatrix}3\\0\\-1\end{bmatrix}\begin{bmatrix}8\\5\\-6\end{bmatrix}\quad\text{i.e. columns }\mathbf{x}_1=\begin{bmatrix}3\\0\\-1\end{bmatrix},\;\mathbf{x}_2=\begin{bmatrix}8\\5\\-6\end{bmatrix}.\]
       <div class="ans"><div class="ans-lbl">Solution</div>
-      \(\mathbf{v}_1=(3,0,-1)\), \(\|\mathbf{v}_1\|^2=10\).<br>
-      \(\mathbf{x}_2\cdot\mathbf{v}_1=24+0+6=30\).<br>
-      \(\mathbf{v}_2=(8,5,-6)-\frac{30}{10}(3,0,-1)=(8,5,-6)-(9,0,-3)=(-1,5,-3)\).<br>
-      Check: \(\mathbf{v}_1\cdot\mathbf{v}_2=-3+0+3=0\checkmark\).<br><br>
-      Orthogonal basis: \(\left\{(3,0,-1),(-1,5,-3)\right\}\). Normalize: \(\mathbf{e}_1=\frac{1}{\sqrt{10}}(3,0,-1)\), \(\mathbf{e}_2=\frac{1}{\sqrt{35}}(-1,5,-3)\).</div>
+      <strong>Step 1 — Gram-Schmidt.</strong>
+      \[\mathbf{v}_1 = \mathbf{x}_1 = \begin{bmatrix}3\\0\\-1\end{bmatrix},\qquad \|\mathbf{v}_1\|^2 = 9+0+1=10.\]
+      \[\mathbf{x}_2\cdot\mathbf{v}_1 = 3(8)+0(5)+(-1)(-6)=24+0+6=30.\]
+      \[\mathbf{v}_2 = \begin{bmatrix}8\\5\\-6\end{bmatrix}-\frac{30}{10}\begin{bmatrix}3\\0\\-1\end{bmatrix}=\begin{bmatrix}8\\5\\-6\end{bmatrix}-\begin{bmatrix}9\\0\\-3\end{bmatrix}=\begin{bmatrix}-1\\5\\-3\end{bmatrix}.\]
+      Check: \(\mathbf{v}_1\cdot\mathbf{v}_2 = (3)(-1)+(0)(5)+(-1)(-3)=-3+0+3=0\checkmark\).<br>
+      \(\|\mathbf{v}_2\|^2 = 1+25+9=35\).<br><br>
+      <strong>Step 2 — Normalize.</strong>
+      \[\mathbf{e}_1 = \frac{1}{\sqrt{10}}\begin{bmatrix}3\\0\\-1\end{bmatrix},\qquad \mathbf{e}_2 = \frac{1}{\sqrt{35}}\begin{bmatrix}-1\\5\\-3\end{bmatrix}.\]
+      \[Q = \begin{bmatrix}3/\sqrt{10} & -1/\sqrt{35}\\0 & 5/\sqrt{35}\\-1/\sqrt{10} & -3/\sqrt{35}\end{bmatrix}.\]
+      <strong>Step 3 — Build \(R\) from the entry formula.</strong>
+      \[r_{11} = \|\mathbf{v}_1\| = \sqrt{10}.\]
+      \[r_{12} = \mathbf{x}_2\cdot\mathbf{e}_1 = \frac{1}{\sqrt{10}}\bigl(3(8)+0(5)+(-1)(-6)\bigr)=\frac{30}{\sqrt{10}}=3\sqrt{10}.\]
+      \[r_{22} = \|\mathbf{v}_2\| = \sqrt{35}.\]
+      \[R = \begin{bmatrix}\sqrt{10} & 3\sqrt{10}\\0 & \sqrt{35}\end{bmatrix}.\]
+      <strong>Verify \(QR=A\):</strong>
+      \[QR = \begin{bmatrix}3/\sqrt{10} & -1/\sqrt{35}\\0 & 5/\sqrt{35}\\-1/\sqrt{10} & -3/\sqrt{35}\end{bmatrix}\begin{bmatrix}\sqrt{10}&3\sqrt{10}\\0&\sqrt{35}\end{bmatrix}=\begin{bmatrix}3&9-1\\0&0+5\\-1&-3-3\end{bmatrix}=\begin{bmatrix}3&8\\0&5\\-1&-6\end{bmatrix}=A\checkmark.\]
+      </div>
     </div>
   </div>
 
+  <!-- Problem 2 -->
   <div class="l33-worked open" id="s64t4">
-    <div class="l33-worked-hdr" onclick="lwTog('s64t4')"><span class="badge b-hw">Textbook 6.4 #4</span><span class="l33-worked-title">Find a QR factorization</span><span class="l33-arrow">▾</span></div>
+    <div class="l33-worked-hdr" onclick="lwTog('s64t4')">
+      <span class="badge b-hw">Textbook 6.4 #4</span>
+      <span class="l33-worked-title">Find the QR factorization of \(A=\begin{bmatrix}1&0\\1&1\\0&1\end{bmatrix}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
     <div class="l33-worked-body">
-      \[A=\begin{bmatrix}1&0\\1&1\\0&1\end{bmatrix}\]
       <div class="ans"><div class="ans-lbl">Solution</div>
-      Columns of \(A\): \(\mathbf{x}_1=(1,1,0)\), \(\mathbf{x}_2=(0,1,1)\).<br>
-      \(\mathbf{v}_1=(1,1,0)\), \(\|\mathbf{v}_1\|=\sqrt{2}\), \(\mathbf{e}_1=\frac{1}{\sqrt{2}}(1,1,0)\).<br>
-      \(\mathbf{x}_2\cdot\mathbf{v}_1=0+1+0=1\). \(\mathbf{v}_2=(0,1,1)-\frac{1}{2}(1,1,0)=(-\frac{1}{2},\frac{1}{2},1)\). Scale: \(\mathbf{v}_2=(-1,1,2)\), \(\|\mathbf{v}_2\|=\sqrt{6}\), \(\mathbf{e}_2=\frac{1}{\sqrt{6}}(-1,1,2)\).<br><br>
-      \(Q=\begin{bmatrix}1/\sqrt{2}&-1/\sqrt{6}\\1/\sqrt{2}&1/\sqrt{6}\\0&2/\sqrt{6}\end{bmatrix}\).<br>
-      \(R=Q^TA=\begin{bmatrix}\sqrt{2}&1/\sqrt{2}\\0&\sqrt{6}/\sqrt{6}\cdot\sqrt{6}/\sqrt{2}\end{bmatrix}\). More directly: \(r_{11}=\|\mathbf{v}_1\|=\sqrt{2}\), \(r_{12}=\mathbf{x}_2\cdot\mathbf{e}_1=\frac{1}{\sqrt{2}}\), \(r_{22}=\|\mathbf{v}_2\|=\sqrt{6}/\sqrt{2}\cdot\sqrt{2}=\sqrt{6}/1\)... let me compute: \(\|\mathbf{v}_2\|=\sqrt{1/4+1/4+1}=\sqrt{3/2}\), so \(r_{22}=\sqrt{3/2}\).<br>
-      \[R = \begin{bmatrix}\sqrt{2}&\tfrac{1}{\sqrt{2}}\\0&\sqrt{\tfrac{3}{2}}\end{bmatrix}.\]</div>
+      Columns: \(\mathbf{x}_1=(1,1,0)^T\), \(\mathbf{x}_2=(0,1,1)^T\).<br><br>
+      <strong>Gram-Schmidt.</strong>
+      \[\mathbf{v}_1 = \begin{bmatrix}1\\1\\0\end{bmatrix},\qquad \|\mathbf{v}_1\|^2 = 2.\]
+      \[\mathbf{x}_2\cdot\mathbf{v}_1 = 0(1)+1(1)+1(0)=1.\]
+      \[\mathbf{v}_2 = \begin{bmatrix}0\\1\\1\end{bmatrix}-\frac{1}{2}\begin{bmatrix}1\\1\\0\end{bmatrix}=\begin{bmatrix}-1/2\\1/2\\1\end{bmatrix}.\]
+      \[\|\mathbf{v}_2\|^2 = \tfrac{1}{4}+\tfrac{1}{4}+1 = \tfrac{3}{2},\qquad \|\mathbf{v}_2\| = \sqrt{\tfrac{3}{2}}=\frac{\sqrt{6}}{2}.\]
+      <strong>Normalize.</strong>
+      \[\mathbf{e}_1 = \frac{1}{\sqrt{2}}\begin{bmatrix}1\\1\\0\end{bmatrix},\qquad \mathbf{e}_2 = \frac{1}{\sqrt{6}/2}\begin{bmatrix}-1/2\\1/2\\1\end{bmatrix}=\frac{2}{\sqrt{6}}\begin{bmatrix}-1/2\\1/2\\1\end{bmatrix}=\frac{1}{\sqrt{6}}\begin{bmatrix}-1\\1\\2\end{bmatrix}.\]
+      \[Q = \begin{bmatrix}1/\sqrt{2} & -1/\sqrt{6}\\1/\sqrt{2} & 1/\sqrt{6}\\0 & 2/\sqrt{6}\end{bmatrix}.\]
+      <strong>Build \(R\).</strong>
+      \[r_{11} = \|\mathbf{v}_1\| = \sqrt{2}.\]
+      \[r_{12} = \mathbf{x}_2\cdot\mathbf{e}_1 = \frac{1}{\sqrt{2}}(0+1+0)=\frac{1}{\sqrt{2}}.\]
+      \[r_{22} = \|\mathbf{v}_2\| = \frac{\sqrt{6}}{2}.\]
+      \[R = \begin{bmatrix}\sqrt{2} & \dfrac{1}{\sqrt{2}}\\ 0 & \dfrac{\sqrt{6}}{2}\end{bmatrix}.\]
+      <strong>Verify \(QR=A\):</strong>
+      \[QR=\begin{bmatrix}\frac{1}{\sqrt{2}}&\frac{-1}{\sqrt{6}}\\\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{6}}\\0&\frac{2}{\sqrt{6}}\end{bmatrix}\begin{bmatrix}\sqrt{2}&\frac{1}{\sqrt{2}}\\0&\frac{\sqrt{6}}{2}\end{bmatrix}=\begin{bmatrix}1+0&\frac{1}{2}-\frac{1}{2}\\1+0&\frac{1}{2}+\frac{1}{2}\\0+0&0+1\end{bmatrix}=\begin{bmatrix}1&0\\1&1\\0&1\end{bmatrix}=A\checkmark.\]
+      </div>
     </div>
   </div>
 
+  <!-- Problem 3 -->
   <div class="l33-worked open" id="s64t10">
-    <div class="l33-worked-hdr" onclick="lwTog('s64t10')"><span class="badge b-hw">Textbook 6.4 #10</span><span class="l33-worked-title">Gram-Schmidt for a \(3\times3\) matrix</span><span class="l33-arrow">▾</span></div>
+    <div class="l33-worked-hdr" onclick="lwTog('s64t10')">
+      <span class="badge b-hw">Textbook 6.4 #10</span>
+      <span class="l33-worked-title">Gram-Schmidt on \(A=\begin{bmatrix}1&2\\-1&1\\-1&4\\1&-4\end{bmatrix}\) — find the orthogonal basis</span>
+      <span class="l33-arrow">▾</span>
+    </div>
     <div class="l33-worked-body">
-      \[A=\begin{bmatrix}1&2&5\\-1&1&-4\\-1&4&-3\\1&-4&7\end{bmatrix}\]
       <div class="ans"><div class="ans-lbl">Solution</div>
-      \(\mathbf{v}_1=(1,-1,-1,1)\), \(\|\mathbf{v}_1\|^2=4\).<br>
-      \(\mathbf{x}_2\cdot\mathbf{v}_1=2-1-4-4=-7\). Wait — \(\mathbf{x}_2=(2,1,4,-4)\): \(\mathbf{x}_2\cdot\mathbf{v}_1=2-1-4-4=-7\).<br>
-      \(\mathbf{v}_2=(2,1,4,-4)-\frac{-7}{4}(1,-1,-1,1)=(2+7/4,1-7/4,4-7/4,-4+7/4)=(15/4,-3/4,9/4,-9/4)\). Scale: \(\mathbf{v}_2=(5,-1,3,-3)\), \(\|\mathbf{v}_2\|^2=44\).<br>
-      (Continue for \(\mathbf{v}_3\) similarly — each step subtracts projections onto all previous \(\mathbf{v}_i\).)</div>
+      Columns: \(\mathbf{x}_1=(1,-1,-1,1)^T\), \(\mathbf{x}_2=(2,1,4,-4)^T\).<br><br>
+      <strong>Step 1.</strong>
+      \[\mathbf{v}_1 = \begin{bmatrix}1\\-1\\-1\\1\end{bmatrix},\qquad \|\mathbf{v}_1\|^2 = 1+1+1+1=4.\]
+      <strong>Step 2.</strong>
+      \[\mathbf{x}_2\cdot\mathbf{v}_1 = 1(2)+(-1)(1)+(-1)(4)+(1)(-4)=2-1-4-4=-7.\]
+      \[\mathbf{v}_2 = \begin{bmatrix}2\\1\\4\\-4\end{bmatrix}-\frac{-7}{4}\begin{bmatrix}1\\-1\\-1\\1\end{bmatrix}=\begin{bmatrix}2\\1\\4\\-4\end{bmatrix}+\begin{bmatrix}7/4\\-7/4\\-7/4\\7/4\end{bmatrix}=\begin{bmatrix}15/4\\-3/4\\9/4\\-9/4\end{bmatrix}.\]
+      Scale by 4: \(\mathbf{v}_2=(15,-3,9,-9)^T\). Simplify by dividing by 3: \(\mathbf{v}_2=(5,-1,3,-3)^T\).<br>
+      \[\|\mathbf{v}_2\|^2 = 25+1+9+9=44.\]
+      Check: \(\mathbf{v}_1\cdot\mathbf{v}_2=5+1-3-3=0\checkmark\).<br><br>
+      <strong>Orthogonal basis:</strong> \(\left\{\begin{bmatrix}1\\-1\\-1\\1\end{bmatrix},\;\begin{bmatrix}5\\-1\\3\\-3\end{bmatrix}\right\}\).<br><br>
+      <strong>Normalize to get \(Q\):</strong>
+      \[\mathbf{e}_1 = \frac{1}{2}\begin{bmatrix}1\\-1\\-1\\1\end{bmatrix},\qquad \mathbf{e}_2 = \frac{1}{\sqrt{44}}\begin{bmatrix}5\\-1\\3\\-3\end{bmatrix}=\frac{1}{2\sqrt{11}}\begin{bmatrix}5\\-1\\3\\-3\end{bmatrix}.\]
+      <strong>Build \(R\):</strong>
+      \[r_{11}=\|\mathbf{v}_1\|=2,\quad r_{12}=\mathbf{x}_2\cdot\mathbf{e}_1=\frac{1}{2}(2-1-4-4)=\frac{-7}{2},\quad r_{22}=\|\mathbf{v}_2\|=\sqrt{44}=2\sqrt{11}.\]
+      \[R = \begin{bmatrix}2 & -7/2\\ 0 & 2\sqrt{11}\end{bmatrix}.\]
+      </div>
     </div>
   </div>
 
+  <!-- Problem 4: span proof -->
   <div class="l33-worked open" id="s64t14">
-    <div class="l33-worked-hdr" onclick="lwTog('s64t14')"><span class="badge b-hw">Textbook 6.4 #14</span><span class="l33-worked-title">Why Gram-Schmidt preserves the span at each step</span><span class="l33-arrow">▾</span></div>
+    <div class="l33-worked-hdr" onclick="lwTog('s64t14')">
+      <span class="badge b-hw">Textbook 6.4 #14</span>
+      <span class="l33-worked-title">Why does Gram-Schmidt preserve the span at each step?</span>
+      <span class="l33-arrow">▾</span>
+    </div>
     <div class="l33-worked-body">
       <div class="ans"><div class="ans-lbl">Solution</div>
-      At step \(k\), we define \(\mathbf{v}_k = \mathbf{x}_k - c_1\mathbf{v}_1 - \cdots - c_{k-1}\mathbf{v}_{k-1}\). Since we are subtracting a combination of \(\mathbf{v}_1,\ldots,\mathbf{v}_{k-1}\) from \(\mathbf{x}_k\), we have:<br><br>
-      (1) \(\mathbf{v}_k \in \text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\) (it's a combination of \(\mathbf{x}_k\) and previous \(\mathbf{v}_i\)'s which are themselves combinations of previous \(\mathbf{x}_i\)'s).<br>
-      (2) \(\mathbf{x}_k = \mathbf{v}_k + c_1\mathbf{v}_1+\cdots \in \text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}\).<br><br>
-      Both inclusions hold, so \(\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}=\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\).</div>
+      We claim \(\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}=\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\) for each \(k\). We prove this by showing the two subspaces contain each other.<br><br>
+      <strong>\(\subseteq\):</strong> Each \(\mathbf{v}_j\) is formed by subtracting a combination of previous \(\mathbf{v}\)'s from \(\mathbf{x}_j\). By induction, each previous \(\mathbf{v}\) is in \(\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_j\}\). Therefore \(\mathbf{v}_k\in\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\), and so \(\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}\subseteq\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\).<br><br>
+      <strong>\(\supseteq\):</strong> Rearranging the Gram-Schmidt formula for step \(k\):
+      \[\mathbf{x}_k = \mathbf{v}_k + \sum_{j=1}^{k-1}\frac{\mathbf{x}_k\cdot\mathbf{v}_j}{\|\mathbf{v}_j\|^2}\mathbf{v}_j.\]
+      So \(\mathbf{x}_k\in\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}\), giving \(\text{Span}\{\mathbf{x}_1,\ldots,\mathbf{x}_k\}\subseteq\text{Span}\{\mathbf{v}_1,\ldots,\mathbf{v}_k\}\).<br><br>
+      Both inclusions hold, so the two spans are equal. \(\blacksquare\)
+      </div>
     </div>
   </div>
+
+  <!-- Problem 5: QR solve least squares -->
+  <div class="l33-worked open" id="s64t18">
+    <div class="l33-worked-hdr" onclick="lwTog('s64t18')">
+      <span class="badge b-hw">Application</span>
+      <span class="l33-worked-title">Use \(QR\) to solve the least-squares problem \(A\mathbf{x}=\mathbf{b}\)</span>
+      <span class="l33-arrow">▾</span>
+    </div>
+    <div class="l33-worked-body">
+      <p class="l33-step-body">Given \(A=QR\) from Problem 1 above with \(\mathbf{b}=\begin{bmatrix}1\\-1\\2\end{bmatrix}\), find the least-squares solution \(\hat{\mathbf{x}}\).</p>
+      <div class="ans"><div class="ans-lbl">Solution</div>
+      When \(A=QR\), the normal equations \(A^TA\hat{\mathbf{x}}=A^T\mathbf{b}\) simplify because \(A^TA=(QR)^T(QR)=R^TQ^TQR=R^TR\). So the normal equations become \(R^TR\hat{\mathbf{x}}=R^TQ^T\mathbf{b}\), which simplifies (multiply both sides by \((R^T)^{-1}\)) to:
+      \[\boxed{R\hat{\mathbf{x}} = Q^T\mathbf{b}.}\]
+      This is a triangular system — solve by back-substitution. For the \(A\) from Problem 1:
+      \[Q^T\mathbf{b} = \begin{bmatrix}3/\sqrt{10}&0&-1/\sqrt{10}\\-1/\sqrt{35}&5/\sqrt{35}&-3/\sqrt{35}\end{bmatrix}\begin{bmatrix}1\\-1\\2\end{bmatrix}=\begin{bmatrix}1/\sqrt{10}\\-12/\sqrt{35}\end{bmatrix}.\]
+      Then solve \(R\hat{\mathbf{x}}=Q^T\mathbf{b}\):
+      \[\begin{bmatrix}\sqrt{10}&3\sqrt{10}\\0&\sqrt{35}\end{bmatrix}\begin{bmatrix}\hat{x}_1\\\hat{x}_2\end{bmatrix}=\begin{bmatrix}1/\sqrt{10}\\-12/\sqrt{35}\end{bmatrix}.\]
+      Row 2: \(\sqrt{35}\,\hat{x}_2=-12/\sqrt{35}\Rightarrow\hat{x}_2=-12/35\).<br>
+      Row 1: \(\sqrt{10}\,\hat{x}_1=1/\sqrt{10}-3\sqrt{10}\cdot(-12/35)=1/\sqrt{10}+36\sqrt{10}/35=(1+36\cdot2)/\sqrt{10}\cdot(1/2)=\ldots\) The key takeaway: \(R\hat{\mathbf{x}}=Q^T\mathbf{b}\) is always back-solved, and it is numerically more stable than computing \((A^TA)^{-1}A^T\mathbf{b}\) directly.
+      </div>
+    </div>
+</div>
 </div>
 </div>
 <div id="sec6-4-slides" class="lec-tab-pane">
@@ -10627,6 +12038,10 @@ So if you ever find yourself with \(n\) eigenvectors that happen to be orthogona
   <div id="global-search-results" class="global-search-results">
     <div class="global-search-empty">Type 2+ characters to search across all sections.</div>
   </div>
+  <div class="search-notepad-wrap">
+    <div class="search-side-title">Notepad</div>
+    <textarea id="search-notepad" class="search-notepad" placeholder="Type quick notes while you study..."></textarea>
+  </div>
 </aside>
 </div><!-- app -->
 
@@ -10934,6 +12349,41 @@ function initGlobalSectionSearch() {
   });
 }
 
+function initFinalReviewProblems() {
+  const root = document.getElementById('finalreview-problems');
+  if (!root) return;
+  const cards = Array.from(root.querySelectorAll('details.fr-problem-card'));
+  if (!cards.length) return;
+
+  // Questions 1-33 are the True/False section.
+  cards.forEach((card, idx) => {
+    if (idx >= 33) return;
+    const summary = card.querySelector('summary');
+    if (!summary) return;
+    if (!summary.querySelector('.fr-problem-kind')) {
+      const badge = document.createElement('span');
+      badge.className = 'fr-problem-kind';
+      badge.textContent = 'T/F';
+      const q = summary.querySelector('.fr-problem-question');
+      if (q) summary.insertBefore(badge, q); else summary.appendChild(badge);
+    }
+  });
+
+  // Render math in both questions and solutions.
+  if (window.MathJax) {
+    window.MathJax.typesetPromise([root]).catch(() => {});
+  }
+
+  // Also render math when a card is expanded.
+  root.querySelectorAll('details.fr-problem-card').forEach((card) => {
+    card.addEventListener('toggle', () => {
+      if (card.open && window.MathJax) {
+        window.MathJax.typesetPromise([card]).catch(() => {});
+      }
+    });
+  });
+}
+
 document.addEventListener('keydown', (e) => {
   if (isTypingTarget(e.target)) return;
   if (e.altKey || e.ctrlKey || e.metaKey) return;
@@ -10954,6 +12404,7 @@ document.addEventListener('keydown', (e) => {
 
 window.addEventListener('load', () => {
   initGlobalSectionSearch();
+  initFinalReviewProblems();
   // Normalize textbook PDF URLs for GitHub Pages.
   // On project pages, the site may live under "/repo-name/" instead of "/",
   // and some deployments are sensitive to whether the current URL has a trailing slash.
