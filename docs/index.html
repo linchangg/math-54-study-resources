@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Math 54 — Full Lecture Notes (Lec 1–34)</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
 <script>
 window.MathJax = {
   tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']], tags:'none' },
@@ -172,6 +172,7 @@ h1 em{font-style:italic;color:var(--gold)}
 mjx-container{color:var(--text)}
 /* ── LECTURE TAB SYSTEM ── */
 .lec-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.lec-tab-break{flex-basis:100%;height:0}
 .lec-tab{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:.35rem .9rem;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'DM Mono',monospace;letter-spacing:.05em;text-transform:uppercase}
 .lec-tab:hover{color:var(--text);border-color:var(--border2)}
 .lec-tab.active{color:var(--gold);border-color:rgba(232,184,109,.4);background:rgba(232,184,109,.07)}
@@ -234,6 +235,48 @@ mjx-container{color:var(--text)}
 .exp-grid-cell-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
 .exp-grid-cell p{font-size:13px;color:#c0bdb8;line-height:1.65}
 
+/* Quiz Yourself */
+.qz-wrap{max-width:820px;margin:1.25rem auto 3rem;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:1.35rem 1.5rem 1.55rem}
+.qz-setup{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin:.1rem 0 .9rem}
+.qz-setup-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.qz-select{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.45rem .55rem;font-size:13px;font-family:inherit}
+.qz-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem;margin-bottom:.9rem;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.qz-stem{font-size:15px;line-height:1.75;color:var(--text);margin-bottom:1.25rem}
+.qz-input-area{margin-bottom:1.1rem}
+.qz-help{font-size:12.5px;color:var(--muted);margin:.35rem 0 .75rem;line-height:1.55}
+.qz-tf-row,.qz-mc-list{display:flex;flex-direction:column;gap:.55rem}
+.qz-choice-btn{text-align:left;padding:.65rem .85rem;border-radius:10px;border:1px solid var(--border);background:var(--bg3);color:var(--text);cursor:pointer;font-size:14px;line-height:1.45;font-family:inherit;transition:border-color .15s,background .15s}
+.qz-choice-btn:hover{border-color:rgba(232,184,109,.35);background:var(--bg)}
+.qz-choice-btn.selected{border-color:var(--gold);box-shadow:0 0 0 1px rgba(232,184,109,.2)}
+.qz-row{margin-bottom:.5rem}
+.qz-row label{display:inline-block;min-width:3.5rem;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);vertical-align:middle;margin-right:.4rem}
+.qz-textfield{width:100%;max-width:320px;padding:.55rem .7rem;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit;font-size:14px}
+.qz-matrix-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;margin-top:.25rem}
+.qz-matrix{display:grid;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:.65rem .75rem}
+.qz-matrix-cell{width:4.35rem;padding:.42rem .45rem;text-align:center;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:13px}
+.qz-matrix-br{font-family:'Georgia',serif;font-size:1.45rem;line-height:1;color:var(--gold);padding:0 .2rem}
+.qz-matrix-row{display:flex;align-items:center;gap:.25rem}
+.qz-actions{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;margin:.4rem 0 1rem}
+.qz-btn{padding:.55rem 1rem;border-radius:9px;font-family:inherit;font-size:13.5px;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text);transition:border-color .15s,background .15s,color .15s}
+.qz-btn.primary{background:rgba(232,184,109,.14);border-color:rgba(232,184,109,.42);color:var(--gold)}
+.qz-btn.primary:hover{background:rgba(232,184,109,.2)}
+.qz-btn:hover:not(:disabled){border-color:rgba(139,158,202,.35)}
+.qz-btn:disabled{opacity:.45;cursor:default}
+.qz-btn.ghost{background:transparent;border-color:var(--border)}
+.qz-feedback{margin:.5rem 0 1rem;padding:.85rem 1rem;border-radius:10px;border:1px solid var(--border2);font-size:14px;line-height:1.65;display:none}
+.qz-feedback.on{display:block}
+.qz-feedback.ok{border-color:rgba(126,184,164,.42);background:rgba(126,184,164,.08);color:#a8dcc8}
+.qz-feedback.need{border-color:rgba(232,184,109,.4);background:rgba(232,184,109,.06);color:var(--text)}
+.qz-feedback.bad{border-color:rgba(196,123,123,.45);background:rgba(196,123,123,.1);color:#e0abab}
+.qz-feedback .qz-ex{font-size:13px;color:var(--muted);margin-top:.65rem;display:block;line-height:1.6}
+.qz-history-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:1.2rem 0 .55rem;padding-top:.9rem;border-top:1px solid var(--border2)}
+.qz-history{display:flex;flex-direction:column;gap:.5rem}
+.qz-hist-item{font-size:12.8px;line-height:1.55;color:var(--text);padding:.62rem .75rem;background:var(--bg3);border:1px solid var(--border);border-radius:8px}
+.qz-hist-item .qz-h-meta{font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:var(--muted);margin-bottom:.35rem}
+.qz-hist-item.ok{border-left:3px solid rgba(126,184,164,.85)}
+.qz-hist-item.bad{border-left:3px solid rgba(196,123,123,.85)}
+@media(max-width:520px){.qz-matrix-cell{width:3.5rem;font-size:12px}}
+
 </style>
 </head>
 <body>
@@ -247,8 +290,9 @@ mjx-container{color:var(--text)}
   </div>
 
   <div class="sb-group">
-    <button class="sb-item on" onclick="showLec('courseinfo',this)" style="font-weight:600;color:var(--text)"><span class="sb-num" style="color:var(--teal)">★</span>Course Info &amp; Resources</button>
+    <button class="sb-item on" onclick="showLec('courseinfo',this)" style="color:var(--text)"><span class="sb-num" style="color:var(--teal)">★</span>Course Info &amp; Resources</button>
     <button class="sb-item" onclick="showLec('finalreview',this)"><span class="sb-num" style="color:var(--gold)">★</span>Final Review Resources</button>
+    <button class="sb-item" onclick="showLec('quizyourself',this)"><span class="sb-num" style="color:var(--teal)">?</span>Quiz Yourself</button>
   </div>
 
   <div class="sb-group">
@@ -320,17 +364,6 @@ mjx-container{color:var(--text)}
 <!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
 <div class="main">
 
-<div class="legend" style="margin-bottom:1.5rem">
-  <div class="li"><span class="ldot" style="background:var(--gold)"></span> Primary / real part</div>
-  <div class="li"><span class="ldot" style="background:var(--teal)"></span> Secondary / imaginary</div>
-  <div class="li"><span class="ldot" style="background:var(--red)"></span> Eigenvalue \(\alpha,\beta\)</div>
-  <div class="li"><span class="ldot" style="background:var(--blue)"></span> Matrix / system</div>
-  <div class="li"><span class="ldot" style="background:var(--purple)"></span> Assembled solution</div>
-  <div class="li"><span class="badge b-lec">Lecture</span> From slides</div>
-  <div class="li"><span class="badge b-new">New</span> Practice</div>
-  <div class="li"><span class="badge b-hw">HW</span> Homework</div>
-</div>
-
 <!-- ══════════════════════════════════════════════ -->
 <!-- LECTURES 1–31: CONCISE SUMMARIES             -->
 <!-- ══════════════════════════════════════════════ -->
@@ -362,9 +395,18 @@ mjx-container{color:var(--text)}
 <style>
 /* ── Course Info page ── */
 .ci-page { max-width: 860px; }
-.ci-hero { margin-bottom: 2.5rem; }
-.ci-hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(1.6rem,3.5vw,2.2rem); font-weight: 400; line-height: 1.2; margin-bottom: .4rem; }
-.ci-hero-sub { font-size: 14px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: .08em; }
+.ci-hero { margin-bottom: 2.5rem; min-height: 44vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transition:opacity .35s ease, transform .35s ease; }
+.ci-hero.faded { opacity:.08; transform:translateY(-8px); pointer-events:none; }
+.ci-hero-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem,4.4vw,2.95rem); font-weight: 400; line-height: 1.15; margin-bottom: .55rem; letter-spacing:.01em; }
+.ci-hero-title .ci-hero-line-main{display:inline;color:#d6d3cc}
+.ci-hero-title .ci-hero-line-mid{display:inline;color:#d6d3cc}
+.ci-hero-title .ci-hero-line-script{display:inline;color:var(--gold);font-family:'Great Vibes','Instrument Serif',serif;font-size:1.16em;font-weight:400;letter-spacing:.02em;padding-left:.12em}
+.ci-hero-sub { font-size: 13px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: .08em; }
+.ci-scroll-cue { margin-top: 2.15rem; display:flex; flex-direction:column; align-items:center; gap:.62rem; color:var(--muted); font-family:'DM Mono', monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; opacity:.92; transition:opacity .25s ease, transform .25s ease; }
+.ci-scroll-cue.hidden { opacity:0; transform:translateY(-4px); pointer-events:none; }
+.ci-scroll-arrow { font-size:18px; color:var(--gold); line-height:1; }
+.ci-scroll-label{line-height:1.2;margin-top:.33in}
+@keyframes ciArrowBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 .ci-section { margin-bottom: 2.5rem; }
 .ci-section-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
 .ci-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.4rem; margin-bottom: .8rem; }
@@ -417,8 +459,12 @@ mjx-container{color:var(--text)}
 <div class="ci-page">
 
 <div class="ci-hero">
-  <div class="ci-hero-title">Math 54 — Linear Algebra &amp; Differential Equations</div>
-  <div class="ci-hero-sub">Spring 2026 · Arun Sharma · <a href="https://www.ocf.berkeley.edu/~asharma/Math54/" target="_blank" style="color:var(--teal);text-decoration:none">Official Course Website ↗</a></div>
+  <div class="ci-hero-title"><span class="ci-hero-line-main">Linear Algebra</span> <span class="ci-hero-line-mid">&amp; Differential Equations</span> <span class="ci-hero-line-script">Visualizer</span></div>
+  <div class="ci-hero-sub">Math 54 · Spring 2026 · Created by Linda Chang · <a href="https://www.ocf.berkeley.edu/~asharma/Math54/" target="_blank" style="color:var(--teal);text-decoration:none">Course Website ↗</a></div>
+  <div id="ci-scroll-cue" class="ci-scroll-cue">
+    <div class="ci-scroll-arrow">↓</div>
+    <div class="ci-scroll-label">Scroll For Course Info</div>
+  </div>
 </div>
 
 <!-- ── Tabs ── -->
@@ -788,15 +834,21 @@ mjx-container{color:var(--text)}
 <div class="lec-pg-title">Final Review Resources</div>
 <div class="lec-pg-meta">FORMULA SHEET + FINAL REVIEW PDF</div>
 <div class="lec-tabs">
-  <button class="lec-tab active" onclick="switchTab('finalreview','formula',this)">Formula Sheet</button>
+  <button class="lec-tab active" onclick="switchTab('finalreview','formula',this)">Final Formula Sheet</button>
+  <button class="lec-tab" onclick="switchTab('finalreview','mid1formula',this)">Midterm 1 Formula Sheet</button>
+  <button class="lec-tab" onclick="switchTab('finalreview','mid2formula',this)">Midterm 2 Formula Sheet</button>
+  <span class="lec-tab-break" aria-hidden="true"></span>
   <button class="lec-tab" onclick="switchTab('finalreview','final',this)">Final Review</button>
-  <button class="lec-tab" onclick="switchTab('finalreview','problems',this)">Problems</button>
+  <button class="lec-tab" onclick="switchTab('finalreview','mid1review',this)">Midterm 1 Review</button>
+  <button class="lec-tab" onclick="switchTab('finalreview','mid2review',this)">Midterm 2 Review</button>
+  <span class="lec-tab-break" aria-hidden="true"></span>
+  <button class="lec-tab" onclick="switchTab('finalreview','problems',this)">Final Review Questions</button>
 </div>
 
 <div id="finalreview-formula" class="lec-tab-pane active">
   <div class="pdf-viewer-wrap">
     <div class="pdf-viewer-toolbar">
-      <div class="pdf-viewer-label">Overall Formula Sheet PDF</div>
+      <div class="pdf-viewer-label">Final Formula Sheet</div>
       <a class="pdf-open-btn" href="final-review-pdfs/overall-formula-sheet.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
     </div>
     <iframe class="pdf-frame" src="final-review-pdfs/overall-formula-sheet.pdf#navpanes=0"></iframe>
@@ -806,10 +858,50 @@ mjx-container{color:var(--text)}
 <div id="finalreview-final" class="lec-tab-pane">
   <div class="pdf-viewer-wrap">
     <div class="pdf-viewer-toolbar">
-      <div class="pdf-viewer-label">Final Review PDF</div>
+      <div class="pdf-viewer-label">Final Review</div>
       <a class="pdf-open-btn" href="final-review-pdfs/final-review.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
     </div>
     <iframe class="pdf-frame" src="final-review-pdfs/final-review.pdf#navpanes=0"></iframe>
+  </div>
+</div>
+
+<div id="finalreview-mid1formula" class="lec-tab-pane">
+  <div class="pdf-viewer-wrap">
+    <div class="pdf-viewer-toolbar">
+      <div class="pdf-viewer-label">Midterm 1 Formula Sheet</div>
+      <a class="pdf-open-btn" href="final-review-pdfs/midterm-1-formula-sheet.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
+    </div>
+    <iframe class="pdf-frame" src="final-review-pdfs/midterm-1-formula-sheet.pdf#navpanes=0"></iframe>
+  </div>
+</div>
+
+<div id="finalreview-mid2formula" class="lec-tab-pane">
+  <div class="pdf-viewer-wrap">
+    <div class="pdf-viewer-toolbar">
+      <div class="pdf-viewer-label">Midterm 2 Formula Sheet</div>
+      <a class="pdf-open-btn" href="final-review-pdfs/midterm-2-formula-sheet.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
+    </div>
+    <iframe class="pdf-frame" src="final-review-pdfs/midterm-2-formula-sheet.pdf#navpanes=0"></iframe>
+  </div>
+</div>
+
+<div id="finalreview-mid1review" class="lec-tab-pane">
+  <div class="pdf-viewer-wrap">
+    <div class="pdf-viewer-toolbar">
+      <div class="pdf-viewer-label">Midterm 1 Review</div>
+      <a class="pdf-open-btn" href="final-review-pdfs/midterm-1-review.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
+    </div>
+    <iframe class="pdf-frame" src="final-review-pdfs/midterm-1-review.pdf#navpanes=0"></iframe>
+  </div>
+</div>
+
+<div id="finalreview-mid2review" class="lec-tab-pane">
+  <div class="pdf-viewer-wrap">
+    <div class="pdf-viewer-toolbar">
+      <div class="pdf-viewer-label">Midterm 2 Review</div>
+      <a class="pdf-open-btn" href="final-review-pdfs/midterm-2-review.pdf#navpanes=0" target="_blank">Open in Separate Tab</a>
+    </div>
+    <iframe class="pdf-frame" src="final-review-pdfs/midterm-2-review.pdf#navpanes=0"></iframe>
   </div>
 </div>
 
@@ -1513,6 +1605,38 @@ mjx-container{color:var(--text)}
 </div>
 </div><!-- end s-finalreview -->
 
+<div class="sec" id="s-quizyourself">
+<div class="lec-pg-title">Quiz Yourself</div>
+<div class="lec-pg-meta">PRACTICE · LINEAR ALGEBRA &amp; DIFFERENTIAL EQUATIONS</div>
+<p class="l33-p" style="max-width:720px;margin:0 auto .5rem;line-height:1.75">Shuffle of practice items (true/false, multiple choice, numeric fields, and matrix/vector entry). Your answer log is stored in this browser only (<code>localStorage</code>).</p>
+
+<div class="qz-wrap">
+  <div class="qz-setup">
+    <span class="qz-setup-label">Choose quiz</span>
+    <select id="qz-quiz-select" class="qz-select">
+      <option value="quiza">Quiz A · Core mixed practice</option>
+      <option value="quizb">Quiz B · Hard mode comprehensive</option>
+    </select>
+    <button type="button" class="qz-btn ghost" id="qz-start">Start selected quiz</button>
+  </div>
+  <div class="qz-head">
+    <span id="qz-topic">Topic</span>
+    <span id="qz-progress">Question 1 / 30</span>
+  </div>
+  <div id="qz-stem" class="qz-stem"></div>
+  <div id="qz-input" class="qz-input-area"></div>
+  <div class="qz-actions">
+    <button type="button" class="qz-btn primary" id="qz-submit">Check answer</button>
+    <button type="button" class="qz-btn" id="qz-next" disabled>Next question</button>
+    <button type="button" class="qz-btn ghost" id="qz-shuffle">New shuffle</button>
+    <button type="button" class="qz-btn ghost" id="qz-clear-history">Clear history</button>
+  </div>
+  <div id="qz-feedback" class="qz-feedback" role="status"></div>
+  <div class="qz-history-title">Answer history</div>
+  <div id="qz-history" class="qz-history"></div>
+</div><!-- qz-wrap -->
+</div><!-- end s-quizyourself -->
+
 <!-- ── LEC 1 ── -->
 
 <div class="sec" id="s-sec1-1">
@@ -1919,16 +2043,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 01 · Intro + 1.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture1.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture1.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture1.pdf" title="Lecture 1 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture1.pdf" title="Lecture 1 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 02 · 1.1 P2 + 1.2</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture2.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture2.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture2.pdf" title="Lecture 2 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture2.pdf" title="Lecture 2 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-1-textbook" class="lec-tab-pane">
@@ -2335,9 +2459,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 02 · 1.1 P2 + 1.2</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture2.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture2.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture2.pdf" title="Lecture 2 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture2.pdf" title="Lecture 2 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-2-textbook" class="lec-tab-pane">
@@ -2739,9 +2863,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 03 · 1.3 + 1.4 + 1.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture3.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture3.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture3.pdf" title="Lecture 3 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture3.pdf" title="Lecture 3 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-3-textbook" class="lec-tab-pane">
@@ -2934,9 +3058,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 03 · 1.3 + 1.4 + 1.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture3.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture3.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture3.pdf" title="Lecture 3 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture3.pdf" title="Lecture 3 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-4-textbook" class="lec-tab-pane">
@@ -3148,16 +3272,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 03 · 1.3 + 1.4 + 1.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture3.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture3.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture3.pdf" title="Lecture 3 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture3.pdf" title="Lecture 3 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 04 · 1.5 P2 + 1.7 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture4.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture4.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture4.pdf" title="Lecture 4 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture4.pdf" title="Lecture 4 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-5-textbook" class="lec-tab-pane">
@@ -3328,16 +3452,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 04 · 1.5 P2 + 1.7 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture4.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture4.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture4.pdf" title="Lecture 4 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture4.pdf" title="Lecture 4 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 05 · 1.7 P2 + 1.8 + 1.9 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture5.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture5.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture5.pdf" title="Lecture 5 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture5.pdf" title="Lecture 5 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-7-textbook" class="lec-tab-pane">
@@ -3515,9 +3639,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 05 · 1.7 P2 + 1.8 + 1.9 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture5.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture5.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture5.pdf" title="Lecture 5 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture5.pdf" title="Lecture 5 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-8-textbook" class="lec-tab-pane">
@@ -3704,16 +3828,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 05 · 1.7 P2 + 1.8 + 1.9 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture5.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture5.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture5.pdf" title="Lecture 5 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture5.pdf" title="Lecture 5 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 06 · 1.9 P2 + 2.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture6.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture6.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture6.pdf" title="Lecture 6 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture6.pdf" title="Lecture 6 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec1-9-textbook" class="lec-tab-pane">
@@ -3908,16 +4032,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 06 · 1.9 P2 + 2.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture6.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture6.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture6.pdf" title="Lecture 6 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture6.pdf" title="Lecture 6 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 07 · 2.1 P2</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture7.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture7.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture7.pdf" title="Lecture 7 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture7.pdf" title="Lecture 7 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec2-1-textbook" class="lec-tab-pane">
@@ -4069,9 +4193,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 08 · 2.2 + 2.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture8.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture8.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture8.pdf" title="Lecture 8 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture8.pdf" title="Lecture 8 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec2-2-textbook" class="lec-tab-pane">
@@ -4227,16 +4351,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 08 · 2.2 + 2.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture8.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture8.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture8.pdf" title="Lecture 8 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture8.pdf" title="Lecture 8 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 09 · 2.3 P2 + 3.1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture9.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture9.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture9.pdf" title="Lecture 9 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture9.pdf" title="Lecture 9 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec2-3-textbook" class="lec-tab-pane">
@@ -4397,9 +4521,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 09 · 2.3 P2 + 3.1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture9.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture9.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture9.pdf" title="Lecture 9 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture9.pdf" title="Lecture 9 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec3-1-textbook" class="lec-tab-pane">
@@ -4564,9 +4688,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 10 · 3.2 + 3.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture10.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture10.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture10.pdf" title="Lecture 10 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture10.pdf" title="Lecture 10 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec3-2-textbook" class="lec-tab-pane">
@@ -4632,7 +4756,7 @@ mjx-container{color:var(--text)}
   <div class="l33-eq-block">
     <div class="l33-eq-label">Adjugate and inverse</div>
     \[(\text{adj}\,A)_{ij} = C_{ji}, \qquad A^{-1} = \frac{1}{\det(A)}\,\text{adj}\,A.\]
-    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">Note: the \((i,j)\) entry of adj\,(A)\) is the \((j,i)\) cofactor — rows and columns swap. This formula is consistent with the \(2\times2\) inverse formula: \(\frac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}\) is exactly \(\frac{1}{\det A}\text{adj}\,A\).</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:.8rem">Note: the \((i,j)\) entry of adj\,(A) is the \((j,i)\) cofactor — rows and columns swap. This formula is consistent with the \(2\times2\) inverse formula: \(\frac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}\) is exactly \(\frac{1}{\det A}\text{adj}\,A\).</div>
   </div>
 </div>
 
@@ -4733,16 +4857,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 10 · 3.2 + 3.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture10.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture10.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture10.pdf" title="Lecture 10 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture10.pdf" title="Lecture 10 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 11 · 3.3 P2 + 4.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture11.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture11.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture11.pdf" title="Lecture 11 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture11.pdf" title="Lecture 11 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec3-3-textbook" class="lec-tab-pane">
@@ -5426,16 +5550,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 11 · 3.3 P2 + 4.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture11.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture11.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture11.pdf" title="Lecture 11 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture11.pdf" title="Lecture 11 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 12 · 4.1 P2 + 4.2 + 4.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture12.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture12.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture12.pdf" title="Lecture 12 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture12.pdf" title="Lecture 12 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec4-1-textbook" class="lec-tab-pane">
@@ -5610,9 +5734,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 12 · 4.1 P2 + 4.2 + 4.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture12.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture12.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture12.pdf" title="Lecture 12 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture12.pdf" title="Lecture 12 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec4-2-textbook" class="lec-tab-pane">
@@ -5792,16 +5916,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 12 · 4.1 P2 + 4.2 + 4.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture12.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture12.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture12.pdf" title="Lecture 12 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture12.pdf" title="Lecture 12 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 13 · 4.3 P2 + 4.4 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture13.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture13.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture13.pdf" title="Lecture 13 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture13.pdf" title="Lecture 13 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec4-3-textbook" class="lec-tab-pane">
@@ -5972,16 +6096,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 13 · 4.3 P2 + 4.4 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture13.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture13.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture13.pdf" title="Lecture 13 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture13.pdf" title="Lecture 13 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 14 · 4.4 P2 + 4.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture14.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture14.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture14.pdf" title="Lecture 14 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture14.pdf" title="Lecture 14 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec4-4-textbook" class="lec-tab-pane">
@@ -6150,16 +6274,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 14 · 4.4 P2 + 4.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture14.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture14.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture14.pdf" title="Lecture 14 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture14.pdf" title="Lecture 14 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 15 · 4.5 P2 + 4.6</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture15.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture15.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture15.pdf" title="Lecture 15 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture15.pdf" title="Lecture 15 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec4-5-textbook" class="lec-tab-pane">
@@ -6339,9 +6463,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 15 · 4.5 P2 + 4.6</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture15.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture15.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture15.pdf" title="Lecture 15 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture15.pdf" title="Lecture 15 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec4-6-textbook" class="lec-tab-pane">
@@ -6537,9 +6661,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 16 · 5.1 + 5.2 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture16.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture16.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture16.pdf" title="Lecture 16 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture16.pdf" title="Lecture 16 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec5-1-textbook" class="lec-tab-pane">
@@ -6702,16 +6826,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 16 · 5.1 + 5.2 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture16.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture16.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture16.pdf" title="Lecture 16 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture16.pdf" title="Lecture 16 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 17 · 5.2 P2 + 5.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture17.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture17.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture17.pdf" title="Lecture 17 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture17.pdf" title="Lecture 17 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec5-2-textbook" class="lec-tab-pane">
@@ -6898,16 +7022,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 17 · 5.2 P2 + 5.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture17.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture17.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture17.pdf" title="Lecture 17 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture17.pdf" title="Lecture 17 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 18 · 5.3 P2 + 5.4 + 5.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture18.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture18.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture18.pdf" title="Lecture 18 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture18.pdf" title="Lecture 18 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec5-3-textbook" class="lec-tab-pane">
@@ -7026,9 +7150,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 18 · 5.3 P2 + 5.4 + 5.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture18.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture18.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture18.pdf" title="Lecture 18 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture18.pdf" title="Lecture 18 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec5-4-textbook" class="lec-tab-pane">
@@ -7206,16 +7330,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 18 · 5.3 P2 + 5.4 + 5.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture18.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture18.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture18.pdf" title="Lecture 18 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture18.pdf" title="Lecture 18 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 19 · 5.5 P2 + 6.1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture19.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture19.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture19.pdf" title="Lecture 19 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture19.pdf" title="Lecture 19 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec5-5-textbook" class="lec-tab-pane">
@@ -7392,9 +7516,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 19 · 5.5 P2 + 6.1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture19.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture19.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture19.pdf" title="Lecture 19 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture19.pdf" title="Lecture 19 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-1-textbook" class="lec-tab-pane">
@@ -7527,9 +7651,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 20 · 6.2 + 6.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture20.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture20.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture20.pdf" title="Lecture 20 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture20.pdf" title="Lecture 20 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-2-textbook" class="lec-tab-pane">
@@ -7697,16 +7821,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 20 · 6.2 + 6.3 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture20.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture20.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture20.pdf" title="Lecture 20 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture20.pdf" title="Lecture 20 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 21 · 6.3 P2 + 6.4 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture21.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture21.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture21.pdf" title="Lecture 21 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture21.pdf" title="Lecture 21 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-3-textbook" class="lec-tab-pane">
@@ -8112,16 +8236,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 21 · 6.3 P2 + 6.4 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture21.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture21.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture21.pdf" title="Lecture 21 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture21.pdf" title="Lecture 21 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 22 · 6.4 P2 + 6.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture22.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture22.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture22.pdf" title="Lecture 22 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture22.pdf" title="Lecture 22 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-4-textbook" class="lec-tab-pane">
@@ -8259,16 +8383,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 22 · 6.4 P2 + 6.5 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture22.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture22.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture22.pdf" title="Lecture 22 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture22.pdf" title="Lecture 22 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 23 · 6.5 P2 + 6.6 + 6.7 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture23.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture23.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture23.pdf" title="Lecture 23 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture23.pdf" title="Lecture 23 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-5-textbook" class="lec-tab-pane">
@@ -8407,9 +8531,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 23 · 6.5 P2 + 6.6 + 6.7 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture23.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture23.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture23.pdf" title="Lecture 23 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture23.pdf" title="Lecture 23 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-6-textbook" class="lec-tab-pane">
@@ -8575,16 +8699,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 23 · 6.5 P2 + 6.6 + 6.7 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture23.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture23.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture23.pdf" title="Lecture 23 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture23.pdf" title="Lecture 23 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 24 · 6.7 P2 + 7.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture24.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture24.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture24.pdf" title="Lecture 24 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture24.pdf" title="Lecture 24 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec6-7-textbook" class="lec-tab-pane">
@@ -8824,16 +8948,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 24 · 6.7 P2 + 7.1 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture24.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture24.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture24.pdf" title="Lecture 24 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture24.pdf" title="Lecture 24 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 25 · 7.1 P2 + 7.2 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture25.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture25.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture25.pdf" title="Lecture 25 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture25.pdf" title="Lecture 25 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec7-1-textbook" class="lec-tab-pane">
@@ -9072,16 +9196,16 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 25 · 7.1 P2 + 7.2 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture25.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture25.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture25.pdf" title="Lecture 25 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture25.pdf" title="Lecture 25 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 26 · 7.2 P2 + 7.4 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture26.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture26.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture26.pdf" title="Lecture 26 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture26.pdf" title="Lecture 26 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec7-2-textbook" class="lec-tab-pane">
@@ -9378,23 +9502,23 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 26 · 7.2 P2 + 7.4 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture26.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture26.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture26.pdf" title="Lecture 26 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture26.pdf" title="Lecture 26 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 27 · 7.4 P2</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture27.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture27.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture27.pdf" title="Lecture 27 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture27.pdf" title="Lecture 27 slides PDF"></iframe>
 </div>
 <div class="pdf-viewer-wrap" style="margin-bottom:1rem;">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Lecture 28 · 7.4 P3 + B4.2 P1</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture28.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture28.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture28.pdf" title="Lecture 28 slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture28.pdf" title="Lecture 28 slides PDF"></iframe>
 </div>
 </div>
 <div id="sec7-4-textbook" class="lec-tab-pane">
@@ -9432,9 +9556,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture29.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture29.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture29.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture29.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><div class="sec" id="s-lec30">
@@ -9462,9 +9586,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture30.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture30.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture30.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture30.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><div class="sec" id="s-lec31">
@@ -9493,9 +9617,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture31.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture31.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture31.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture31.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><!-- end s-lec31 -->
@@ -9798,9 +9922,9 @@ mjx-container{color:var(--text)}
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture32.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture32.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture32.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture32.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><!-- end s-lec32 -->
@@ -10276,30 +10400,6 @@ mjx-container{color:var(--text)}
   </div>
 </div>
 
-<script>
-
-function switchTab(lecId, paneId, btn) {
-  const container = document.getElementById('s-' + lecId);
-  if (!container) return;
-  container.querySelectorAll('.lec-tab').forEach(t => t.classList.remove('active'));
-  container.querySelectorAll('.lec-tab-pane').forEach(p => p.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  const pane = document.getElementById(lecId + '-' + paneId);
-  if (pane) pane.classList.add('active');
-  if (window.MathJax) MathJax.typesetPromise([pane]);
-}
-
-function lwTog(id) {
-  const el = document.getElementById(id);
-  const isOpen = el.classList.contains('open');
-  el.classList.toggle('open', !isOpen);
-  el.classList.toggle('closed', isOpen);
-  const sub = el.querySelector('.l33-worked-sub');
-  if (sub) sub.textContent = isOpen ? 'click to expand' : 'click to collapse';
-  if (!isOpen && window.MathJax) MathJax.typesetPromise([el]);
-}
-</script>
-
 </div>
 <div id="lec33-practice" class="lec-tab-pane"><div class="no-problems">No problems added yet for this lecture.</div></div>
 
@@ -10307,9 +10407,9 @@ function lwTog(id) {
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture33.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture33.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture33.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture33.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><!-- end lec33 -->
@@ -10557,9 +10657,9 @@ function lwTog(id) {
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture34.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture34.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture34.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture34.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><!-- end lec34 -->
@@ -10725,9 +10825,9 @@ function lwTog(id) {
 <div class="pdf-viewer-wrap">
   <div class="pdf-viewer-toolbar">
     <span class="pdf-viewer-label">Sharma Lecture Slides</span>
-    <a class="pdf-open-btn" href="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture34.pdf" target="_blank">↗ Open in new tab</a>
+    <a class="pdf-open-btn" href="slides-pdfs/Lecture34.pdf" target="_blank">↗ Open in new tab</a>
   </div>
-  <iframe class="pdf-frame" src="https://www.ocf.berkeley.edu/~asharma/Math54/Lecture34.pdf" title="Lecture slides PDF"></iframe>
+  <iframe class="pdf-frame" src="slides-pdfs/Lecture34.pdf" title="Lecture slides PDF"></iframe>
 </div>
 </div>
 </div><!-- end addendum -->
@@ -12059,7 +12159,9 @@ function showLec(id, btn) {
   const sec = document.getElementById('s-' + id);
   if (sec) sec.classList.add('on');
   if (btn) btn.classList.add('on');
-  if (window.MathJax) MathJax.typesetPromise();
+  if (sec && window.MathJax && sec.id !== 's-quizyourself' && !sec.dataset.mathReady) {
+    window.MathJax.typesetPromise([sec]).then(() => { sec.dataset.mathReady = '1'; }).catch(() => {});
+  }
   // scroll main to top
   document.querySelector('.main').scrollTo(0,0);
 }
@@ -12079,7 +12181,9 @@ function switchTab(lecId, paneId, btn) {
   if (btn) btn.classList.add('active');
   const pane = document.getElementById(lecId + '-' + paneId);
   if (pane) pane.classList.add('active');
-  if (window.MathJax) MathJax.typesetPromise([pane]);
+  if (pane && window.MathJax && !pane.dataset.mathReady) {
+    window.MathJax.typesetPromise([pane]).then(() => { pane.dataset.mathReady = '1'; }).catch(() => {});
+  }
 }
 
 function lwTog(id) {
@@ -12384,6 +12488,581 @@ function initFinalReviewProblems() {
   });
 }
 
+function initCourseInfoHeroCue() {
+  const main = document.querySelector('.main');
+  const hero = document.querySelector('#s-courseinfo .ci-hero');
+  const cue = document.getElementById('ci-scroll-cue');
+  if (!main || !hero || !cue) return;
+  const update = () => {
+    const y = main.scrollTop;
+    cue.classList.toggle('hidden', y > 18);
+    hero.classList.toggle('faded', y > 120);
+  };
+  main.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+const QUIZ_HISTORY_KEY = 'math54QuizHistory_v1';
+const QUIZ_A_BANK = [
+  { id:'q01', topic:'Linear systems', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) If \\(A\\) and \\(B\\) are row equivalent, then for every \\(\\mathbf{b}\\) the systems \\(A\\mathbf{x}=\\mathbf{b}\\) and \\(B\\mathbf{x}=\\mathbf{b}\\) have the same solution set.',
+    answer:false,
+    explain:'Row equivalence gives \\(B=EA\\) with \\(E\\) invertible, so \\(A\\mathbf{x}=\\mathbf{b}\\) matches \\(B\\mathbf{x}=E\\mathbf{b}\\), not necessarily \\(B\\mathbf{x}=\\mathbf{b}\\).' },
+  { id:'q02', topic:'Matrix inverse', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) If \\(A\\) is a square real matrix with \\(A^2=I\\), then \\(A^{\\mathsf T}\\) is also its own inverse (\\((A^{\\mathsf T})^2=I\\)).',
+    answer:true,
+    explain:'Transposing \\(A^2=I\\) gives \\((A^{\\mathsf T})^2=I\\).' },
+  { id:'q03', topic:'Eigenvalues', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) If \\(A\\) and \\(B\\) are same-size invertible real matrices, then \\(AB\\) and \\(BA\\) have the same characteristic polynomial.',
+    answer:true,
+    explain:'Invertible \\(A\\) gives \\(BA=A^{-1}(AB)A\\), so \\(AB\\) and \\(BA\\) are similar; similar matrices share the characteristic polynomial.' },
+  { id:'q04', topic:'Determinants', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) Every square \\(0\\)–\\(1\\) matrix has the same determinant as its reduced row echelon form.',
+    answer:false,
+    explain:'Row reductions can multiply the determinant by nonzero scalars and swap rows; \\( \\det(A) \\neq \\det(\\mathrm{rref}\\,A) \\) in general.' },
+  { id:'q05', topic:'Symmetric matrices', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) A real symmetric matrix has only real eigenvalues.',
+    answer:true,
+    explain:'Spectral theorem (or self-adjoint argument on \\(\\mathbb R^n\\)) implies all eigenvalues are real.' },
+  { id:'q06', topic:'Orthogonality', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) If \\(\\mathbf{u}\\cdot\\mathbf{v}=0\\) in \\(\\mathbb R^n\\), then \\(\\mathbf u\\) and \\(\\mathbf v\\) are orthogonal.',
+    answer:true,
+    explain:'That is the definition of orthogonal vectors in Euclidean space.' },
+  { id:'q07', topic:'Subspaces', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) Every subspace of \\(\\mathbb R^n\\) must contain \\(\\mathbf 0\\).',
+    answer:true,
+    explain:'Subspaces are closed under scalar multiplication; scaling any vector there by \\(0\\) gives \\(\\mathbf 0\\).' },
+  { id:'q08', topic:'Consistency', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) A linear system \\(A\\mathbf x=\\mathbf b\\) is always consistent.',
+    answer:false,
+    explain:'Consistency requires \\(\\mathbf b\\in\\mathrm{Col}(A)\\); for example \\(0=x_1\\) with \\(\\mathbf b=(1)\\) is inconsistent.' },
+  { id:'q09', topic:'Invertibility', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) If \\(\\mathbf v\\) is an eigenvector of \\(A\\) with eigenvalue \\(\\lambda\\), then \\(2\\mathbf v\\) is also an eigenvector (with the same \\(\\lambda\\)).',
+    answer:true,
+    explain:'\\(A(2\\mathbf v)=2A\\mathbf v=2\\lambda\\mathbf v=\\lambda(2\\mathbf v)\\).' },
+  { id:'q10', topic:'Eigenvectors', kind:'mc',
+    stem:'For \\(A=\\begin{pmatrix}2&1\\\\0&3\\end{pmatrix}\\), which vector is an eigenvector for eigenvalue \\(2\\)?',
+    choices:['\\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\)', '\\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\)'],
+    answer:1 },
+  { id:'q11', topic:'Determinants', kind:'scalar', tol: 0.01,
+    stem:'Compute \\(\\det\\begin{pmatrix}3&1\\\\2&4\\end{pmatrix}\\).',
+    answer:10 },
+  { id:'q12', topic:'Systems', kind:'vector', dim:2,
+    stem:'Solve \\(\\displaystyle\\begin{cases}x+y=5\\\\2x-y=1\\end{cases}\\). Enter \\(x,y\\):',
+    answer:[2,3] },
+  { id:'q13', topic:'Least squares', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) A least-squares solution \\( \\hat{\\mathbf x} \\) of \\(A\\mathbf x\\approx\\mathbf b\\) minimizes \\(\\lVert A\\mathbf x-\\mathbf b\\rVert_2\\).',
+    answer:true,
+    explain:'Least squares literally minimizes the Euclidean \\(2\\)-norm residual.' },
+  { id:'q14', topic:'Diagonalization intuition', kind:'mc',
+    stem:'Matrices that are \\(PDP^{-1}\\) with diagonal \\(D\\) are called',
+    choices:['orthogonally projecting', 'diagonalizable', 'skew-symmetric always', 'always normal for any \\(P\\)'],
+    answer:1 },
+  { id:'q15', topic:'Matrix multiplication', kind:'matrix', rows:2, cols:2,
+    stem:'Let \\(A=\\begin{pmatrix}1&0\\\\2&3\\end{pmatrix}\\), \\(B=\\begin{pmatrix}2&1\\\\0&2\\end{pmatrix}\\). Enter \\(AB\\), row-major (top row left to right, then second row):',
+    answer:[2,1,4,8] },
+  { id:'q16', topic:'Characteristic polynomial', kind:'scalar', tol:0.05,
+    stem:'For \\(A=\\begin{pmatrix}5&1\\\\0&2\\end{pmatrix}\\), what is the \\(\\textbf{smallest}\\) eigenvalue?',
+    answer:2 },
+  { id:'q17', topic:'Determinants', kind:'scalar', tol:0.05,
+    stem:'Compute \\(\\det\\bigl(\\begin{smallmatrix}2&5\\\\1&4\\end{smallmatrix}\\bigr)\\).',
+    answer:3 },
+  { id:'q18', topic:'Systems of linear ODE', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) An \\(n\\)th-order linear ODE always lifts to an equivalent linear first-order system in \\(n\\) unknown functions.',
+    answer:true,
+    explain:'Classic reduction: \\(x_1=y,\\, x_2=y\', \\dots\\)\\( x_n=y^{(n-1)}\\).' },
+  { id:'q19', topic:'Variation of constants', kind:'mc',
+    stem:'Which method finds a particular solution \\(y_p\\) of \\(y\'\'+ p(t) y\' + q(t) y=g(t)\\) using two independent solutions of the homogeneous equation?',
+    choices:'integrating factor on first order systems only|undetermined coefficients for any forcing|variation of parameters|separation of variables always'.split('|'),
+    answer:2 },
+  { id:'q20', topic:'Oscillators', kind:'mc',
+    stem:'The general solution of \\(y\'\' + 4y = 0\\) is:',
+    choices:['\\(C_1 e^{2t}+C_2 e^{-2t}\\)', '\\(C_1 e^{4t}+C_2\\)', '\\(C_1\\cos 2t + C_2\\sin 2t\\)', '\\(C_1 t+C_2 t^2\\)'],
+    answer:2 },
+  { id:'q21', topic:'Systems x\'=Ax', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) If every eigenvalue \\(\\lambda\\) of \\(A\\) satisfies \\(\\mathrm{Re}(\\lambda)<0\\), then \\(\\mathbf x=\\mathbf 0\\) is asymptotically stable for \\(\\mathbf x\'=A\\mathbf x\\).',
+    answer:true,
+    explain:'Standard linear stability test for \\( \\dot{\\mathbf x}=A\\mathbf x\\).' },
+  { id:'q22', topic:'Eigenvalues', kind:'scalar', tol:1e-6,
+    stem:'What is \\( \\mathrm{trace}\\begin{pmatrix}-1&3\\\\8&9\\end{pmatrix}\\)?',
+    answer:8 },
+  { id:'q23', topic:'Eigenvectors', kind:'mc',
+    stem:'Eigenvectors belonging to distinct eigenvalues of one matrix are:',
+    choices:['always orthogonal in \\(\\mathbb R^n\\) without extra hypotheses', 'always linearly independent', 'never linearly independent', 'always eigenvectors for \\(A^{-1}\\) with the **same** eigenvalues'],
+    answer:1 },
+  { id:'q24', topic:'Linear independence', kind:'text',
+    stem:'Vectors \\(\\begin{pmatrix}1\\\\1\\\\1\\end{pmatrix},\\begin{pmatrix}2\\\\3\\\\5\\end{pmatrix},\\begin{pmatrix}-1\\\\0\\\\1\\end{pmatrix}\\) in \\(\\mathbb R^3\\) are:',
+    answer:'independent', alts:['linearly independent','lin inde','linearly independent.'] },
+  { id:'q25', topic:'Integrating factors', kind:'mc',
+    stem:'Which is an integrating factor for \\(y\'+2y=g(t)\\)?',
+    choices:['\\(e^{-2t}\\)', '\\(e^{t^2}\\)', '\\(e^{2t}\\)', '\\(t^2\\)'],
+    answer:2 },
+  { id:'q26', topic:'Dimensional reasoning', kind:'scalar', tol:0.001,
+    stem:'The subspace \\(W=\\{(s,-s,4s)\\mid s\\in\\mathbb R\\}\\subset\\mathbb R^3\\). What is \\(\\dim(W)\\)?',
+    answer:1 },
+  { id:'q27', topic:'Matrices', kind:'tf',
+    stem:'\\( \\textbf{True or false:} \\) For \\(n\\times n\\), \\(\\det(AB)=(\\det A)(\\det B)\\).',
+    answer:true,
+    explain:'Multiplicativity of the determinant.' },
+  { id:'q28', topic:'Spans', kind:'mc',
+    stem:'The span of \\( \\{\\begin{pmatrix}2\\\\6\\end{pmatrix}\\}\\) equals which set?',
+    choices:['every vector in \\(\\mathbb R^2\\)', '\\( \\{(s,3s)\\mid s\\in\\mathbb R\\}\\)\\)', '\\( \\{(s,t)\\mid s+t=5\\}\\)', 'only \\( \\mathbf 0\\)'],
+    answer:1 },
+  { id:'q29', topic:'Diagonal entries', kind:'matrix', rows:2, cols:2,
+    stem:'Enter the diagonal \\(2\\times 2\\) matrix \\( \\mathrm{diag}(7,-5)\\): (row-major \\(a,b;c,d\\) as \\(a,b,c,d\\)):',
+    answer:[7,0,0,-5] },
+  { id:'q30', topic:'Consistency', kind:'mc',
+    stem:'The system \\(3x+y=9\\), \\(6x+2y=k\\). It is inconsistent when:',
+    choices:['\\(k=18\\)', '\\(k=0\\)', '\\(k\\neq18\\)', '\\(k\\) is irrational'],
+    answer:2 },
+];
+
+const QUIZ_B_BANK = [
+  { id:'b01', topic:'Diagonalization', kind:'tf',
+    stem:'\\(\\textbf{True or false:}\\) A real \\(3\\times 3\\) matrix with three distinct real eigenvalues is diagonalizable over \\(\\mathbb R\\).',
+    answer:true, explain:'Distinct eigenvalues give three linearly independent eigenvectors.' },
+  { id:'b02', topic:'Linear independence / RREF', kind:'mc',
+    stem:'For vectors \\(v_1=(1,2,3),\\ v_2=(2,4,6),\\ v_3=(1,0,1)\\), which statement is correct?',
+    choices:['All three are linearly independent', 'Exactly two are linearly independent', 'Only one is linearly independent', 'None is linearly independent'],
+    answer:1 },
+  { id:'b03', topic:'Row reduction', kind:'matrix', rows:2, cols:3,
+    stem:'Enter \\(\\mathrm{rref}\\left(\\begin{bmatrix}1&2&1\\\\2&4&3\\end{bmatrix}\\right)\\) in row-major order.',
+    answer:[1,2,0,0,0,1] },
+  { id:'b04', topic:'Rank-nullity', kind:'scalar', tol:1e-6,
+    stem:'If \\(A\\) is \\(4\\times 6\\) with rank \\(4\\), what is \\(\\dim(\\mathcal N(A))\\)?',
+    answer:2 },
+  { id:'b05', topic:'Diagonalization', kind:'mc',
+    stem:'\\(A=\\begin{pmatrix}4&1\\\\0&4\\end{pmatrix}\\). Is \\(A\\) diagonalizable over \\(\\mathbb R\\)?',
+    choices:['Yes, because the eigenvalue is real', 'No, eigenspace has dimension 1', 'Yes, any upper-triangular matrix is diagonalizable', 'No, because determinant is nonzero'],
+    answer:1 },
+  { id:'b06', topic:'Gram-Schmidt', kind:'vector', dim:3, tol:1e-3,
+    stem:'Apply Gram-Schmidt to \\(a_1=(1,1,0),\\ a_2=(1,0,1)\\). Enter the orthogonalized \\(u_2\\).',
+    answer:[0.5,-0.5,1] },
+  { id:'b07', topic:'QR factorization', kind:'matrix', rows:2, cols:2, tol:1e-3,
+    stem:'For \\(A=\\begin{pmatrix}1&1\\\\1&-1\\end{pmatrix}\\), enter the \\(R\\) from the reduced QR factorization \\(A=QR\\).',
+    answer:[1.4142,0,0,1.4142] },
+  { id:'b08', topic:'Least squares normal equations', kind:'vector', dim:2, tol:1e-3,
+    stem:'Given \\(A=\\begin{pmatrix}1&0\\\\1&1\\\\1&2\\end{pmatrix},\\ b=(1,2,2)^T\\), solve \\((A^TA)x=A^Tb\\). Enter \\(x\\).',
+    answer:[1.1667,0.5] },
+  { id:'b09', topic:'SVD facts', kind:'tf',
+    stem:'\\(\\textbf{True or false:}\\) Nonzero singular values of \\(A\\) are \\(\\sqrt{\\text{eigenvalues of }A^TA}\\).',
+    answer:true, explain:'By definition, singular values come from the spectrum of \\(A^TA\\).' },
+  { id:'b10', topic:'SVD computation', kind:'scalar', tol:1e-6,
+    stem:'For \\(A=\\mathrm{diag}(3,1)\\), what is the largest singular value?',
+    answer:3 },
+  { id:'b11', topic:'Column space test', kind:'mc',
+    stem:'System \\(A x=b\\) is consistent exactly when:',
+    choices:['\\(b\\in\\mathrm{Col}(A)\\)', '\\(\\det(A)\\neq0\\)', '\\(A\\) is symmetric', '\\(A^TA\\) is invertible'],
+    answer:0 },
+  { id:'b12', topic:'Homogeneous ODE', kind:'text',
+    stem:'Solve \\(y^{\\prime}-3y=0\\). Type the functional form only (constants okay):',
+    answer:'Ce^{3t}', alts:['c e^{3t}','c*e^{3t}','ke^{3t}','Ae^{3t}'] },
+  { id:'b13', topic:'Undetermined coefficients', kind:'mc',
+    stem:'For \\(y^{\\prime\\prime}+y=t\\), a good trial for \\(y_p\\) by MUC is:',
+    choices:['\\(At+B\\)', '\\(A\\cos t+B\\sin t\\)', '\\(At^2+Bt+C\\)', '\\(Ae^t\\)'],
+    answer:2 },
+  { id:'b14', topic:'Undetermined coefficients', kind:'vector', dim:2, tol:1e-4,
+    stem:'For \\(y^{\\prime\\prime}+y=t\\), if \\(y_p=At+B\\), enter \\((A,B)\\).',
+    answer:[1,0] },
+  { id:'b15', topic:'Variation of parameters setup', kind:'mc',
+    stem:'For \\(y^{\\prime\\prime}+y=\\tan t\\), which method is generally appropriate for a particular solution?',
+    choices:['Undetermined coefficients', 'Variation of parameters', 'Separation of variables', 'Diagonalization'],
+    answer:1 },
+  { id:'b16', topic:'Second-order homogeneous ODE', kind:'mc',
+    stem:'General solution of \\(y^{\\prime\\prime}-4y^{\\prime}+4y=0\\) is:',
+    choices:['\\(C_1e^{2t}+C_2e^{-2t}\\)', '\\(C_1e^{2t}+C_2te^{2t}\\)', '\\(C_1\\cos2t+C_2\\sin2t\\)', '\\(C_1+C_2e^{4t}\\)'],
+    answer:1 },
+  { id:'b17', topic:'Complex roots ODE', kind:'text',
+    stem:'For \\(y^{\\prime\\prime}+2y^{\\prime}+10y=0\\), solution uses \\(e^{-t}(\\cdots)\\). Type the trig frequencies part only (like C1 cos(kt)+C2 sin(kt)).',
+    answer:'C1 cos(3t)+C2 sin(3t)', alts:['c1cos3t+c2sin3t','c1 cos 3t + c2 sin 3t'] },
+  { id:'b18', topic:'Systems of ODE', kind:'tf',
+    stem:'\\(\\textbf{True or false:}\\) For \\(x^{\\prime}=Ax\\), if \\(A\\) has two independent eigenvectors in \\(\\mathbb R^2\\), then general solution is a linear combination of two exponential eigenmodes.',
+    answer:true, explain:'Each eigenpair contributes \\(c_ie^{\\lambda_i t}v_i\\).' },
+  { id:'b19', topic:'Linear models / QR', kind:'mc',
+    stem:'Why is solving \\(Rx=Q^Tb\\) (from \\(A=QR\\)) numerically preferred to directly forming \\((A^TA)x=A^Tb\\)?',
+    choices:['Because \\(Q\\) is diagonal', 'Because \\(A^TA\\) can worsen conditioning', 'Because QR only works for square A', 'Because normal equations are nonlinear'],
+    answer:1 },
+  { id:'b20', topic:'Projection matrix', kind:'matrix', rows:2, cols:2, tol:1e-3,
+    stem:'For orthonormal \\(q=(1/\\sqrt2,1/\\sqrt2)^T\\), enter projection matrix \\(P=qq^T\\).',
+    answer:[0.5,0.5,0.5,0.5] },
+  { id:'b21', topic:'Determinant and pivots', kind:'tf',
+    stem:'\\(\\textbf{True or false:}\\) If a square matrix has a zero row in RREF, then its determinant is zero.',
+    answer:true, explain:'A missing pivot implies rank deficient and singular.' },
+  { id:'b22', topic:'Eigenvalue multiplicity', kind:'mc',
+    stem:'If algebraic multiplicity of \\(\\lambda\\) is 3, geometric multiplicity can be:',
+    choices:['only 3', '1, 2, or 3', '0,1,2,3', 'only 1 or 3'],
+    answer:1 },
+  { id:'b23', topic:'QR quick compute', kind:'scalar', tol:1e-3,
+    stem:'For \\(A=\\begin{pmatrix}3&0\\\\4&0\\end{pmatrix}\\), what is \\(r_{11}\\) in reduced QR?',
+    answer:5 },
+  { id:'b24', topic:'SVD rank', kind:'scalar', tol:1e-6,
+    stem:'If singular values are \\(\\{9,2,0,0\\}\\), what is \\(\\mathrm{rank}(A)\\)?',
+    answer:2 },
+  { id:'b25', topic:'Row space / null space', kind:'tf',
+    stem:'\\(\\textbf{True or false:}\\) If \\(x\\in\\mathcal N(A)\\), then \\(x\\) is orthogonal to every row of \\(A\\).',
+    answer:true, explain:'\\(Ax=0\\) means each row dot-product with \\(x\\) is zero.' },
+  { id:'b26', topic:'Linear ODE with forcing', kind:'mc',
+    stem:'Solve form for \\(y^{\\prime}-2y=e^{2t}\\):',
+    choices:['\\(y=C e^{2t}\\)', '\\(y=(C+t)e^{2t}\\)', '\\(y=C e^{-2t}+e^{2t}\\)', '\\(y=C+t\\)'],
+    answer:1 },
+  { id:'b27', topic:'Method choice', kind:'mc',
+    stem:'Best method for \\(y^{\\prime\\prime}+4y=\\sec t\\):',
+    choices:['Undetermined coefficients', 'Variation of parameters', 'Annihilator with polynomial guess', 'No method applies'],
+    answer:1 },
+  { id:'b28', topic:'Orthogonality check', kind:'tf',
+    stem:'\\(\\textbf{True or false:}\\) Columns of an orthogonal matrix are orthonormal.',
+    answer:true, explain:'\\(Q^TQ=I\\) exactly states orthonormal columns.' },
+  { id:'b29', topic:'Normal equations dimensions', kind:'mc',
+    stem:'If \\(A\\) is \\(m\\times n\\), then \\(A^TA\\) is:',
+    choices:['\\(m\\times m\\)', '\\(n\\times n\\)', '\\(m\\times n\\)', '\\(n\\times m\\)'],
+    answer:1 },
+  { id:'b30', topic:'Systems nonhomogeneous ODE', kind:'text',
+    stem:'For \\(x^{\\prime}=Ax+f(t)\\), complete the statement: general solution = homogeneous solution + _____ solution.',
+    answer:'particular', alts:['a particular','one particular'] },
+];
+
+const QUIZ_SETS = {
+  quiza: { label: 'Quiz A', bank: QUIZ_A_BANK },
+  quizb: { label: 'Quiz B', bank: QUIZ_B_BANK },
+};
+
+function initQuizYourself(){
+  const selQuiz = document.getElementById('qz-quiz-select');
+  const btnStart = document.getElementById('qz-start');
+  const elTopic = document.getElementById('qz-topic');
+  const elProg = document.getElementById('qz-progress');
+  const elStem = document.getElementById('qz-stem');
+  const elInput = document.getElementById('qz-input');
+  const elFb = document.getElementById('qz-feedback');
+  const btnSubmit = document.getElementById('qz-submit');
+  const btnNext = document.getElementById('qz-next');
+  const btnShuffle = document.getElementById('qz-shuffle');
+  const btnClearHist = document.getElementById('qz-clear-history');
+  const elHist = document.getElementById('qz-history');
+  if (!elStem || !elInput || !selQuiz || !btnStart) return;
+
+  const state = {
+    quizKey: 'quiza',
+    bank: QUIZ_A_BANK,
+    order: [],
+    idx: 0,
+    submitted: false,
+  };
+
+  const shuffleArr = () => {
+    state.order = state.bank.map((_, i) => i);
+    for (let i = state.order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [state.order[i], state.order[j]] = [state.order[j], state.order[i]];
+    }
+    state.idx = 0;
+    state.submitted = false;
+  };
+
+  const loadHist = () => {
+    try {
+      const raw = localStorage.getItem(QUIZ_HISTORY_KEY);
+      if (!raw) return [];
+      const a = JSON.parse(raw);
+      return Array.isArray(a) ? a : [];
+    } catch (e) { return []; }
+  };
+
+  let history = loadHist();
+
+  const saveHist = () => {
+    localStorage.setItem(QUIZ_HISTORY_KEY, JSON.stringify(history.slice(0, 240)));
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function normalizeTextAnswer(s){
+    return String(s || '').trim().toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g,' ').trim();
+  }
+
+  function parseScalar(s){
+    const t = String(s || '').trim().replace(',', '.');
+    const n = Number(t);
+    if (Number.isFinite(n)) return n;
+    const m = t.match(/^(-?\d+)\s*\/\s*(\d+)$/);
+    if (m) return Number(m[1]) / Number(m[2]);
+    return NaN;
+  }
+
+  function nearNumbers(a,b,tol){
+    const t = tol != null ? tol : Math.max(1e-9, 1e-6 * (1 + Math.abs(b)));
+    return Math.abs(a-b) <= t;
+  }
+
+  function currentQ(){ return state.bank[state.order[state.idx]]; }
+
+  function formatCorrect(q){
+    if (q.kind === 'tf') return q.answer ? 'True' : 'False';
+    if (q.kind === 'scalar') return String(q.answer);
+    if (q.kind === 'text') return q.answer + (q.alts && q.alts.length ? '' : '');
+    if (q.kind === 'mc') return (q.choices && q.choices[q.answer]) ? `(choice ${q.answer + 1}) ${q.choices[q.answer].replace(/^\\\(|\\\)/g,'')}` : String(q.answer);
+    if (q.kind === 'vector') return '[' + q.answer.join(', ') + ']';
+    if (q.kind === 'matrix') return '[' + q.answer.join(', ') + '] (row-major)';
+    return '(see notes)';
+  }
+
+  function summarizeStemHtml(q){ return `<span>${escapeHtml(q.id)}</span> · ${escapeHtml(q.topic)}`; }
+
+  function readUserSubmission(q){
+    if (q.kind === 'tf') {
+      const v = document.querySelector('input[name="qz-tf"]:checked');
+      return { ok: v != null, payload: v ? v.value === 'true' : null };
+    }
+    if (q.kind === 'mc') {
+      const v = document.querySelector('input[name="qz-mc"]:checked');
+      return { ok: !!v, payload: v ? parseInt(v.value, 10) : null };
+    }
+    if (q.kind === 'scalar') {
+      const inp = document.getElementById('qz-scalar');
+      const t = inp ? inp.value.trim() : '';
+      if (!t) return { ok: false, payload: '' };
+      const n = parseScalar(t);
+      return { ok: Number.isFinite(n), payload: t };
+    }
+    if (q.kind === 'text') {
+      const inp = document.getElementById('qz-text');
+      return { ok: !!inp && inp.value.trim() !== '', payload: inp ? inp.value.trim() : '' };
+    }
+    if (q.kind === 'vector'){
+      const pts = [];
+      let got = false;
+      for (let i=0;i<(q.dim||0); i++){
+        const el = document.getElementById('qz-v-' + i);
+        if (!el) return { ok:false, payload:null };
+        if (el.value.trim()) got = true;
+        pts.push(parseScalar(el.value));
+      }
+      return { ok: got && pts.every(x => Number.isFinite(x)), payload: pts };
+    }
+    if (q.kind === 'matrix'){
+      const n = q.rows * q.cols;
+      const pts = [];
+      let got=false;
+      for (let i=0;i<n;i++){
+        const el = document.getElementById('qz-m-' + i);
+        if (!el) return { ok:false, payload:null };
+        if (el.value.trim()) got = true;
+        pts.push(parseScalar(el.value));
+      }
+      return { ok:got && pts.every(x => Number.isFinite(x)), payload: pts };
+    }
+    return { ok:false, payload:null };
+  }
+
+  function evalAnswer(q, read){
+    if (q.kind === 'tf'){
+      return read.payload === q.answer;
+    }
+    if (q.kind === 'mc'){
+      return read.payload === q.answer;
+    }
+    if (q.kind === 'scalar'){
+      const n = parseScalar(read.payload);
+      return Number.isFinite(n) && nearNumbers(n,q.answer,q.tol);
+    }
+    if (q.kind === 'text'){
+      const nu = normalizeTextAnswer(read.payload);
+      const na = normalizeTextAnswer(q.answer);
+      if (!nu||!na) return false;
+      if (nu === na || nu.replace(/\s+/g,'') === na.replace(/\s+/g,'')) return true;
+      if (q.alts){
+        for (let k=0;k<q.alts.length;k++){
+          const nk = normalizeTextAnswer(q.alts[k]);
+          if (nu===nk || nu.replace(/\s+/g,'')=== nk.replace(/\s+/g,'')) return true;
+        }
+      }
+      return false;
+    }
+    if (q.kind === 'vector'){
+      if (!Array.isArray(read.payload)||read.payload.length!==q.answer.length) return false;
+      for(let i=0;i<read.payload.length;i++){
+        if (!nearNumbers(read.payload[i],q.answer[i],q.tol!=null?q.tol:1e-4)) return false;
+      }
+      return true;
+    }
+    if (q.kind === 'matrix'){
+      if(!Array.isArray(read.payload)||read.payload.length!==q.answer.length) return false;
+      for(let i=0;i<read.payload.length;i++){
+        if (!nearNumbers(read.payload[i],q.answer[i],q.tol!=null?q.tol:1e-4)) return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function formatUserSubmitted(q, read){
+    if (!read.ok) return '(none)';
+    if (q.kind==='tf') return read.payload?'True':'False';
+    if (q.kind==='mc') return `(choice ${(read.payload+1)})`;
+    if (q.kind==='vector') return '['+read.payload.map(x=>String(x)).join(', ') + ']';
+    if (q.kind==='matrix') return '['+read.payload.map(x=>String(x)).join(', ') + ']';
+    return String(read.payload);
+  }
+
+  function renderHistory(){
+    if (!history.length){
+      elHist.innerHTML='<div class="qz-hist-item"><div class="qz-h-meta">No attempts yet.</div></div>';
+      return;
+    }
+    elHist.innerHTML = history.map((h)=>{
+      const cl = h.correct ? 'ok' : 'bad';
+      const mark = h.correct ? 'Correct' : 'Incorrect';
+      return `<div class="qz-hist-item ${cl}"><div class="qz-h-meta">${escapeHtml(h.time)} · ${(h.quiz || 'Quiz A')} · ${h.id} · ${escapeHtml(mark)} · ${escapeHtml(h.topic)}</div><div><strong>Yours:</strong> ${escapeHtml(String(h.user))} &nbsp;·&nbsp; <strong>Expected:</strong> ${escapeHtml(String(h.expected))}</div></div>`;
+    }).join('');
+  }
+
+  async function quizTypeset(nodes){
+    if (!window.MathJax || !window.MathJax.typesetPromise || !nodes || !nodes.length) return;
+    try { await window.MathJax.typesetPromise(nodes.filter(Boolean)); } catch (err) {}
+  }
+
+  async function paintQuestion(){
+    const q = currentQ();
+    state.submitted = false;
+    elFb.style.display='none'; elFb.classList.remove('on','ok','bad','need'); elFb.textContent='';
+    btnNext.disabled=true; btnSubmit.disabled=false;
+    elTopic.textContent = (QUIZ_SETS[state.quizKey]?.label || 'Quiz') + ' · ' + (q.topic || 'Practice');
+    elProg.textContent = 'Question ' + (state.idx+1) + ' / ' + state.order.length;
+    elStem.innerHTML = '<div>' + q.stem + '</div>';
+    elInput.innerHTML = '';
+
+    if (q.kind === 'tf'){
+      elInput.innerHTML = `
+        <div class="qz-help">Choose True or False, then submit.</div>
+        <div class="qz-tf-row" role="group" aria-label="True or False">
+          <label class="qz-choice-btn"><input type="radio" name="qz-tf" value="true"/> True</label>
+          <label class="qz-choice-btn"><input type="radio" name="qz-tf" value="false"/> False</label>
+        </div>`;
+      elInput.querySelectorAll('label.qz-choice-btn').forEach((lab)=>{
+        const inp = lab.querySelector('input');
+        lab.addEventListener('click', ()=> lab.classList.toggle('selected', inp.checked));
+      });
+      elInput.querySelectorAll('input[name="qz-tf"]').forEach((inp)=>{
+        inp.addEventListener('change',()=>{
+          elInput.querySelectorAll('label.qz-choice-btn').forEach(L=> L.classList.remove('selected'));
+          const L = inp.closest('label'); if(L) L.classList.add('selected');
+        });
+      });
+    } else if (q.kind === 'mc'){
+      const opts = q.choices.map((c,i)=>`
+        <label class="qz-choice-btn"><input type="radio" name="qz-mc" value="${i}"/> (${i+1}) ${c}</label>`).join('');
+      elInput.innerHTML = `<div class="qz-help">Select one answer.</div><div class="qz-mc-list">${opts}</div>`;
+      elInput.querySelectorAll('input[name="qz-mc"]').forEach((inp)=>{
+        inp.addEventListener('change',()=>{
+          elInput.querySelectorAll('label.qz-choice-btn').forEach(L=> L.classList.remove('selected'));
+          const L = inp.closest('label'); if(L) L.classList.add('selected');
+        });
+      });
+    } else if (q.kind === 'scalar'){
+      elInput.innerHTML = '<div class="qz-help">Type a numeric answer (decimals or fractions like <code>1/2</code>).</div>'
+        + '<div class="qz-row"><input id="qz-scalar" class="qz-textfield" type="text" autocomplete="off" /></div>';
+    } else if (q.kind === 'text'){
+      elInput.innerHTML = '<div class="qz-help">Short phrase answer (grammar-insensitive).</div>'
+        + '<div class="qz-row"><input id="qz-text" class="qz-textfield" type="text" autocomplete="off" /></div>';
+    } else if (q.kind === 'vector'){
+      const labels=['First coordinate','Second coordinate','Third coordinate','Fourth coordinate'];
+      elInput.innerHTML = '<div class="qz-help">Fill each coordinate.</div>'
+        + Array.from({length:q.dim}, (_,i)=>{
+          const name = labels[i] || ('Coordinate '+(i+1));
+          return `<div class="qz-row"><label><span>${name}: </span><input id="qz-v-${i}" class="qz-textfield" style="max-width:9rem"/></label></div>`;
+        }).join('');
+    } else if (q.kind === 'matrix'){
+      let idx=0;
+      const grid=[];
+      for (let r=0;r<q.rows;r++){
+        const row=[];
+        for (let c=0;c<q.cols;c++,idx++){
+          row.push('<input id="qz-m-' + idx + '" type="text" class="qz-matrix-cell" autocomplete="off" />');
+        }
+        grid.push('<div style="display:contents">' + row.join('')+'</div>');
+      }
+      elInput.innerHTML = '<div class="qz-help">Row-major entries: left→right across each row, top row first.</div>'
+        + '<div class="qz-matrix-row"><span class="qz-matrix-br">{</span><div class="qz-matrix" style="grid-template-columns:repeat('+q.cols+',minmax(auto,auto))">'
+        + grid.join('') + '</div><span class="qz-matrix-br">}</span></div>';
+    }
+
+    await quizTypeset([elStem, elInput]);
+  }
+
+  function onSubmit(){
+    if (state.submitted) return;
+    const q = currentQ();
+    const rd = readUserSubmission(q);
+    if (!rd.ok){
+      elFb.className='qz-feedback on need';
+      elFb.innerHTML='<strong>Incomplete.</strong><span class="qz-ex"> Fill in every part (or choose an option) before checking.</span>';
+      elFb.style.display='block';
+      quizTypeset([elFb]);
+      return;
+    }
+    const corr = evalAnswer(q, rd);
+
+    state.submitted = true;
+    btnSubmit.disabled=true; btnNext.disabled=false;
+
+    const userStr = formatUserSubmitted(q, rd);
+    const expStr = typeof formatCorrect(q)==='string'?formatCorrect(q):String(formatCorrect(q));
+    history.unshift({
+      time: new Date().toISOString(),
+      quiz: QUIZ_SETS[state.quizKey]?.label || 'Quiz',
+      id: q.id,
+      topic: q.topic,
+      stem: summarizeStemHtml(q),
+      user: userStr,
+      expected: stripMathForHist(expStr),
+      correct: !!corr,
+    });
+    history = history.slice(0,240);
+    saveHist();
+    renderHistory();
+
+    if (corr){
+      elFb.className='qz-feedback on ok';
+      elFb.innerHTML='<strong>✓ Correct.</strong>'
+        +(q.explain?('<span class="qz-ex">'+escapeHtml(q.explain)+'</span>'):'');
+    } else {
+      elFb.className='qz-feedback on bad';
+      elFb.innerHTML='<strong>✗ Incorrect.</strong> Correct answer: '+escapeHtml(stripMathForHist(expStr))
+        +(q.explain?('<span class="qz-ex">'+escapeHtml(q.explain)+'</span>'):'');
+    }
+    quizTypeset([elFb]);
+  }
+
+  function stripMathForHist(s){ return String(s).replace(/\$[^$]*\$/g,'').replace(/\([^)]*\\\\[^)]*\)/g,'').trim(); }
+
+  function onNext(){
+    if (!state.submitted) return;
+    state.idx = (state.idx + 1) % state.order.length;
+    paintQuestion();
+  }
+
+  function startSelectedQuiz() {
+    const chosen = selQuiz.value && QUIZ_SETS[selQuiz.value] ? selQuiz.value : 'quiza';
+    state.quizKey = chosen;
+    state.bank = QUIZ_SETS[chosen].bank;
+    shuffleArr();
+    paintQuestion();
+    renderHistory();
+  }
+
+  btnSubmit.addEventListener('click', onSubmit);
+  btnNext.addEventListener('click', onNext);
+  btnShuffle.addEventListener('click', ()=>{ shuffleArr(); paintQuestion(); renderHistory(); });
+  btnClearHist.addEventListener('click', ()=>{ history=[]; saveHist(); renderHistory(); });
+  btnStart.addEventListener('click', startSelectedQuiz);
+
+  selQuiz.value = 'quiza';
+  startSelectedQuiz();
+  renderHistory();
+}
+
 document.addEventListener('keydown', (e) => {
   if (isTypingTarget(e.target)) return;
   if (e.altKey || e.ctrlKey || e.metaKey) return;
@@ -12405,40 +13084,9 @@ document.addEventListener('keydown', (e) => {
 window.addEventListener('load', () => {
   initGlobalSectionSearch();
   initFinalReviewProblems();
-  // Normalize textbook PDF URLs for GitHub Pages.
-  // On project pages, the site may live under "/repo-name/" instead of "/",
-  // and some deployments are sensitive to whether the current URL has a trailing slash.
-  const currentPath = window.location.pathname;
-  const repoSegment = '/math-54-study-resources/';
-  let siteBase;
-  if (currentPath.includes(repoSegment)) {
-    siteBase = repoSegment;
-  } else if (currentPath.endsWith('/')) {
-    siteBase = currentPath;
-  } else {
-    siteBase = currentPath.slice(0, currentPath.lastIndexOf('/') + 1);
-  }
-  const normalizeAssetUrl = (relativePath) =>
-    siteBase.replace(/\/+$/, '/') + relativePath.replace(/^\.?\//, '');
-
-  document.querySelectorAll('a[href^="textbook-pdfs/"], iframe[src^="textbook-pdfs/"]').forEach((el) => {
-    if (el.hasAttribute('href')) {
-      el.setAttribute('href', normalizeAssetUrl(el.getAttribute('href')));
-    }
-    if (el.hasAttribute('src')) {
-      el.setAttribute('src', normalizeAssetUrl(el.getAttribute('src')));
-    }
-  });
-
-  // Cross-origin PDFs often fail to render directly inside browser iframes
-  // on GitHub Pages even when "open in new tab" works. Route remote lecture
-  // slide PDFs through Google's embedded viewer for the in-page preview only.
-  document.querySelectorAll('iframe.pdf-frame[src*="ocf.berkeley.edu/~asharma/Math54/Lecture"]').forEach((frame) => {
-    const rawSrc = frame.getAttribute('src');
-    if (!rawSrc) return;
-    const wrappedSrc = 'https://docs.google.com/gview?embedded=1&url=' + encodeURIComponent(rawSrc);
-    frame.setAttribute('src', wrappedSrc);
-  });
+  initCourseInfoHeroCue();
+  initQuizYourself();
+  // Keep PDF iframe src values untouched at runtime to avoid mass reloads.
 
   // Default note placeholders (Sections 2–7 + Lectures 29–31)
   // Keeps HTML structure stable while clearly marking unfinished notes.
@@ -12457,7 +13105,10 @@ window.addEventListener('load', () => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = placeholderHtml;
   });
-  if (window.MathJax) MathJax.typesetPromise();
+  const activeSection = document.querySelector('.sec.on');
+  if (activeSection && window.MathJax) {
+    window.MathJax.typesetPromise([activeSection]).then(() => { activeSection.dataset.mathReady = '1'; }).catch(() => {});
+  }
 });
 </script>
 </body>
